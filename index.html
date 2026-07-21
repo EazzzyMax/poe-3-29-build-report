@@ -1,0 +1,857 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Персональный аналитический рейтинг league starter билдов Path of Exile 3.29: Curse of the Allflame.">
+  <title>PoE 3.29 — что стартовать</title>
+  <style>
+    :root {
+      --bg: oklch(0.085 0 0);
+      --surface: oklch(0.13 0.012 330);
+      --surface-2: oklch(0.17 0.014 330);
+      --surface-3: oklch(0.22 0.018 330);
+      --ink: oklch(0.94 0.01 330);
+      --muted: oklch(0.72 0.025 330);
+      --faint: oklch(0.55 0.02 330);
+      --line: oklch(0.31 0.025 330 / 0.68);
+      --primary: oklch(0.65 0.16 330);
+      --primary-pale: oklch(0.84 0.08 330);
+      --accent: oklch(0.72 0.14 28);
+      --good: oklch(0.74 0.13 155);
+      --warn: oklch(0.79 0.14 82);
+      --bad: oklch(0.66 0.18 24);
+      --info: oklch(0.72 0.12 240);
+      --rank-s: oklch(0.79 0.16 88);
+      --rank-a: oklch(0.72 0.13 155);
+      --rank-b: oklch(0.72 0.12 240);
+      --rank-c: oklch(0.68 0.09 310);
+      --shadow: 0 20px 70px oklch(0 0 0 / 0.35);
+      --ease: cubic-bezier(.16, 1, .3, 1);
+      --max: 1440px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 84% 2%, oklch(0.3 0.11 330 / 0.28), transparent 34rem),
+        radial-gradient(circle at 8% 34%, oklch(0.25 0.08 25 / 0.17), transparent 30rem),
+        var(--bg);
+      font-family: Aptos, "Segoe UI Variable", "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.58;
+      text-rendering: optimizeLegibility;
+    }
+
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    button, select { color: inherit; }
+    :focus-visible { outline: 2px solid var(--primary-pale); outline-offset: 3px; }
+
+    .skip-link {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 20;
+      padding: 10px 14px;
+      color: var(--bg);
+      background: var(--ink);
+      transform: translateY(-150%);
+      transition: transform .2s var(--ease);
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .shell { width: min(calc(100% - 40px), var(--max)); margin-inline: auto; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid var(--line);
+      background: oklch(0.085 0 0 / 0.92);
+      backdrop-filter: blur(18px) saturate(125%);
+    }
+    .topbar-inner {
+      min-height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .wordmark {
+      display: flex;
+      align-items: baseline;
+      gap: 9px;
+      font-family: Bahnschrift, "Arial Narrow", sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .wordmark span { color: var(--primary-pale); font-size: .8rem; font-weight: 500; }
+    .nav { display: flex; gap: 22px; }
+    .nav a { color: var(--muted); text-decoration: none; font-size: .88rem; }
+    .nav a:hover { color: var(--ink); }
+    .freshness { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .82rem; white-space: nowrap; }
+    .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 5px oklch(0.74 0.13 155 / .11); }
+
+    .hero {
+      min-height: min(850px, calc(100vh - 62px));
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(340px, .85fr);
+      align-items: center;
+      gap: clamp(44px, 7vw, 110px);
+      padding-block: clamp(72px, 10vw, 148px);
+    }
+    .hero h1 {
+      max-width: 12ch;
+      margin: 0 0 26px;
+      font-family: Bahnschrift, "Arial Narrow", sans-serif;
+      font-size: clamp(3.3rem, 7.2vw, 6rem);
+      line-height: .93;
+      letter-spacing: -0.04em;
+      text-wrap: balance;
+    }
+    .hero h1 em { color: var(--primary-pale); font-style: normal; }
+    .dek { max-width: 67ch; margin: 0; color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); text-wrap: pretty; }
+    .hero-note { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 10px 22px; color: var(--faint); font-size: .85rem; }
+    .hero-note strong { color: var(--ink); font-weight: 600; }
+
+    .verdict-panel {
+      position: relative;
+      padding: clamp(26px, 4vw, 42px);
+      background: var(--surface);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .verdict-panel::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      right: -75px;
+      top: -80px;
+      border-radius: 50%;
+      background: var(--primary);
+      filter: blur(60px);
+      opacity: .16;
+    }
+    .verdict-label { margin: 0 0 28px; color: var(--primary-pale); font: 600 .82rem/1 Bahnschrift, sans-serif; }
+    .pick { display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: start; padding: 18px 0; border-top: 1px solid var(--line); }
+    .pick:last-child { padding-bottom: 0; }
+    .pick-num { color: var(--faint); font: 700 1.1rem/1 Bahnschrift, sans-serif; }
+    .pick h2 { margin: -4px 0 3px; font-size: 1.06rem; line-height: 1.3; }
+    .pick p { margin: 0; color: var(--muted); font-size: .87rem; }
+    .score { color: var(--rank-s); font: 700 1rem/1 Bahnschrift, sans-serif; }
+    .hero-cta { display: inline-flex; margin-top: 34px; align-items: center; gap: 10px; text-decoration: none; color: var(--bg); background: var(--primary-pale); padding: 12px 16px; font-weight: 700; }
+    .hero-cta:hover { background: var(--ink); }
+
+    .section { padding-block: clamp(72px, 9vw, 128px); border-top: 1px solid var(--line); }
+    .section-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr); gap: 48px; align-items: end; margin-bottom: 48px; }
+    .section-heading h2 { margin: 0; font: 700 clamp(2.1rem, 4.2vw, 4.2rem)/.98 Bahnschrift, sans-serif; letter-spacing: -0.035em; text-wrap: balance; }
+    .section-heading p { margin: 0; color: var(--muted); max-width: 68ch; }
+
+    .market-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(340px, .8fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .market-copy, .market-plot { background: var(--surface); padding: clamp(24px, 4vw, 46px); }
+    .market-copy h3 { margin: 0 0 12px; font: 700 clamp(1.45rem, 2.5vw, 2.4rem)/1.1 Bahnschrift, sans-serif; }
+    .market-copy > p { color: var(--muted); max-width: 64ch; }
+    .signal-list { margin: 34px 0 0; padding: 0; list-style: none; }
+    .signal-list li { display: grid; grid-template-columns: 130px 1fr; gap: 20px; padding: 16px 0; border-top: 1px solid var(--line); }
+    .signal-list strong { color: var(--primary-pale); font-size: .88rem; }
+    .signal-list span { color: var(--muted); font-size: .9rem; }
+    .plot-title { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; margin-bottom: 20px; }
+    .plot-title strong { font-family: Bahnschrift, sans-serif; }
+    .plot-title span { color: var(--faint); font-size: .78rem; }
+    .market-svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .axis { stroke: var(--line); stroke-width: 1; }
+    .gridline { stroke: var(--line); stroke-width: .7; stroke-dasharray: 4 7; }
+    .dot { transition: r .25s var(--ease), opacity .25s; }
+    .market-svg:hover .dot { opacity: .35; }
+    .market-svg .dot:hover { r: 10; opacity: 1; }
+    .svg-label { fill: var(--muted); font: 12px Aptos, sans-serif; }
+    .svg-small { fill: var(--faint); font: 10px Aptos, sans-serif; }
+
+    .controls-wrap { position: sticky; top: 62px; z-index: 8; padding-block: 14px; background: oklch(0.085 0 0 / .95); border-block: 1px solid var(--line); }
+    .controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .search { flex: 1 1 280px; min-width: 0; position: relative; }
+    .search input { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: var(--surface); padding: 10px 14px 10px 39px; }
+    .search::before { content: "⌕"; position: absolute; left: 14px; top: 8px; color: var(--faint); font-size: 1.25rem; }
+    .filters { display: flex; gap: 7px; flex-wrap: wrap; }
+    .filter, .sort-select { min-height: 42px; border: 1px solid var(--line); border-radius: 0; background: var(--surface); padding: 8px 12px; cursor: pointer; }
+    .filter[aria-pressed="true"] { color: var(--bg); background: var(--primary-pale); border-color: var(--primary-pale); font-weight: 700; }
+    .sort-select { color: var(--muted); }
+    .result-count { color: var(--faint); font-size: .82rem; margin-left: auto; white-space: nowrap; }
+
+    .rank-list { margin-top: 28px; border-top: 1px solid var(--line); }
+    .build {
+      --tier-color: var(--rank-b);
+      display: grid;
+      grid-template-columns: 84px minmax(250px, .85fr) minmax(320px, 1.15fr) 162px;
+      gap: clamp(20px, 3vw, 44px);
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+      transition: background .25s var(--ease), opacity .2s;
+    }
+    .build[data-tier="S"] { --tier-color: var(--rank-s); }
+    .build[data-tier="A"] { --tier-color: var(--rank-a); }
+    .build[data-tier="B"] { --tier-color: var(--rank-b); }
+    .build[data-tier="C"] { --tier-color: var(--rank-c); }
+    .build:hover { background: oklch(0.65 0.16 330 / .035); }
+    .rankbox { display: flex; flex-direction: column; gap: 7px; align-items: flex-start; }
+    .ranknum { color: var(--faint); font: 700 1.65rem/1 Bahnschrift, sans-serif; }
+    .tier { color: var(--tier-color); font: 700 1rem/1 Bahnschrift, sans-serif; border: 1px solid color-mix(in oklch, var(--tier-color), transparent 55%); padding: 6px 9px; }
+    .build-title h3 { margin: 0 0 8px; font: 700 clamp(1.25rem, 2vw, 1.65rem)/1.08 Bahnschrift, sans-serif; letter-spacing: -.02em; text-wrap: balance; }
+    .classline { color: var(--primary-pale); font-size: .87rem; }
+    .statusline { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border: 1px solid var(--line); color: var(--muted); font-size: .72rem; }
+    .tag.proven { color: var(--good); }
+    .tag.hype { color: var(--warn); }
+    .tag.wip { color: var(--bad); }
+    .build-main > p { margin: 0 0 16px; color: var(--muted); max-width: 68ch; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .pros, .cons { margin: 0; padding: 0; list-style: none; }
+    .pros li, .cons li { position: relative; padding-left: 18px; margin-top: 7px; font-size: .86rem; }
+    .pros li::before, .cons li::before { position: absolute; left: 0; font-weight: 800; }
+    .pros li::before { content: "+"; color: var(--good); }
+    .cons li::before { content: "−"; color: var(--bad); }
+    .metrics { display: grid; gap: 10px; align-content: start; }
+    .metric { display: grid; grid-template-columns: 1fr auto; gap: 8px; font-size: .76rem; color: var(--muted); }
+    .metric b { color: var(--ink); font-weight: 600; }
+    .bar { grid-column: 1 / -1; height: 3px; background: var(--surface-3); overflow: hidden; }
+    .bar span { display: block; height: 100%; background: var(--tier-color); transform-origin: left; }
+    .details { grid-column: 2 / -1; margin-top: 0; }
+    .compact-source-icon { width: 15px; height: 15px; flex-basis: 15px; border-radius: 3px; }
+    .compact-source-icon .source-icon-fallback { font-size: .54rem; }
+    .detail-body { padding: 22px; background: var(--surface); display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .7fr); gap: 28px; }
+    .detail-body p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .sources { display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
+    .source { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 7px 10px; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); text-decoration: none; font-size: .77rem; }
+    .source:hover { border-color: var(--primary); background: var(--surface-3); }
+    .source-icon { position: relative; display: inline-grid; place-items: center; width: 18px; height: 18px; flex: 0 0 18px; overflow: hidden; border-radius: 4px; background: var(--surface-3); }
+    .source-icon-fallback { color: var(--muted); font-size: .65rem; font-weight: 800; line-height: 1; }
+    .source-favicon { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: var(--surface-2); }
+    .source-favicon[hidden] { display: none; }
+    .source-type { color: var(--primary-pale); font-weight: 700; }
+    .link-with-favicon { display: inline-flex; align-items: center; gap: 6px; }
+    .empty { display: none; padding: 50px 0; color: var(--muted); text-align: center; border-bottom: 1px solid var(--line); }
+
+    .watchlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line); background: var(--line); gap: 1px; }
+    .watchitem { background: var(--surface); padding: 24px; display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; }
+    .watchitem h3 { margin: 0; font: 700 1.15rem/1.2 Bahnschrift, sans-serif; }
+    .watchitem p { margin: 0; color: var(--muted); font-size: .86rem; grid-column: 1 / -1; }
+    .watchitem a { color: var(--primary-pale); text-decoration: none; font-size: .78rem; }
+    .watchitem a:hover { text-decoration: underline; }
+
+    .method-grid { display: grid; grid-template-columns: minmax(280px, .75fr) minmax(0, 1.25fr); gap: 60px; }
+    .method-lede { color: var(--muted); font-size: 1.05rem; }
+    .method-lede strong { color: var(--ink); }
+    .criteria { margin: 0; padding: 0; list-style: none; }
+    .criterion { display: grid; grid-template-columns: 52px 160px 1fr; gap: 20px; padding: 20px 0; border-top: 1px solid var(--line); }
+    .criterion b { color: var(--primary-pale); font: 700 1rem/1.5 Bahnschrift, sans-serif; }
+    .criterion strong { font-size: .9rem; }
+    .criterion span { color: var(--muted); font-size: .87rem; }
+
+    .ledger { width: 100%; border-collapse: collapse; font-size: .87rem; }
+    .ledger th, .ledger td { padding: 16px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    .ledger th { color: var(--faint); font-weight: 600; }
+    .ledger td:first-child { color: var(--primary-pale); white-space: nowrap; }
+    .ledger a { text-decoration: none; }
+    .ledger a:hover { text-decoration: underline; }
+
+    .disclaimer { margin-top: 40px; padding: 24px; border: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
+    .disclaimer strong { color: var(--ink); }
+    footer { padding-block: 36px 60px; color: var(--faint); font-size: .8rem; border-top: 1px solid var(--line); }
+    .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+    @media (max-width: 1080px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero h1 { max-width: 10ch; }
+      .market-grid { grid-template-columns: 1fr; }
+      .build { grid-template-columns: 64px minmax(220px, .9fr) minmax(280px, 1.1fr); }
+      .metrics { grid-column: 2 / -1; grid-template-columns: repeat(5, 1fr); }
+      .details { grid-column: 2 / -1; }
+    }
+
+    @media (max-width: 760px) {
+      .shell { width: min(calc(100% - 28px), var(--max)); }
+      .nav { display: none; }
+      .freshness { font-size: .74rem; }
+      .hero { padding-block: 72px 90px; }
+      .hero h1 { font-size: clamp(3rem, 16vw, 5rem); }
+      .section-heading { grid-template-columns: 1fr; gap: 22px; }
+      .controls-wrap { position: static; }
+      .controls { align-items: stretch; }
+      .filters { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; }
+      .filter { white-space: nowrap; }
+      .sort-select { flex: 1; }
+      .result-count { display: flex; align-items: center; }
+      .build { grid-template-columns: 54px 1fr; gap: 18px; padding: 28px 0; }
+      .build-main, .metrics, .details { grid-column: 2 / -1; }
+      .metrics { grid-template-columns: repeat(2, 1fr); }
+      .detail-body { grid-template-columns: 1fr; }
+      .split { grid-template-columns: 1fr; gap: 8px; }
+      .watchlist { grid-template-columns: 1fr; }
+      .method-grid { grid-template-columns: 1fr; gap: 30px; }
+      .criterion { grid-template-columns: 42px 1fr; gap: 14px; }
+      .criterion span { grid-column: 2; }
+      .ledger-wrap { overflow-x: auto; }
+      .ledger { min-width: 700px; }
+      .signal-list li { grid-template-columns: 1fr; gap: 5px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#ranking">К рейтингу</a>
+
+  <header class="topbar">
+    <div class="shell topbar-inner">
+      <div class="wordmark">POE / 3.29 <span>личный build brief</span></div>
+      <nav class="nav" aria-label="Разделы отчёта">
+        <a href="#market">Рынок</a>
+        <a href="#ranking">Рейтинг</a>
+        <a href="#watchlist">Ещё варианты</a>
+        <a href="#sources">Источники</a>
+      </nav>
+      <div class="freshness"><span class="pulse" aria-hidden="true"></span>Срез: 21.07.2026</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell hero" aria-labelledby="hero-title">
+      <div>
+        <h1 id="hero-title">Что стартовать в <em>Curse of the Allflame</em></h1>
+        <p class="dek">Не пересказ патчноутов, а решение перед стартом. 30+ свежих предложений после анонса 16 июля сведены к одному рейтингу: сила на пустой экономике, цена ошибки, путь до T16 и реальная готовность гайда.</p>
+        <div class="hero-note">
+          <span><strong>Лига:</strong> Path of Exile 3.29</span>
+          <span><strong>Старт:</strong> 24 июля, 20:00 UTC</span>
+          <span><strong>Статус:</strong> pre-launch, PoB ещё догоняет патч</span>
+        </div>
+      </div>
+
+      <aside class="verdict-panel" aria-label="Короткий вердикт">
+        <p class="verdict-label">МОЙ КОРОТКИЙ ВЫБОР</p>
+        <div class="pick">
+          <span class="pick-num">01</span>
+          <div><h2>Penance Brand Ignite</h2><p>Самый безопасный компромисс: проверен в 3.28, не понерфлен, два сильных свежих гайда.</p></div>
+          <span class="score">91</span>
+        </div>
+        <div class="pick">
+          <span class="pick-num">02</span>
+          <div><h2>Chaos Minion Army</h2><p>Если хочется ровной кампании и права смотреть на механику, пока армия делает работу.</p></div>
+          <span class="score">89</span>
+        </div>
+        <div class="pick">
+          <span class="pick-num">03</span>
+          <div><h2>Shield Crush Juggernaut</h2><p>Лучший выбор на прочность: оружие не определяет урон, прогрессия расписана по актам.</p></div>
+          <span class="score">87</span>
+        </div>
+        <a class="hero-cta" href="#ranking">Открыть полный рейтинг <span aria-hidden="true">↓</span></a>
+      </aside>
+    </section>
+
+    <section class="section" id="market">
+      <div class="shell">
+        <div class="section-heading">
+          <h2>Рынок после патчноутов</h2>
+          <p>Главная ошибка этого окна — принять количество новых гайдов за доказательство силы. 3.29 действительно двигает self-cast и миньонов, но одновременно создаёт дорогую толпу вокруг Winter Orb и новую волну WIP-страниц.</p>
+        </div>
+        <div class="market-grid">
+          <div class="market-copy">
+            <h3>Три рынка, три разных уровня риска</h3>
+            <p>Верх рейтинга забирают не самые новые умения, а билды, где свежий патч усилил уже работающий каркас. Чем больше новая концепция зависит от AI наёмника, неизвестного unique или ещё не проверенной механики overlap, тем ниже уверенность.</p>
+            <ul class="signal-list">
+              <li><strong>Проверенное</strong><span>Penance Brand Ignite, миньон-армия, Shield Crush, Earthshatter — основа уже пережила реальный league start.</span></li>
+              <li><strong>Усиленное</strong><span>Absolution получил более быстрый cast; обычные minions больше не делают паузы между атаками; Winter Orb получил 2–3 проекта вместо одного.</span></li>
+              <li><strong>Перегретое</strong><span>Winter Orb и caster gear будут конкурировать за одни и те же ранние предметы. «Баффнут» не означает «дёшев».</span></li>
+              <li><strong>Теория</strong><span>Luminary Merc Bot и часть новых Holy Hammers зависят от непроверенного поведения AI, drop rate и механики попаданий.</span></li>
+            </ul>
+          </div>
+          <div class="market-plot">
+            <div class="plot-title"><strong>Карта риска</strong><span>правее — больше хайпа</span></div>
+            <svg class="market-svg" viewBox="0 0 460 360" role="img" aria-labelledby="plot-name plot-desc">
+              <title id="plot-name">Рыночная карта архетипов</title>
+              <desc id="plot-desc">Сравнение доказанности и рыночного хайпа пяти групп билдов.</desc>
+              <line class="axis" x1="48" y1="310" x2="430" y2="310" />
+              <line class="axis" x1="48" y1="310" x2="48" y2="28" />
+              <line class="gridline" x1="48" y1="216" x2="430" y2="216" />
+              <line class="gridline" x1="48" y1="122" x2="430" y2="122" />
+              <line class="gridline" x1="175" y1="28" x2="175" y2="310" />
+              <line class="gridline" x1="302" y1="28" x2="302" y2="310" />
+              <text class="svg-small" x="50" y="330">низкий хайп</text>
+              <text class="svg-small" x="364" y="330">высокий</text>
+              <text class="svg-small" transform="translate(18 307) rotate(-90)">мало доказательств</text>
+              <text class="svg-small" transform="translate(18 125) rotate(-90)">проверено</text>
+
+              <circle class="dot" cx="188" cy="73" r="8" fill="var(--rank-s)" />
+              <text class="svg-label" x="201" y="77">PBrand ignite</text>
+              <circle class="dot" cx="116" cy="92" r="8" fill="var(--good)" />
+              <text class="svg-label" x="129" y="96">minions</text>
+              <circle class="dot" cx="98" cy="136" r="8" fill="var(--info)" />
+              <text class="svg-label" x="111" y="140">melee proven</text>
+              <circle class="dot" cx="357" cy="151" r="8" fill="var(--warn)" />
+              <text class="svg-label" x="300" y="174">Winter Orb</text>
+              <circle class="dot" cx="393" cy="260" r="8" fill="var(--bad)" />
+              <text class="svg-label" x="303" y="283">Luminary / new tech</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ranking">
+      <div class="shell">
+        <div class="section-heading">
+          <h2>Рейтинг стартеров</h2>
+          <p>Итоговый score — не PoB DPS. Это вероятность получить хороший первый персонаж без заранее накопленной валюты. Открой «Разбор и ссылки» у любого билда: там перечислены все свежие материалы, которые вошли в оценку.</p>
+        </div>
+      </div>
+
+      <div class="controls-wrap">
+        <div class="shell controls" role="group" aria-label="Фильтры рейтинга">
+          <label class="search"><span class="skip-link">Поиск билда</span><input id="search" type="search" placeholder="Умение, класс или автор…" autocomplete="off"></label>
+          <div class="filters" aria-label="Фильтр по tier">
+            <button class="filter" type="button" data-filter="all" aria-pressed="true">Все</button>
+            <button class="filter" type="button" data-filter="S" aria-pressed="false">S tier</button>
+            <button class="filter" type="button" data-filter="A" aria-pressed="false">A tier</button>
+            <button class="filter" type="button" data-filter="B" aria-pressed="false">B tier</button>
+            <button class="filter" type="button" data-filter="risk" aria-pressed="false">Риск / WIP</button>
+          </div>
+          <label><span class="skip-link">Сортировка</span><select class="sort-select" id="sort">
+            <option value="rank">По общему рейтингу</option>
+            <option value="safety">По надёжности</option>
+            <option value="map">По маппингу</option>
+            <option value="boss">По боссам</option>
+            <option value="budget">По дешевизне</option>
+          </select></label>
+          <span class="result-count" id="count" aria-live="polite">14 билдов</span>
+        </div>
+      </div>
+
+      <div class="shell">
+        <div class="rank-list" id="build-list"></div>
+        <p class="empty" id="empty">По этому фильтру ничего не осталось.</p>
+      </div>
+    </section>
+
+    <section class="section" id="watchlist">
+      <div class="shell">
+        <div class="section-heading">
+          <h2>Ещё в свежем предложении</h2>
+          <p>Эти варианты не вошли в основной топ либо из-за меньшей доказательной базы, либо потому что рядом есть более ясный гайд того же архетипа. Ссылки всё равно оставляю — рынок шире одного тир-листа.</p>
+        </div>
+        <div class="watchlist">
+          <article class="watchitem"><h3>Carrion Golems + Zombies</h3><a href="https://maxroll.gg/poe/build-guides/carrion-golems-zombies-necromancer-league-starter" target="_blank" rel="noopener">Maxroll ↗</a><p>Простой постоянный minion core; свежий индекс рекомендует, но внутри комьюнити есть спор о качестве конкретного гайда.</p></article>
+          <article class="watchitem"><h3>Poison Ranged Animate Weapon</h3><a href="https://maxroll.gg/poe/build-guides/poison-ranged-animate-weapons-league-starter" target="_blank" rel="noopener">Maxroll ↗</a><p>Высокий потолок и хороший boss damage, но больше обслуживания и переходов, чем у minion army.</p></article>
+          <article class="watchitem"><h3>Popcorn SRS Necromancer</h3><a href="https://www.youtube.com/watch?v=jrld4-0AnTs" target="_blank" rel="noopener">Видео 3.29 ↗</a><p>Свежий полный путь start→endgame; отдельная механика взрыва делает его не прямой заменой poison SRS.</p></article>
+          <article class="watchitem"><h3>Ice Crash Ignite Chieftain</h3><a href="https://www.youtube.com/watch?v=YTTcKnqipOM" target="_blank" rel="noopener">Crouching Tuna ↗</a><p>Интересный ignite-melee гибрид; меньше рыночной конкуренции, но темп и ощущения очень специфичны.</p></article>
+          <article class="watchitem"><h3>Eviscerate Gladiator</h3><a href="https://www.youtube.com/watch?v=_yr67QUlRH0" target="_blank" rel="noopener">Goratha ↗</a><p>Block и retaliation дают прочность; механика реакции на удар нравится не всем и хуже контролируется.</p></article>
+          <article class="watchitem"><h3>Reap of Butchery Hierophant</h3><a href="https://www.youtube.com/watch?v=MaEQVudHQeA" target="_blank" rel="noopener">tfwStarving ↗</a><p>Новая transfigured gem и настоящий 3.29 guide, но стартовый риск выше проверенных phys DoT вариантов.</p></article>
+          <article class="watchitem"><h3>Lightning Arrow Deadeye</h3><a href="https://www.youtube.com/watch?v=Ov5KpoNcvr4" target="_blank" rel="noopener">Fubgun ↗</a><p>По-прежнему быстрый trade-start mapper, но хрупкость и конкуренция за bow-gear не исчезли.</p></article>
+          <article class="watchitem"><h3>Cyclone Slayer + AG</h3><a href="https://mobalytics.gg/poe/builds/cyclone-slayer-league-starter-to-endgame-step-by-step-guide-beginner-friendly" target="_blank" rel="noopener">Mobalytics, WIP ↗</a><p>Приятный one-button core, но свежая AG-технология ещё тестируется, а сам автор пометил страницу Work in Progress.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="method">
+      <div class="shell">
+        <div class="section-heading">
+          <h2>Как посчитан рейтинг</h2>
+          <p>Одинаковая шкала нужна, чтобы не сравнивать «мой любимый билд» с «сильнейшим билдом» на уровне впечатлений. Вес даётся раннему прогрессу, а не зеркальному PoB.</p>
+        </div>
+        <div class="method-grid">
+          <p class="method-lede"><strong>Факт:</strong> патч ещё не запущен. Поэтому confidence и наличие честного WIP-disclaimer весят больше, чем обещание «Ubers на 10 div». После первых 48 часов экономики этот порядок может измениться.</p>
+          <ol class="criteria">
+            <li class="criterion"><b>30%</b><strong>Доказанность</strong><span>Был ли архетип реально сыгран на старте и пережил ли патч без критического nerf.</span></li>
+            <li class="criterion"><b>25%</b><strong>Fresh economy</strong><span>Работает ли билд на rares/доступных uniques и насколько опасна конкуренция за ключевые предметы.</span></li>
+            <li class="criterion"><b>20%</b><strong>Путь до T16</strong><span>Кампания, момент swap, voidstones, отсутствие болезненной ямы в yellow/red maps.</span></li>
+            <li class="criterion"><b>15%</b><strong>Ошибка игрока</strong><span>Защита, recovery, видимость механик, число обязательных кнопок и возможность исправить плохой gear.</span></li>
+            <li class="criterion"><b>10%</b><strong>Качество гайда</strong><span>Leveling trees, gear stages, crafting, video, PoB notes и честно обозначенные неизвестные.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="sources">
+      <div class="shell">
+        <div class="section-heading">
+          <h2>Опорные источники</h2>
+          <p>В выборку не включались дорелизные тир-листы, опубликованные до раскрытия 3.29. Старые архетипы попали сюда только через страницу или обновление, актуализированное после 16 июля.</p>
+        </div>
+        <div class="ledger-wrap">
+          <table class="ledger">
+            <thead><tr><th>Дата</th><th>Источник</th><th>Что подтверждает</th><th>Тип</th></tr></thead>
+            <tbody>
+              <tr><td>16.07</td><td><a href="https://www.pathofexile.com/forum/view-thread/3985332" target="_blank" rel="noopener">Официальные patch notes 3.29</a></td><td>Gem/ascendancy/item changes, новые умения, socket overhaul.</td><td>Первичный</td></tr>
+              <tr><td>16.07</td><td><a href="https://www.pathofexile.com/allflame" target="_blank" rel="noopener">Curse of the Allflame overview</a></td><td>Лига, Voyages, дата и ключевые системы.</td><td>Первичный</td></tr>
+              <tr><td>19.07</td><td><a href="https://poe.how/guides/curse-of-the-allflame" target="_blank" rel="noopener">PoeHow: economy guide</a></td><td>Сводка 14 изменений со ссылками на конкретные таймкоды GGG.</td><td>Агрегатор</td></tr>
+              <tr><td>20–21.07</td><td><a href="https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/" target="_blank" rel="noopener">3.29 League Start Build Index</a></td><td>29 свежих guide links, community sniff-test и предупреждения.</td><td>Индекс</td></tr>
+              <tr><td>20.07</td><td><a href="https://mobalytics.gg/poe/starter-builds" target="_blank" rel="noopener">Mobalytics starter catalog</a></td><td>Состояние verified/creator guides и даты обновлений.</td><td>Каталог</td></tr>
+              <tr><td>17–21.07</td><td><a href="https://www.reddit.com/r/PathOfExileBuilds/comments/1uyouu2/detailed_interactive_table_of_329_skill_gem/" target="_blank" rel="noopener">Интерактивная таблица gem changes</a></td><td>Проверка масштаба buffs/nerfs по отдельным камням.</td><td>Комьюнити</td></tr>
+              <tr><td>20.07</td><td><a href="https://www.reddit.com/r/PathOfExileBuilds/comments/1v1ki8f/329_a_few_battle_tested_offmeta_league_starters/" target="_blank" rel="noopener">Battle-tested off-meta starters</a></td><td>PoB и честная оценка трёх сыгранных альтернатив.</td><td>Практика</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="disclaimer"><strong>Граница уверенности.</strong> Это pre-launch отчёт на 21 июля 2026 года. Drop rate новых uniques, поведение Mercenary AI, точная экономика transfigured gems и первый hotfix ещё неизвестны. Любой guide с пометкой WIP оценён как незавершённый, даже если площадка показывает его как Featured или Verified.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner"><span>Собрано для личного выбора league starter · 21 июля 2026</span><span>Path of Exile и все названия принадлежат Grinding Gear Games.</span></div>
+  </footer>
+
+  <script>
+    const builds = [
+      {
+        rank: 1, score: 91, tier: 'S', risk: false,
+        name: 'Penance Brand Ignite', className: 'Elementalist · ignite / brand',
+        tags: [['Проверен в 3.28','proven'], ['2 свежих гайда','proven'], ['SC/HC варианты','']],
+        verdict: 'Самый ровный выбор без знания твоего любимого стиля. Архетип уже доказал бюджетный mapping, патч его не тронул, а рынок предлагает и осторожную HC-линию, и более быструю SC-прогрессию.',
+        pros: ['сильный clear через ignite proliferation и explosions', 'не требует build-defining unique для входа в maps', 'можно двигаться, пока ignite работает'],
+        cons: ['задержка до взрыва бренда', 'single target комфортный, но не быстрый', 'после старта Lost Unity и herald gear могут подорожать'],
+        metrics: { safety: 91, map: 92, boss: 69, budget: 87, guide: 94 },
+        analysis: 'Goratha ориентируется на более прочную HC/trade основу; Zeeboub — на SC trade и более агрессивный урон. Комьюнити сходится в том, что билд очень комфортен на малом бюджете, но на боссах ощущается медленнее специализированных вариантов. Это честный стартер, который позже удобно перевести в herald stacker или другой Elementalist endgame.',
+        sources: [
+          ['VIDEO','Goratha · guide 3.29','https://www.youtube.com/watch?v=42t9yK-9_Go'],
+          ['VIDEO','Zeeboub · подробный SC guide','https://www.youtube.com/watch?v=SFdN0JkcnQ0'],
+          ['THREAD','Сравнение Goratha / Zeeboub','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2er27/penance_brand_zeebou_or_goratha/'],
+          ['THREAD','Отзывы игроков 3.28→3.29','https://www.reddit.com/r/PathOfExileBuilds/comments/1v1kksl/penance_brand_ignite_general_thoughts/']
+        ]
+      },
+      {
+        rank: 2, score: 89, tier: 'S', risk: false,
+        name: 'Chaos Minion Army', className: 'Necromancer · mixed minions / poison',
+        tags: [['Battle-tested','proven'], ['Maxroll guide',''], ['миньон buff 3.29','proven']],
+        verdict: 'Самая безопасная minion-линия: армия стартует на обычном gear, а 3.29 убрал паузы между атаками у многих обычных minions. Это прямой practical buff к реальному DPS, а не только цифра в PoB.',
+        pros: ['ровная кампания через SRS/Absolution', 'хорошие защита и boss uptime', 'дешёвый вход, Covenant — апгрейд, а не стартовый замок'],
+        cons: ['Animate Guardian и spectres требуют обслуживания', 'визуальный шум и зависимость от minion AI', 'Abyss jewels теперь сильнее привязаны к Abyss supply'],
+        metrics: { safety: 92, map: 84, boss: 86, budget: 90, guide: 93 },
+        analysis: 'В 3.29 non-Spectre minions из официального списка атакуют без прежней короткой остановки; туда входят Zombies, SRS, Skeletons и Golems. Это особенно хорошо для смешанной армии. Риск не в базовой силе, а в количестве систем: spectres, AG, poison chance и переход на Covenant надо делать по этапам гайда.',
+        sources: [
+          ['GUIDE','Helm Breaker · Maxroll','https://maxroll.gg/poe/build-guides/chaos-minion-army-necromancer-league-starter'],
+          ['FORUM','Авторский thread + вопросы','https://www.pathofexile.com/forum/view-thread/3533329'],
+          ['PATCH','Официальные minion changes','https://www.pathofexile.com/forum/view-thread/3985332#skillgemchanges'],
+          ['INDEX','Верхняя рекомендация 3.29','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      {
+        rank: 3, score: 87, tier: 'S', risk: false,
+        name: 'Shield Crush', className: 'Juggernaut · armour / shield attack',
+        tags: [['Обновлён 20.07','proven'], ['new-player friendly',''], ['низкий hype','']],
+        verdict: 'Самый надёжный melee в выборке. Урон растёт от щита, а не от постоянной гонки за оружием; guide разбит на уровни, early maps и финальную armour-stack форму.',
+        pros: ['очень прочный и прощающий ошибки', 'кампания с уровня 10', 'не зависит от roll физического оружия'],
+        cons: ['средние AoE и мобильность', 'не лучший full-clear для плотных карт', 'endgame armour-stack gear уже дорогой'],
+        metrics: { safety: 95, map: 72, boss: 84, budget: 88, guide: 96 },
+        analysis: 'Играть имеет смысл, если приоритет — не умереть и без сюрпризов дойти до voidstones. Автор прямо отмечает, что 3.29 билд не задел, а socket overhaul делает campaign links проще. Финальные 30–40M цифры не входят в мою стартовую оценку: важнее, что ранняя версия не разваливается без Replica Dreamfeather.',
+        sources: [
+          ['GUIDE','Ignatius · полный Mobalytics','https://mobalytics.gg/poe/builds/ignatius-shield-crush'],
+          ['VIDEO','IlNino · Shield Crush Slayer','https://www.youtube.com/watch?v=BiorPV-Cv4E'],
+          ['INDEX','Свежий build index','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      {
+        rank: 4, score: 85, tier: 'A', risk: false,
+        name: 'Poison SRS', className: 'Necromancer · temporary minions / poison',
+        tags: [['Проверенный core','proven'], ['boss uptime','proven'], ['Maxroll','']],
+        verdict: 'Высокая уверенность и хороший single target. SRS тоже получает улучшение непрерывности атак, а переход в poison можно отложить до появления нужных jewels и Covenant.',
+        pros: ['сильная кампания ещё до poison swap', 'безопасный урон во время движения', 'хорошо масштабируется в bosses и Ubers'],
+        cons: ['постоянно пересоздаёт minions', 'poison chance и Covenant создают точку перехода', 'clear менее автоматический, чем у zoomancer'],
+        metrics: { safety: 89, map: 79, boss: 91, budget: 84, guide: 92 },
+        analysis: 'Если нужен minion starter с прицелом именно на боссов, я предпочту его общей армии. Для самого простого blind start армия всё же выше: SRS активнее по кнопкам и чувствительнее к правильному моменту poison conversion.',
+        sources: [
+          ['GUIDE','Helm Breaker · Maxroll','https://maxroll.gg/poe/build-guides/poison-srs-necromancer-league-starter'],
+          ['PATCH','Официальные minion changes','https://www.pathofexile.com/forum/view-thread/3985332#skillgemchanges'],
+          ['INDEX','Верхняя рекомендация 3.29','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      {
+        rank: 5, score: 84, tier: 'A', risk: false,
+        name: 'Earthshatter', className: 'Juggernaut · slam / warcries',
+        tags: [['Без изменений 3.29','proven'], ['HC/SSF','proven'], ['Warcry rotation','']],
+        verdict: 'Консервативный melee starter, который ничего не выиграл от spell-патча — и именно поэтому понятен. Woolie обновил страницу 17 июля и прямо подтвердил: критических изменений нет.',
+        pros: ['толстый Juggernaut', 'проверенная Sunder→Earthshatter прогрессия', 'работает в HC и SSF'],
+        cons: ['warcry/Autoexertion ритм подходит не всем', 'не мгновенный clear', 'физическое оружие всё же надо регулярно обновлять'],
+        metrics: { safety: 93, map: 74, boss: 82, budget: 86, guide: 91 },
+        analysis: 'Хороший выбор, если хочется активно нажимать и не участвовать в caster-экономике. Урон складывается из initial hit и детонации spikes, поэтому ощущение билда зависит от правильного warcry rhythm сильнее, чем сухой PoB.',
+        sources: [
+          ['GUIDE','Woolie · Mobalytics 3.29','https://mobalytics.gg/poe/builds/woolie-earthshatter-juggernaut'],
+          ['PROFILE','Все актуальные Woolie builds','https://mobalytics.gg/poe/profile/woolie/builds']
+        ]
+      },
+      {
+        rank: 6, score: 83, tier: 'A', risk: false,
+        name: 'Holy Absolution', className: 'Guardian · minion caster',
+        tags: [['Cast time buff','proven'], ['Guide updated 20.07','proven'], ['много этапов','']],
+        verdict: 'Сильный hybrid: сам кастуешь, но основной uptime держат minions. Absolution ускорили с 0.75 до 0.65 секунды, а подробная линия Guardian уже прошла 3.28.',
+        pros: ['очень подробная leveling→Uber прогрессия', 'block, endurance charges и Eldritch Battery', 'быстрый cast заметно улучшает summon/refresh'],
+        cons: ['Doryani swap требует понимания отрицательного lightning res', 'spectres/AG добавляют менеджмент', 'Necromancer-версия всё ещё прямо помечена SOON/WIP'],
+        metrics: { safety: 86, map: 79, boss: 87, budget: 82, guide: 97 },
+        analysis: 'Выбирать именно Guardian guide, а Necromancer-вариант оставить как возможный pivot. Guardian уже имеет дневники прогресса, craft videos и отдельные PoB по этапам; это важнее небольшой теоретической разницы ascendancy.',
+        sources: [
+          ['GUIDE','Ronarray · Guardian','https://mobalytics.gg/poe/builds/ronarray-holy-absolution-guardian'],
+          ['GUIDE','Necromancer variant · WIP','https://mobalytics.gg/poe/builds/ronarray-absolution-necromancer-build-league-starter-to-endgame'],
+          ['PATCH','Absolution: 0.75→0.65','https://www.pathofexile.com/forum/view-thread/3985332#skillgemchanges']
+        ]
+      },
+      {
+        rank: 7, score: 80, tier: 'A', risk: true,
+        name: 'Winter Orb', className: 'Occultist / Elementalist · channeling cold',
+        tags: [['Сильный buff 3.29','proven'], ['высокий hype','hype'], ['часть гайдов WIP','wip']],
+        verdict: 'Победитель патчноутов, но не победитель по надёжности. 2–3 projectiles вместо одного, 7.5% base crit и freeze — огромный реальный buff; цена — массовый спрос и channeling playstyle.',
+        pros: ['намного лучше coverage уже с gem levels', 'стреляет во время движения после набора stages', 'несколько свежих авторских вариантов'],
+        cons: ['надо стоять и channel для boss DPS', 'gear будет перегрет рынком', 'две Mobalytics-страницы честно помечены WIP'],
+        metrics: { safety: 66, map: 94, boss: 76, budget: 61, guide: 78 },
+        analysis: 'Если тебе нравится Winter Orb — теперь есть рациональная причина стартовать. Если ты просто ищешь сильнейший стартер, не покупайся на один patch-note: channelling, power-charge gear и популярность никуда не делись. Occultist лучше для высокой инвестиции; Elementalist/Arctic Salvo предлагает более прямой старт.',
+        sources: [
+          ['VIDEO','PhazePlays · Arctic Salvo','https://www.youtube.com/watch?v=kO1ZTP_WLvE'],
+          ['VIDEO','Ronarray · Occultist','https://www.youtube.com/watch?v=yn1MzoinnUw'],
+          ['GUIDE','Peuget2 · Elementalist WIP','https://mobalytics.gg/poe/builds/winter-orb-elementalist-league-starter-peuget2'],
+          ['PATCH','Официальный Winter Orb buff','https://www.pathofexile.com/forum/view-thread/3985332#skillgemchanges'],
+          ['THREAD','Риски WOrb vs PBrand','https://www.reddit.com/r/PathOfExileBuilds/comments/1v1kksl/penance_brand_ignite_general_thoughts/']
+        ]
+      },
+      {
+        rank: 8, score: 78, tier: 'A', risk: false,
+        name: 'Static Strike', className: 'Slayer · exerted strike',
+        tags: [['Off-meta',''], ['full leveling PoB','proven'], ['низкая конкуренция','proven']],
+        verdict: 'Сильный off-meta melee для игрока, который понимает exert mechanics. В обсуждении его прямо ставят выше Boneshatter по темпу, а свежий guide включает leveling и crafting.',
+        pros: ['дешевле популярных caster starters', 'приятный map clear после запуска beams', 'Slayer даёт sustain и хороший потолок'],
+        cons: ['ruthless/exert rotation не интуитивна', 'меньше независимых проверок', 'ошибки в buff uptime сильно режут урон'],
+        metrics: { safety: 79, map: 86, boss: 78, budget: 89, guide: 87 },
+        analysis: 'Это не blind recommendation новичку, но хороший value pick для опытного игрока. Его сила — не secret broken interaction, а низкая конкуренция и автор, который показывает весь маршрут.',
+        sources: [
+          ['VIDEO','Alohaa · полный guide 3.29','https://www.youtube.com/watch?v=jQy7qtUnQHM'],
+          ['INDEX','Build index + discussion','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      {
+        rank: 9, score: 77, tier: 'A', risk: false,
+        name: 'Toxic Rain', className: 'Pathfinder · chaos DoT / bow',
+        tags: [['Проверенная классика','proven'], ['универсальные map mods',''], ['без 3.29 hype','']],
+        verdict: 'Не модный, зато предсказуемый. Почти не зависит от hit scaling и спокойно проходит большинство модов карт — хороший вариант, если новый spell meta не интересует.',
+        pros: ['работает на дешёвом bow craft', 'стойкий Pathfinder и flask uptime', 'мало неприятных map mods'],
+        cons: ['damage ramp и delayed pods', 'визуально/звуково нравится не всем', 'потолок ниже дорогих hit builds'],
+        metrics: { safety: 88, map: 82, boss: 72, budget: 88, guide: 84 },
+        analysis: 'Патч не дал ему headline buff, поэтому gear не должен испытать такой спрос, как у Winter Orb. Это и есть рыночное преимущество. Выбирать для спокойного Atlas progression, не для гонки boss DPS.',
+        sources: [
+          ['VIDEO','Path of Evening · 3.29','https://www.youtube.com/watch?v=HwsaAGY8HdQ'],
+          ['INDEX','Свежий build index','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      {
+        rank: 10, score: 75, tier: 'B', risk: false,
+        name: 'Boneshatter', className: 'Juggernaut / Champion · strike',
+        tags: [['Zizaran + Woolie','proven'], ['community debate','hype'], ['не провалится','proven']],
+        verdict: 'Надёжный, но переоценённый. Не застрянет на старте, однако темп уступает хорошим slam/Static Strike вариантам; Champion-версия дополнительно опирается на спорную трактовку нового unique.',
+        pros: ['много накопленных знаний и два свежих видео', 'очень хорошая физическая устойчивость', 'ясная melee progression'],
+        cons: ['self-damage и зависимость от attack speed', 'оружие надо обновлять', 'Woolie Champion содержит условную untested деталь'],
+        metrics: { safety: 86, map: 76, boss: 75, budget: 80, guide: 91 },
+        analysis: 'Брать Juggernaut/Zizaran, если не хочется импровизировать. Champion от Woolie оставить опытным игрокам, способным быстро pivot, если conditional modifier нового abyss unique окажется global, а не local.',
+        sources: [
+          ['VIDEO','Zizaran · Juggernaut','https://www.youtube.com/watch?v=ThANqlWYJ98'],
+          ['VIDEO','Woolie · Champion','https://www.youtube.com/watch?v=EGkr-48wZas'],
+          ['THREAD','Предупреждение о conditional unique','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      {
+        rank: 11, score: 73, tier: 'B', risk: false,
+        name: 'Arc Ignite', className: 'Elementalist · ignite / chain spell',
+        tags: [['Авторский tested core','proven'], ['4–5M <5 div claim',''], ['mana +25%','hype']],
+        verdict: 'Честный и хорошо документированный off-meta starter. Arc кастуется быстрее, но для ignite это прежде всего QoL; 25% больший mana cost надо реально решить.',
+        pros: ['очень хороший clear и chain feel', '10 progression loadouts в PoB', 'автор не продаёт билд как скрытую имбу'],
+        cons: ['хуже Penance Brand по раннему single target', 'mana cost вырос на 25%', 'не meta — меньше независимых endgame проверок'],
+        metrics: { safety: 77, map: 91, boss: 65, budget: 86, guide: 92 },
+        analysis: 'Хороший выбор ради Arc, плохой выбор ради «самого сильного ignite». Свежий Reddit-пост необычно подробно описывает бюджет, защиты и progression. Я снижаю место только потому, что Penance Brand выполняет ту же задачу рынка с более сильной доказательной базой.',
+        sources: [
+          ['VIDEO','BuffaloBaron · Arc Ignite','https://www.youtube.com/watch?v=YuDyMPb8ryw'],
+          ['THREAD','Авторский пост + PoB notes','https://www.reddit.com/r/PathOfExileBuilds/comments/1v1vd1w/arc_ignite_elementalist_league_starter_329/'],
+          ['PATCH','Arc cast/mana changes','https://www.pathofexile.com/forum/view-thread/3985332#skillgemchanges']
+        ]
+      },
+      {
+        rank: 12, score: 70, tier: 'B', risk: true,
+        name: 'Holy Hammers of Spirals', className: 'Inquisitor · new slam',
+        tags: [['Новая gem','wip'], ['Guide updated 20.07','proven'], ['Romira swap','']],
+        verdict: 'Лучший из новых skill starters по качеству готового плана, но всё ещё новый. До 28/60 уровня идёт через Ground Slam/Sunder; настоящий билд раскрывается с Romira’s Banquet и overlap.',
+        pros: ['полная leveling→hyper-endgame структура', 'сильные regen и block от Inquisitor', 'хороший clear после power-charge setup'],
+        cons: ['максимальный DPS требует правильной дистанции и overlap', 'Romira на 60 и cluster для mana leech', 'нет live economy/league test'],
+        metrics: { safety: 66, map: 84, boss: 80, budget: 70, guide: 94 },
+        analysis: 'Если хочется именно новую игрушку — это мой выбор среди новых gems. Но первые часы фактически играются Sunder, а главная сила Holy Hammers подтверждена расчётом и Standard testing, не реальной экономикой 3.29.',
+        sources: [
+          ['GUIDE','Woolie · Mobalytics','https://mobalytics.gg/poe/builds/woolie-holy-hammer-slammer'],
+          ['PATCH','Официальное описание gem','https://www.pathofexile.com/forum/view-thread/3985332#newcontentandfeatures'],
+          ['PROFILE','Woolie · актуальные builds','https://mobalytics.gg/poe/profile/woolie/builds']
+        ]
+      },
+      {
+        rank: 13, score: 63, tier: 'C', risk: true,
+        name: 'Storm Burst Totems', className: 'Hierophant · spell totems',
+        tags: [['Свежий video','proven'], ['прямой nerf','wip'], ['дешёвый рынок','']],
+        verdict: 'Комфортный playstyle и хороший guide, но Spell Totem теперь даёт 50% less вместо 40% на level 20, плюс ослаблены crit nodes и Ritual of Awakening. Не мёртв, просто объективно хуже.',
+        pros: ['безопасный ranged placement', 'totem gear будет дешёвым', 'очень спокойный boss uptime'],
+        cons: ['прямой support nerf', 'потеря crit и ascendancy damage', 'placement и задержка clear'],
+        metrics: { safety: 82, map: 70, boss: 74, budget: 90, guide: 82 },
+        analysis: 'Автор называет его самым комфортным starter, и это может быть правдой по ощущениям. Но рынок одновременно получил прямые численные nerfs totems. Брать ради playstyle, не потому что «totems всегда безопасный S-tier».',
+        sources: [
+          ['VIDEO','Aer0 · Storm Burst 3.29','https://www.youtube.com/watch?v=fCnYDU84q18'],
+          ['PATCH','Spell Totem 40%→50% less','https://www.pathofexile.com/forum/view-thread/3985332#supportgemchanges'],
+          ['THREAD','Разбор off-meta totems','https://www.reddit.com/r/PathOfExileBuilds/comments/1v1ki8f/329_a_few_battle_tested_offmeta_league_starters/']
+        ]
+      },
+      {
+        rank: 14, score: 51, tier: 'C', risk: true,
+        name: 'Luminary Merc Bot', className: 'Scion · permanent mercenary support',
+        tags: [['Новая ascendancy','wip'], ['AI risk','wip'], ['Guide WIP','wip']],
+        verdict: 'Самая интересная идея рынка и худший blind start. Guide честно перечисляет brick-сценарии: movement skills ломают AI, Brutality может обнулить часть урона, а идеальный merc зависит от RNG.',
+        pros: ['новый уникальный playstyle', 'потенциально высокая защита и chill mapping', 'можно менять специализацию merc'],
+        cons: ['зависимость от AI и найденного merc', 'страница прямо Work in Progress', 'урон до появления подходящего наёмника закрывается RF'],
+        metrics: { safety: 34, map: 76, boss: 64, budget: 58, guide: 72 },
+        analysis: 'Стартовать только ради исследования новой системы и с готовностью reroll/pivot. Это не обвинение автора: наоборот, CaptainLance9 правильно перечисляет неизвестные. Но именно эти неизвестные делают билд плохой рекомендацией до live-теста.',
+        sources: [
+          ['GUIDE','CaptainLance9 · WIP','https://mobalytics.gg/poe/builds/captainlance9-luminary-merc-bot'],
+          ['VIDEO','Leveling plan','https://www.youtube.com/watch?v=zNeTIMbxqco'],
+          ['VIDEO','Luminary basics','https://www.youtube.com/watch?v=i-jJT6Z9-ZU'],
+          ['PATCH','Официальная Luminary ascendancy','https://www.pathofexile.com/forum/view-thread/3985332#mercenariesoftrarthus']
+        ]
+      }
+    ];
+
+    const list = document.querySelector('#build-list');
+    const count = document.querySelector('#count');
+    const empty = document.querySelector('#empty');
+    const search = document.querySelector('#search');
+    const sort = document.querySelector('#sort');
+    const filterButtons = [...document.querySelectorAll('.filter')];
+    let activeFilter = 'all';
+
+    const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
+
+    const directFavicons = Object.freeze({
+      'youtube.com': 'https://www.youtube.com/favicon.ico',
+      'reddit.com': 'https://www.reddit.com/favicon.ico',
+      'maxroll.gg': 'https://maxroll.gg/favicon.ico',
+      'poe.how': 'https://poe.how/favicon.ico'
+    });
+
+    function faviconMeta(url) {
+      try {
+        const parsed = new URL(url);
+        const host = parsed.hostname.toLowerCase().replace(/^www\./, '');
+        const proxy = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=64`;
+        return {
+          src: directFavicons[host] || proxy,
+          fallback: directFavicons[host] ? proxy : '',
+          initial: host.charAt(0).toUpperCase() || '↗'
+        };
+      } catch {
+        return { src: '', fallback: '', initial: '↗' };
+      }
+    }
+
+    function sourceIcon(url, compact = false) {
+      const icon = faviconMeta(url);
+      const image = icon.src
+        ? `<img class="source-favicon" src="${esc(icon.src)}"${icon.fallback ? ` data-fallback="${esc(icon.fallback)}"` : ''} width="18" height="18" alt="" aria-hidden="true" loading="lazy" decoding="async" referrerpolicy="no-referrer">`
+        : '';
+      return `<span class="source-icon${compact ? ' compact-source-icon' : ''}" aria-hidden="true"><span class="source-icon-fallback">${esc(icon.initial)}</span>${image}</span>`;
+    }
+
+    function sourceLink([type, label, url]) {
+      return `<a class="source" href="${esc(url)}" target="_blank" rel="noopener">${sourceIcon(url)}<span class="source-type">${esc(type)}</span>${esc(label)} ↗</a>`;
+    }
+
+    function initSourceFavicons(root) {
+      root.querySelectorAll('.source-favicon').forEach(image => {
+        const handleError = () => {
+          const fallback = image.dataset.fallback;
+          if (fallback) {
+            delete image.dataset.fallback;
+            image.src = fallback;
+          } else {
+            image.hidden = true;
+          }
+        };
+        image.addEventListener('error', handleError);
+        if (image.complete && image.naturalWidth === 0) handleError();
+      });
+    }
+
+    function initExternalLinkFavicons(root) {
+      root.querySelectorAll('a[href^="http"]').forEach(link => {
+        if (link.classList.contains('source') || link.querySelector('.source-icon')) return;
+        link.classList.add('link-with-favicon');
+        link.insertAdjacentHTML('afterbegin', sourceIcon(link.href, true));
+      });
+    }
+
+    function render() {
+      const query = search.value.trim().toLocaleLowerCase('ru');
+      let visible = builds.filter(build => {
+        const haystack = `${build.name} ${build.className} ${build.tags.map(t => t[0]).join(' ')}`.toLocaleLowerCase('ru');
+        const filterMatch = activeFilter === 'all' || build.tier === activeFilter || (activeFilter === 'risk' && build.risk);
+        return filterMatch && (!query || haystack.includes(query));
+      });
+
+      const sortKey = sort.value;
+      visible.sort((a, b) => sortKey === 'rank' ? a.rank - b.rank : b.metrics[sortKey] - a.metrics[sortKey]);
+      count.textContent = `${visible.length} ${visible.length === 1 ? 'билд' : visible.length >= 2 && visible.length <= 4 ? 'билда' : 'билдов'}`;
+      empty.style.display = visible.length ? 'none' : 'block';
+
+      list.innerHTML = visible.map(build => `
+        <article class="build" data-tier="${esc(build.tier)}" data-risk="${build.risk}">
+          <div class="rankbox"><span class="ranknum">${String(build.rank).padStart(2, '0')}</span><span class="tier">${esc(build.tier)}</span></div>
+          <div class="build-title">
+            <h3>${esc(build.name)}</h3>
+            <div class="classline">${esc(build.className)}</div>
+            <div class="statusline">${build.tags.map(([label, cls]) => `<span class="tag ${esc(cls)}">${esc(label)}</span>`).join('')}</div>
+          </div>
+          <div class="build-main">
+            <p>${esc(build.verdict)}</p>
+            <div class="split">
+              <ul class="pros">${build.pros.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+              <ul class="cons">${build.cons.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="metrics" aria-label="Оценки билда">
+            ${metric('Надёжность', build.metrics.safety)}
+            ${metric('Маппинг', build.metrics.map)}
+            ${metric('Боссы', build.metrics.boss)}
+            ${metric('Дешевизна', build.metrics.budget)}
+            ${metric('Гайд', build.metrics.guide)}
+          </div>
+          <div class="details">
+            <div class="detail-body">
+              <p>${esc(build.analysis)}</p>
+              <div class="sources">${build.sources.map(sourceLink).join('')}</div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      initSourceFavicons(list);
+    }
+
+    function metric(label, value) {
+      return `<div class="metric"><span>${label}</span><b>${value}</b><div class="bar"><span style="width:${value}%"></span></div></div>`;
+    }
+
+    filterButtons.forEach(button => button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter;
+      filterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      render();
+    }));
+    search.addEventListener('input', render);
+    sort.addEventListener('change', render);
+    initExternalLinkFavicons(document);
+    initSourceFavicons(document);
+    render();
+  </script>
+</body>
+</html>
