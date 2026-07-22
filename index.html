@@ -275,6 +275,12 @@
     .compact-source-icon .source-icon-fallback { font-size: .54rem; }
     .detail-body { padding: 22px; background: var(--surface); display: grid; grid-template-columns: minmax(0, 1fr) minmax(260px, .7fr); gap: 28px; }
     .detail-body p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .source-groups { display: grid; gap: 15px; align-content: start; min-width: 0; }
+    .source-group + .source-group { padding-top: 14px; border-top: 1px solid var(--line); }
+    .source-group-heading { display: flex; align-items: baseline; gap: 7px; margin-bottom: 8px; line-height: 1.2; }
+    .source-group-heading span { color: var(--faint); font-size: .72rem; }
+    .source-group-heading strong { color: var(--ink); font-size: .82rem; font-weight: 650; }
+    .source-group-heading small { margin-left: auto; color: var(--faint); font-size: .68rem; white-space: nowrap; }
     .sources { display: flex; flex-wrap: wrap; gap: 8px; align-content: start; }
     .source { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 7px 10px; color: var(--ink); background: var(--surface-2); border: 1px solid var(--line); text-decoration: none; font-size: .77rem; }
     .source:hover { border-color: var(--primary); background: var(--surface-3); }
@@ -1552,8 +1558,8 @@
       return `<span class="source-icon${compact ? ' compact-source-icon' : ''}" aria-hidden="true"><span class="source-icon-fallback">${esc(icon.initial)}</span>${image}</span>`;
     }
 
-    function sourceLink([type, label, url]) {
-      return `<a class="source" href="${esc(url)}" target="_blank" rel="noopener">${sourceIcon(url)}<span class="source-type">${esc(type)}</span>${esc(label)} ↗</a>`;
+    function sourceLink([type, label, url], displayLabel = label) {
+      return `<a class="source" href="${esc(url)}" target="_blank" rel="noopener">${sourceIcon(url)}<span class="source-type">${esc(type)}</span>${esc(displayLabel)} ↗</a>`;
     }
 
     function initSourceFavicons(root) {
@@ -1631,6 +1637,105 @@
       'Flicker Strike Slayer': 'Magefist'
     });
 
+    const sourceAuthorAliases = Object.freeze({
+      'CaptainLance': 'CaptainLance9',
+      'Big Ducks': 'BigDucks'
+    });
+
+    const sourceAuthorNames = [...new Set([
+      ...Object.values(authorByBuildName).flatMap(authors => authors.split(' + ')),
+      'Peuget2'
+    ])].sort((a, b) => b.length - a.length);
+
+    const sourceAuthorOverrides = Object.freeze({
+      'Luminary Merc Bot': [
+        [/^(Leveling plan|Luminary basics|Later progression)/i, 'CaptainLance9']
+      ],
+      'Reap / Exsanguinate / GC Mines': [
+        [/^Reap\/Exsang/i, 'FearlessDumb0'],
+        [/^GC Mines/i, 'Smokie']
+      ]
+    });
+
+    function sourceAuthor(build, source) {
+      const label = source[1];
+      const override = (sourceAuthorOverrides[build.name] || []).find(([pattern]) => pattern.test(label));
+      if (override) return override[1];
+
+      const normalizedLabel = label.toLocaleLowerCase('ru');
+      const hasAuthorPrefix = name => normalizedLabel === name.toLocaleLowerCase('ru') || normalizedLabel.startsWith(`${name.toLocaleLowerCase('ru')} ·`);
+      const alias = Object.keys(sourceAuthorAliases).find(hasAuthorPrefix);
+      if (alias) return sourceAuthorAliases[alias];
+
+      const named = sourceAuthorNames.find(hasAuthorPrefix);
+      if (named) return named;
+
+      const primaryAuthors = (build.author || authorByBuildName[build.name] || '').split(' + ').filter(Boolean);
+      const isContextType = ['THREAD', 'INDEX', 'PATCH'].includes(source[0]);
+      return primaryAuthors.length === 1 && !isContextType ? primaryAuthors[0] : '';
+    }
+
+    function sourceCategory(build, source) {
+      const [type, label, url] = source;
+      const discussionPattern = /место\s*#|tier list|build index|community|сравнен|отзыв|обсужден|риск|верхн.*рекомендац|совет|практический разбор|симуляц|авторский (thread|пост)|состояние Assassin/i;
+      if (['THREAD', 'INDEX'].includes(type) || url.includes('lOnHH393bhQ') || discussionPattern.test(label)) {
+        return { key: 'discussion', title: 'Рейтинги и обсуждения', kind: 'Общее' };
+      }
+
+      const author = sourceAuthor(build, source);
+      if (author) return { key: `author:${author}`, title: author, kind: 'Гайд автора', author };
+
+      const mechanicsPattern = /официальн|patch|changes|изменени|buff|nerf|описание gem|\d+%.*→|\d+\.\d+→\d+\.\d+/i;
+      if (type === 'PATCH' || mechanicsPattern.test(label)) {
+        return { key: 'mechanics', title: 'Патч и механика', kind: 'Общее' };
+      }
+
+      return { key: 'other', title: 'Дополнительные материалы', kind: 'Прочее' };
+    }
+
+    function stripSourceAuthor(label, author, build) {
+      if (!author) return label;
+      const aliases = [author, ...Object.entries(sourceAuthorAliases).filter(([, canonical]) => canonical === author).map(([alias]) => alias)];
+      for (const alias of aliases) {
+        const escaped = alias.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const stripped = label.replace(new RegExp(`^${escaped}\\s*·\\s*`, 'i'), '');
+        if (stripped !== label) label = stripped;
+      }
+      if (build.name === 'Reap / Exsanguinate / GC Mines' && author === 'FearlessDumb0') return label.replace(/^Reap\/Exsang\s*·\s*/i, '');
+      if (build.name === 'Reap / Exsanguinate / GC Mines' && author === 'Smokie') return label.replace(/^GC Mines\s*·?\s*/i, '');
+      return label;
+    }
+
+    function sourceCountLabel(count) {
+      const word = count === 1 ? 'ссылка' : count >= 2 && count <= 4 ? 'ссылки' : 'ссылок';
+      return `${count} ${word}`;
+    }
+
+    function renderSourceGroups(build) {
+      const authorGroups = new Map();
+      const commonGroups = new Map();
+
+      build.sources.forEach(source => {
+        const category = sourceCategory(build, source);
+        const target = category.author ? authorGroups : commonGroups;
+        if (!target.has(category.key)) target.set(category.key, { ...category, sources: [] });
+        target.get(category.key).sources.push(source);
+      });
+
+      const commonOrder = ['mechanics', 'discussion', 'other'];
+      const groups = [
+        ...authorGroups.values(),
+        ...commonOrder.map(key => commonGroups.get(key)).filter(Boolean)
+      ];
+
+      return `<div class="source-groups">${groups.map(group => `
+        <section class="source-group" aria-label="${esc(group.kind)}: ${esc(group.title)}">
+          <div class="source-group-heading"><span>${esc(group.kind)}</span><strong>${esc(group.title)}</strong><small>${sourceCountLabel(group.sources.length)}</small></div>
+          <div class="sources">${group.sources.map(source => sourceLink(source, stripSourceAuthor(source[1], group.author, build))).join('')}</div>
+        </section>
+      `).join('')}</div>`;
+    }
+
     function buildIdentity(build) {
       const art = build.art || buildArt[build.rank];
       const authors = build.author || authorByBuildName[build.name] || 'автор не указан';
@@ -1693,7 +1798,7 @@
           <div class="details">
             <div class="detail-body">
               <p>${esc(build.analysis)}</p>
-              <div class="sources">${build.sources.map(sourceLink).join('')}</div>
+              ${renderSourceGroups(build)}
             </div>
           </div>
         </article>
@@ -1733,7 +1838,7 @@
           <div class="details">
             <div class="detail-body">
               <p>${esc(build.analysis)}</p>
-              <div class="sources">${build.sources.map(sourceLink).join('')}</div>
+              ${renderSourceGroups(build)}
             </div>
           </div>
         </article>
@@ -1780,7 +1885,7 @@
           <div class="details">
             <div class="detail-body">
               <p>${esc(build.analysis)}</p>
-              <div class="sources">${build.sources.map(sourceLink).join('')}</div>
+              ${renderSourceGroups(build)}
             </div>
           </div>
         </article>
