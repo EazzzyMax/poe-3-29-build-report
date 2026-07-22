@@ -23,10 +23,7 @@
       --warn: oklch(0.79 0.14 82);
       --bad: oklch(0.66 0.18 24);
       --info: oklch(0.72 0.12 240);
-      --rank-s: oklch(0.79 0.16 88);
-      --rank-a: oklch(0.72 0.13 155);
-      --rank-b: oklch(0.72 0.12 240);
-      --rank-c: oklch(0.68 0.09 310);
+      --score-accent: oklch(0.79 0.16 88);
       --shadow: 0 20px 70px oklch(0 0 0 / 0.35);
       --ease: cubic-bezier(.16, 1, .3, 1);
       --max: 1440px;
@@ -146,7 +143,7 @@
     .pick-num { color: var(--faint); font: 700 1.1rem/1 Bahnschrift, sans-serif; }
     .pick h2 { margin: -4px 0 3px; font-size: 1.06rem; line-height: 1.3; }
     .pick p { margin: 0; color: var(--muted); font-size: .87rem; }
-    .score { color: var(--rank-s); font: 700 1rem/1 Bahnschrift, sans-serif; }
+    .score { color: var(--score-accent); font: 700 1rem/1 Bahnschrift, sans-serif; }
     .hero-cta { display: inline-flex; margin-top: 34px; align-items: center; gap: 10px; text-decoration: none; color: var(--bg); background: var(--primary-pale); padding: 12px 16px; font-weight: 700; }
     .hero-cta:hover { background: var(--ink); }
 
@@ -188,7 +185,6 @@
 
     .rank-list { margin-top: 28px; border-top: 1px solid var(--line); }
     .build {
-      --tier-color: var(--rank-b);
       display: grid;
       grid-template-columns: 56px minmax(250px, .85fr) minmax(320px, 1.15fr) 162px;
       column-gap: clamp(8px, 1vw, 16px);
@@ -197,13 +193,8 @@
       border-bottom: 1px solid var(--line);
       transition: opacity .2s;
     }
-    .build[data-tier="S"] { --tier-color: var(--rank-s); }
-    .build[data-tier="A"] { --tier-color: var(--rank-a); }
-    .build[data-tier="B"] { --tier-color: var(--rank-b); }
-    .build[data-tier="C"] { --tier-color: var(--rank-c); }
-    .rankbox { display: flex; flex-direction: column; gap: 7px; align-items: flex-start; }
+    .rankbox { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
     .ranknum { color: var(--faint); font: 700 1.65rem/1 Bahnschrift, sans-serif; }
-    .tier { color: var(--tier-color); font: 700 1rem/1 Bahnschrift, sans-serif; border: 1px solid var(--line); padding: 6px 9px; }
     .overall-score { color: var(--ink); font: 700 .95rem/1 Bahnschrift, sans-serif; }
     .overall-score small { color: var(--faint); font-size: .62rem; font-weight: 500; }
     .build-identity { display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 16px; align-items: center; }
@@ -267,7 +258,7 @@
     .metric { display: grid; grid-template-columns: 1fr auto; gap: 8px; font-size: .76rem; color: var(--muted); }
     .metric b { color: var(--ink); font-weight: 600; }
     .bar { grid-column: 1 / -1; height: 3px; background: var(--surface-3); overflow: hidden; }
-    .bar span { display: block; height: 100%; background: var(--tier-color); transform-origin: left; }
+    .bar span { display: block; height: 100%; background: var(--primary); transform-origin: left; }
     .details { grid-column: 2 / -1; margin-top: 0; }
     .compact-source-icon { width: 15px; height: 15px; flex-basis: 15px; border-radius: 3px; }
     .compact-source-icon .source-icon-fallback { font-size: .54rem; }
@@ -413,7 +404,7 @@
       <div class="shell">
         <div class="section-heading">
           <h2>Рынок после патчноутов</h2>
-          <p>Главная ошибка этого окна — принять количество новых гайдов за доказательство силы. Свежий SC trade tier list вообще не называет ни одного безусловного S-tier outlier; S в этом отчёте означает высокий личный шанс на удачный первый персонаж, а не «сломанный DPS». 3.29 двигает self-cast и миньонов, но одновременно создаёт дорогую толпу вокруг Winter Orb.</p>
+          <p>Главная ошибка этого окна — принять количество новых гайдов за доказательство силы. Свежий SC trade tier list вообще не называет ни одного безусловного outlier; поэтому здесь используется непрерывный score 0–100 и порядок 1–21, без буквенных тиров. 3.29 двигает self-cast и миньонов, но одновременно создаёт дорогую толпу вокруг Winter Orb.</p>
         </div>
         <div class="market-grid">
           <div class="market-copy">
@@ -442,7 +433,7 @@
               <text class="svg-small" transform="translate(18 307) rotate(-90)">мало доказательств</text>
               <text class="svg-small" transform="translate(18 125) rotate(-90)">проверено</text>
 
-              <circle class="dot" cx="188" cy="73" r="8" fill="var(--rank-s)" />
+              <circle class="dot" cx="188" cy="73" r="8" fill="var(--score-accent)" />
               <text class="svg-label" x="201" y="77">PBrand ignite</text>
               <circle class="dot" cx="116" cy="92" r="8" fill="var(--good)" />
               <text class="svg-label" x="129" y="96">minions</text>
@@ -469,11 +460,8 @@
       <div class="controls-wrap">
         <div class="shell controls" role="group" aria-label="Фильтры рейтинга">
           <label class="search"><span class="skip-link">Поиск билда</span><input id="search" type="search" placeholder="Умение, класс или автор…" autocomplete="off"></label>
-          <div class="filters" aria-label="Фильтр по tier">
+          <div class="filters" aria-label="Фильтр списка">
             <button class="filter" type="button" data-filter="all" aria-pressed="true">Все</button>
-            <button class="filter" type="button" data-filter="S" aria-pressed="false">S tier</button>
-            <button class="filter" type="button" data-filter="A" aria-pressed="false">A tier</button>
-            <button class="filter" type="button" data-filter="B" aria-pressed="false">B tier</button>
             <button class="filter" type="button" data-filter="risk" aria-pressed="false">Риск / WIP</button>
           </div>
           <label><span class="skip-link">Сортировка</span><select class="sort-select" id="sort">
@@ -573,7 +561,7 @@
   <script>
     const builds = [
       {
-        rank: 1, score: 93, tier: 'S', risk: false,
+        rank: 1, score: 93, risk: false,
         name: 'Kinetic Fusillade Totems', className: 'Hierophant · ballista / wand attack',
         tags: [['Fubgun #1','proven'], ['Palsteron update 19.07','proven'], ['SSF-tested','proven']],
         verdict: 'Новый лидер после свежего пересчёта. Nerf отнял примерно 10–20% итогового урона, но убрал attack-speed breakpoints и дорогую reduced-duration акробатику; дешёвая версия всё ещё уверенно идёт к red maps и четырём voidstones.',
@@ -590,7 +578,7 @@
         ]
       },
       {
-        rank: 2, score: 90, tier: 'S', risk: false,
+        rank: 2, score: 90, risk: false,
         name: 'Penance Brand Ignite', className: 'Elementalist · ignite / brand',
         tags: [['Проверен в 3.28','proven'], ['2 свежих гайда','proven'], ['SC/HC варианты','']],
         verdict: 'Самый ровный выбор без знания твоего любимого стиля. Архетип уже доказал бюджетный mapping, патч его не тронул, а рынок предлагает и осторожную HC-линию, и более быструю SC-прогрессию.',
@@ -606,7 +594,7 @@
         ]
       },
       {
-        rank: 3, score: 89, tier: 'S', risk: false,
+        rank: 3, score: 89, risk: false,
         name: 'Chaos Minion Army', className: 'Necromancer · mixed minions / poison',
         tags: [['Battle-tested','proven'], ['Maxroll guide',''], ['миньон buff 3.29','proven']],
         verdict: 'Самая безопасная minion-линия: армия стартует на обычном gear, а 3.29 убрал паузы между атаками у многих обычных minions. Это прямой practical buff к реальному DPS, а не только цифра в PoB.',
@@ -622,7 +610,7 @@
         ]
       },
       {
-        rank: 10, score: 81, tier: 'A', risk: false,
+        rank: 10, score: 81, risk: false,
         name: 'Shield Crush', className: 'Slayer · armour / shield attack',
         tags: [['Обновлён 20.07','proven'], ['new-player friendly',''], ['низкий hype','']],
         verdict: 'Надёжный melee с дешёвой осью прогресса: урон растёт от щита, а не от постоянной гонки за оружием. Важная поправка свежего аудита: актуальный IlNino guide — Slayer; прежняя подпись Juggernaut смешивала два разных материала.',
@@ -637,7 +625,7 @@
         ]
       },
       {
-        rank: 9, score: 82, tier: 'A', risk: false,
+        rank: 9, score: 82, risk: false,
         name: 'Poison SRS', className: 'Necromancer · temporary minions / poison',
         tags: [['Проверенный core','proven'], ['boss uptime','proven'], ['Maxroll','']],
         verdict: 'Высокая уверенность и хороший single target. SRS тоже получает улучшение непрерывности атак, а переход в poison можно отложить до появления нужных jewels и Covenant.',
@@ -652,7 +640,7 @@
         ]
       },
       {
-        rank: 4, score: 88, tier: 'S', risk: false,
+        rank: 4, score: 88, risk: false,
         name: 'Earthshatter', className: 'Juggernaut · slam / warcries',
         tags: [['Без изменений 3.29','proven'], ['HC/SSF','proven'], ['Warcry rotation','']],
         verdict: 'Один из сильнейших путей к четырём voidstones. Fubgun ставит slam-прогрессию второй, а проверенный Juggernaut не требует уникальных предметов и не участвует в caster-налоге.',
@@ -666,7 +654,7 @@
         ]
       },
       {
-        rank: 13, score: 78, tier: 'A', risk: false,
+        rank: 13, score: 78, risk: false,
         name: 'Holy Absolution', className: 'Guardian · minion caster',
         tags: [['Cast time buff','proven'], ['Guide updated 20.07','proven'], ['много этапов','']],
         verdict: 'Сильный hybrid: сам кастуешь, но основной uptime держат minions. Absolution ускорили с 0.75 до 0.65 секунды, а подробная линия Guardian уже прошла 3.28.',
@@ -681,7 +669,7 @@
         ]
       },
       {
-        rank: 8, score: 83, tier: 'A', risk: true,
+        rank: 8, score: 83, risk: true,
         name: 'Winter Orb', className: 'Occultist / Elementalist · channeling cold',
         tags: [['Zizaran guide 21.07','proven'], ['Fubgun #6','proven'], ['высокий hype','hype']],
         verdict: 'Победитель патчноутов, но не победитель по надёжности. 2–3 projectiles вместо одного, 7.5% base crit и freeze — огромный реальный buff; цена — массовый спрос и channeling playstyle.',
@@ -701,7 +689,7 @@
         ]
       },
       {
-        rank: 5, score: 86, tier: 'A', risk: false,
+        rank: 5, score: 86, risk: false,
         name: 'Static Strike', className: 'Slayer · exerted strike',
         tags: [['Off-meta',''], ['full leveling PoB','proven'], ['низкая конкуренция','proven']],
         verdict: 'Сильный off-meta melee для игрока, который понимает exert mechanics. В обсуждении его прямо ставят выше Boneshatter по темпу, а свежий guide включает leveling и crafting.',
@@ -715,7 +703,7 @@
         ]
       },
       {
-        rank: 15, score: 76, tier: 'B', risk: false,
+        rank: 15, score: 76, risk: false,
         name: 'Toxic Rain', className: 'Pathfinder · chaos DoT / bow',
         tags: [['Проверенная классика','proven'], ['универсальные map mods',''], ['без 3.29 hype','']],
         verdict: 'Не модный, зато предсказуемый. Почти не зависит от hit scaling и спокойно проходит большинство модов карт — хороший вариант, если новый spell meta не интересует.',
@@ -729,7 +717,7 @@
         ]
       },
       {
-        rank: 16, score: 75, tier: 'B', risk: false,
+        rank: 16, score: 75, risk: false,
         name: 'Boneshatter', className: 'Juggernaut / Champion · strike',
         tags: [['Zizaran + Woolie','proven'], ['community debate','hype'], ['не провалится','proven']],
         verdict: 'Надёжный, но переоценённый. Не застрянет на старте, однако темп уступает хорошим slam/Static Strike вариантам; Champion-версия дополнительно опирается на спорную трактовку нового unique.',
@@ -744,7 +732,7 @@
         ]
       },
       {
-        rank: 17, score: 73, tier: 'B', risk: false,
+        rank: 17, score: 73, risk: false,
         name: 'Arc Ignite', className: 'Elementalist · ignite / chain spell',
         tags: [['Авторский tested core','proven'], ['4–5M <5 div claim',''], ['mana +25%','hype']],
         verdict: 'Честный и хорошо документированный off-meta starter. Arc кастуется быстрее, но для ignite это прежде всего QoL; 25% больший mana cost надо реально решить.',
@@ -759,7 +747,7 @@
         ]
       },
       {
-        rank: 19, score: 70, tier: 'B', risk: true,
+        rank: 19, score: 70, risk: true,
         name: 'Holy Hammers of Spirals', className: 'Inquisitor · new slam',
         tags: [['Новая gem','wip'], ['Guide updated 20.07','proven'], ['Romira swap','']],
         verdict: 'Лучший из новых skill starters по качеству готового плана, но всё ещё новый. До 28/60 уровня идёт через Ground Slam/Sunder; настоящий билд раскрывается с Romira’s Banquet и overlap.',
@@ -774,7 +762,7 @@
         ]
       },
       {
-        rank: 6, score: 85, tier: 'A', risk: false,
+        rank: 6, score: 85, risk: false,
         name: 'Storm Burst Totems', className: 'Hierophant · spell totems',
         tags: [['5:20 stress-test','proven'], ['Fubgun #5','proven'], ['прямой nerf учтён','proven']],
         verdict: 'Свежая практика переворачивает прежнюю оценку. Несмотря на Spell Totem nerf, Aer0 сделал Eater/Exarch stress-run за 5:20 без reset и опубликовал финальный PoB; Fubgun ставит билд пятым по SC trade progression.',
@@ -792,7 +780,7 @@
         ]
       },
       {
-        rank: 7, score: 84, tier: 'A', risk: false,
+        rank: 7, score: 84, risk: false,
         name: 'Righteous Fire', className: 'Chieftain · fire DoT / walking simulator',
         tags: [['Pohx ecosystem','proven'], ['верхняя рекомендация','proven'], ['низкий boss DPS','']],
         verdict: 'Самый спокойный blind start и лучший handholding на рынке. После Library можно перейти со slam-leveling на RF; socket overhaul делает этот маршрут ещё проще. Для быстрого четырёх-stone push slams сильнее, для личного комфорта RF лучше.',
@@ -808,7 +796,7 @@
         ]
       },
       {
-        rank: 11, score: 80, tier: 'A', risk: true,
+        rank: 11, score: 80, risk: true,
         name: 'Poisonous Concoction → Viper Mamba', className: 'Assassin · poison / Bino transition',
         tags: [['Fubgun #3','proven'], ['Jungroan guides','proven'], ['для опытных','wip']],
         verdict: 'Очень быстрый SC trade маршрут для опытного игрока: PConc закрывает дешёвый старт, затем Bino’s и Mamba превращают персонажа в Legion/Breach clearer. Не рекомендую как первый Assassin без понимания poison gear.',
@@ -824,7 +812,7 @@
         ]
       },
       {
-        rank: 12, score: 79, tier: 'A', risk: false,
+        rank: 12, score: 79, risk: false,
         name: 'Rolling Magma Mines', className: 'Saboteur · projectile mines',
         tags: [['Goratha update 21.07','proven'], ['полный Maxroll','proven'], ['низкий hype','']],
         verdict: 'Сильный sleeper от Goratha. Mine supports ослаблены, но buffs Rolling Magma, Greater Chain, quality и новые системные бонусы дают автору основание считать итоговую версию заметно сильнее прежней.',
@@ -839,14 +827,14 @@
         ]
       },
       {
-        rank: 14, score: 77, tier: 'A', risk: true,
+        rank: 14, score: 77, risk: true,
         name: 'Shock Nova of Procession Archmage', className: 'Hierophant · mana / self-cast',
         tags: [['Goratha update 21.07','proven'], ['сильный core','proven'], ['mana friction','wip']],
         verdict: 'Archmage остаётся сильным, но новый mana cost — не косметика. Goratha считает старт жизнеспособным и обновил полный guide, одновременно честно предупреждая, что поддержание mana будет раздражать до хорошего gear.',
         pros: ['высокий урон и хороший endgame ceiling', 'MoM-мана одновременно даёт защиту', 'полный progression guide от проверенного автора'],
         cons: ['неприятный mana sustain в первый день', 'требует дисциплины с reservation и cast rate', 'дешёвый self-cast gear разделяет спрос с другими spell starters'],
         metrics: { safety: 80, map: 81, boss: 89, budget: 69, guide: 95 },
-        analysis: 'Добавлен как сильный, но не беспроблемный caster. В отличие от рекламного «Archmage снова S-tier», первичный автор прямо формулирует компромисс: часть изменений хорошая, часть плохая; старт всё ещё силён, mana раздражает. Поэтому A, а не S.',
+        analysis: 'Добавлен как сильный, но не беспроблемный caster. В отличие от рекламного «Archmage снова S-tier», первичный автор прямо формулирует компромисс: часть изменений хорошая, часть плохая; старт всё ещё силён, mana раздражает. Поэтому итог — 77/100, заметно ниже лидеров рейтинга.',
         sources: [
           ['VIDEO','Goratha · Archmage update 3.29','https://www.youtube.com/watch?v=gYQvyebX8ZM'],
           ['GUIDE','Goratha · Maxroll','https://maxroll.gg/poe/build-guides/shock-nova-of-procession-archmage-hierophant-league-starter'],
@@ -854,14 +842,14 @@
         ]
       },
       {
-        rank: 18, score: 72, tier: 'B', risk: false,
+        rank: 18, score: 72, risk: false,
         name: 'Cyclone Shockwave', className: 'Slayer · channeling melee',
         tags: [['Sanavixx 3.29','proven'], ['SSF/HCSSF runs','proven'], ['one-button core','']],
         verdict: 'Честный удобный all-rounder, а не мета-убийца. Sanavixx обновил leveling/loadouts после нескольких league starts и свежих SSF/HCSSF practice runs; Fubgun ставит его в нижнюю часть рабочего списка.',
         pros: ['постоянное движение во время урона', 'полный PoB и отдельный SSF leveling test', 'масштабируется дальше обычных T16'],
         cons: ['ни clear, ни bossing не лидируют', 'Shockwave привязывает выбор оружия', 'ранний Cyclone чувствителен к attack speed и mana'],
         metrics: { safety: 82, map: 79, boss: 76, budget: 78, guide: 94 },
-        analysis: 'В рейтинг вошла именно версия Sanavixx, а не WIP Cyclone+AG со страницы другого автора. Это снимает главный прежний риск: есть полноценный guide, PoB и recorded SSF run. Score остаётся B, потому что билд «везде нормальный», но нигде не выигрывает у лидеров.',
+        analysis: 'В рейтинг вошла именно версия Sanavixx, а не WIP Cyclone+AG со страницы другого автора. Это снимает главный прежний риск: есть полноценный guide, PoB и recorded SSF run. Score остаётся 72/100, потому что билд «везде нормальный», но нигде не выигрывает у лидеров.',
         sources: [
           ['VIDEO','Sanavixx · guide 3.29','https://www.youtube.com/watch?v=JFsK67lgLhI'],
           ['POB','Sanavixx · актуальный PoB','https://pobb.in/Lo9MjLWzdRLk'],
@@ -870,7 +858,7 @@
         ]
       },
       {
-        rank: 20, score: 62, tier: 'C', risk: true,
+        rank: 20, score: 62, risk: true,
         name: 'Flicker Strike', className: 'Slayer · teleporting strike',
         tags: [['Magefist 21.07','proven'], ['Sunder→Oro’s→Farrul’s',''], ['high variance','wip']],
         verdict: 'Magefist действительно дал свежий маршрут, но это выбор ради Flicker, не ради надёжности. Кампания идёт Sunder, затем нужен Oro’s Sacrifice, позже Farrul’s Fur; сам Flicker почти не даёт контроля над позицией.',
@@ -885,7 +873,7 @@
         ]
       },
       {
-        rank: 21, score: 52, tier: 'C', risk: true,
+        rank: 21, score: 52, risk: true,
         name: 'Luminary Merc Bot', className: 'Scion · permanent mercenary support',
         tags: [['Новая ascendancy','wip'], ['AI risk','wip'], ['Guide WIP','wip']],
         verdict: 'Самая интересная идея рынка и худший blind start. Guide честно перечисляет brick-сценарии: movement skills ломают AI, Brutality может обнулить часть урона, а идеальный merc зависит от RNG.',
@@ -1020,7 +1008,7 @@
       const query = search.value.trim().toLocaleLowerCase('ru');
       let visible = builds.filter(build => {
         const haystack = `${build.name} ${build.className} ${build.tags.map(t => t[0]).join(' ')}`.toLocaleLowerCase('ru');
-        const filterMatch = activeFilter === 'all' || build.tier === activeFilter || (activeFilter === 'risk' && build.risk);
+        const filterMatch = activeFilter === 'all' || (activeFilter === 'risk' && build.risk);
         return filterMatch && (!query || haystack.includes(query));
       });
 
@@ -1030,8 +1018,8 @@
       empty.style.display = visible.length ? 'none' : 'block';
 
       list.innerHTML = visible.map(build => `
-        <article class="build" data-tier="${esc(build.tier)}" data-risk="${build.risk}">
-          <div class="rankbox"><span class="ranknum">${String(build.rank).padStart(2, '0')}</span><span class="tier">${esc(build.tier)}</span><span class="overall-score">${build.score}<small>/100</small></span></div>
+        <article class="build" data-risk="${build.risk}">
+          <div class="rankbox"><span class="ranknum">${String(build.rank).padStart(2, '0')}</span><span class="overall-score">${build.score}<small>/100</small></span></div>
           <div class="build-title">
             ${buildIdentity(build)}
             <div class="statusline">${build.tags.map(([label, cls]) => `<span class="tag ${esc(cls)}">${esc(label)}</span>`).join('')}</div>
