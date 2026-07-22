@@ -94,107 +94,24 @@
     .version-tab { min-height: 34px; padding: 6px 11px; border: 0; color: var(--faint); background: transparent; cursor: pointer; font-size: .78rem; }
     .version-tab + .version-tab { border-left: 1px solid var(--line); }
     .version-tab[aria-selected="true"] { color: var(--ink); background: var(--surface-3); }
-    .nav { display: flex; gap: 22px; }
-    .nav a { color: var(--muted); text-decoration: none; font-size: .88rem; }
-    .nav a:hover { color: var(--ink); }
     .freshness { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .82rem; white-space: nowrap; }
     .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--good); box-shadow: 0 0 0 5px oklch(0.74 0.13 155 / .11); }
 
-    .hero {
-      min-height: min(850px, calc(100vh - 62px));
-      display: grid;
-      grid-template-columns: minmax(0, 1.15fr) minmax(340px, .85fr);
-      align-items: center;
-      gap: clamp(44px, 7vw, 110px);
-      padding-block: clamp(72px, 10vw, 148px);
-    }
-    .hero h1 {
-      max-width: 12ch;
-      margin: 0 0 26px;
-      font-family: Bahnschrift, "Arial Narrow", sans-serif;
-      font-size: clamp(3.3rem, 7.2vw, 6rem);
-      line-height: .93;
-      letter-spacing: -0.04em;
-      text-wrap: balance;
-    }
-    .hero h1 em { color: var(--primary-pale); font-style: normal; }
-    .dek { max-width: 67ch; margin: 0; color: var(--muted); font-size: clamp(1.05rem, 1.8vw, 1.25rem); text-wrap: pretty; }
-    .hero-note { margin-top: 32px; display: flex; flex-wrap: wrap; gap: 10px 22px; color: var(--faint); font-size: .85rem; }
-    .hero-note strong { color: var(--ink); font-weight: 600; }
 
-    .verdict-panel {
-      position: relative;
-      padding: clamp(26px, 4vw, 42px);
-      background: var(--surface);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-    .verdict-panel::before {
-      content: "";
-      position: absolute;
-      width: 220px;
-      height: 220px;
-      right: -75px;
-      top: -80px;
-      border-radius: 50%;
-      background: var(--primary);
-      filter: blur(60px);
-      opacity: .16;
-    }
-    .verdict-label { margin: 0 0 28px; color: var(--primary-pale); font: 600 .82rem/1 Bahnschrift, sans-serif; }
-    .pick { display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: start; padding: 18px 0; border-top: 1px solid var(--line); }
-    .pick:last-child { padding-bottom: 0; }
-    .pick-num { color: var(--faint); font: 700 1.1rem/1 Bahnschrift, sans-serif; }
-    .pick h2 { margin: -4px 0 3px; font-size: 1.06rem; line-height: 1.3; }
-    .pick p { margin: 0; color: var(--muted); font-size: .87rem; }
-    .score { color: var(--score-accent); font: 700 1rem/1 Bahnschrift, sans-serif; }
-    .hero-cta { display: inline-flex; margin-top: 34px; align-items: center; gap: 10px; text-decoration: none; color: var(--bg); background: var(--primary-pale); padding: 12px 16px; font-weight: 700; }
-    .hero-cta:hover { background: var(--ink); }
 
     .report-view[hidden] { display: none !important; }
-    body[data-report-view="fubgun"] .nav { display: none; }
-    .fubgun-kicker { margin: 0 0 22px; color: var(--primary-pale); font: 700 .84rem/1 Bahnschrift, sans-serif; }
-    .fubgun-criteria { margin: 0; padding: 0; list-style: none; }
-    .fubgun-criteria li { display: grid; grid-template-columns: 100px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
-    .fubgun-criteria strong { color: var(--primary-pale); font-size: .82rem; }
-    .fubgun-criteria span { color: var(--muted); font-size: .86rem; }
-    .fubgun-toolbar { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
-    .fubgun-toolbar .search { max-width: 680px; }
-    .fubgun-toolbar-note { margin-left: auto; color: var(--faint); font-size: .8rem; white-space: nowrap; }
     .fubgun-signals { gap: 14px; }
     .fubgun-signal { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
     .fubgun-signal:last-child { padding-bottom: 0; border-bottom: 0; }
     .fubgun-signal span { display: block; color: var(--faint); font-size: .68rem; }
     .fubgun-signal strong { display: block; margin-top: 3px; color: var(--ink); font-size: .78rem; line-height: 1.35; }
     .rank-source { color: var(--primary-pale); font: 700 .66rem/1 Bahnschrift, sans-serif; }
-    .fubgun-caveat { margin-top: 30px; }
-    .fubgun-specials { margin-top: 56px; }
 
     .section { padding-block: clamp(72px, 9vw, 128px); border-top: 1px solid var(--line); }
     .section-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr); gap: 48px; align-items: end; margin-bottom: 48px; }
     .section-heading h2 { margin: 0; font: 700 clamp(2.1rem, 4.2vw, 4.2rem)/.98 Bahnschrift, sans-serif; letter-spacing: -0.035em; text-wrap: balance; }
     .section-heading p { margin: 0; color: var(--muted); max-width: 68ch; }
 
-    .market-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(340px, .8fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .market-copy, .market-plot { background: var(--surface); padding: clamp(24px, 4vw, 46px); }
-    .market-copy h3 { margin: 0 0 12px; font: 700 clamp(1.45rem, 2.5vw, 2.4rem)/1.1 Bahnschrift, sans-serif; }
-    .market-copy > p { color: var(--muted); max-width: 64ch; }
-    .signal-list { margin: 34px 0 0; padding: 0; list-style: none; }
-    .signal-list li { display: grid; grid-template-columns: 130px 1fr; gap: 20px; padding: 16px 0; border-top: 1px solid var(--line); }
-    .signal-list strong { color: var(--primary-pale); font-size: .88rem; }
-    .signal-list span { color: var(--muted); font-size: .9rem; }
-    .plot-title { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; margin-bottom: 20px; }
-    .plot-title strong { font-family: Bahnschrift, sans-serif; }
-    .plot-title span { color: var(--faint); font-size: .78rem; }
-    .market-svg { width: 100%; height: auto; display: block; overflow: visible; }
-    .axis { stroke: var(--line); stroke-width: 1; }
-    .gridline { stroke: var(--line); stroke-width: .7; stroke-dasharray: 4 7; }
-    .dot { transition: r .25s var(--ease), opacity .25s; }
-    .market-svg:hover .dot { opacity: .35; }
-    .market-svg .dot:hover { r: 10; opacity: 1; }
-    .svg-label { fill: var(--muted); font: 12px Aptos, sans-serif; }
-    .svg-small { fill: var(--faint); font: 10px Aptos, sans-serif; }
 
     .controls-sentinel { height: 1px; margin-top: -1px; pointer-events: none; }
     .controls-wrap { position: sticky; top: 62px; z-index: 8; padding-block: 14px; background: oklch(0.085 0 0 / .95); border-block: 1px solid var(--line); transition: padding .22s var(--ease), background-color .22s var(--ease), box-shadow .22s var(--ease); }
@@ -213,6 +130,7 @@
     .ascendancy-class { display: block; margin: 0 0 6px; padding: 0 4px; border: 0; color: var(--faint); background: transparent; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
     .ascendancy-class[aria-pressed="true"] { color: var(--ink); }
     .ascendancy-class[aria-pressed="mixed"] { color: var(--muted); }
+    .ascendancy-class:disabled { cursor: not-allowed; opacity: .42; }
     .ascendancy-options { display: flex; isolation: isolate; }
     .ascendancy-option {
       position: relative;
@@ -334,42 +252,15 @@
     .link-with-favicon { display: inline-flex; align-items: center; gap: 6px; }
     .empty { display: none; padding: 50px 0; color: var(--muted); text-align: center; border-bottom: 1px solid var(--line); }
 
-    .watchlist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line); background: var(--line); gap: 1px; }
-    .watchitem { background: var(--surface); padding: 24px; display: grid; grid-template-columns: 1fr auto; gap: 10px 20px; }
-    .watchitem h3 { margin: 0; font: 700 1.15rem/1.2 Bahnschrift, sans-serif; }
-    .watchitem p { margin: 0; color: var(--muted); font-size: .86rem; grid-column: 1 / -1; }
-    .watchitem a { color: var(--primary-pale); text-decoration: none; font-size: .78rem; }
-    .watchitem a:hover { text-decoration: underline; }
-    .watchlinks { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px 12px; }
 
-    .method-grid { display: grid; grid-template-columns: minmax(280px, .75fr) minmax(0, 1.25fr); gap: 60px; }
-    .method-lede { color: var(--muted); font-size: 1.05rem; }
-    .method-lede strong { color: var(--ink); }
-    .criteria { margin: 0; padding: 0; list-style: none; }
-    .criterion { display: grid; grid-template-columns: 52px 160px 1fr; gap: 20px; padding: 20px 0; border-top: 1px solid var(--line); }
-    .criterion b { color: var(--primary-pale); font: 700 1rem/1.5 Bahnschrift, sans-serif; }
-    .criterion strong { font-size: .9rem; }
-    .criterion span { color: var(--muted); font-size: .87rem; }
 
-    .ledger { width: 100%; border-collapse: collapse; font-size: .87rem; }
-    .ledger th, .ledger td { padding: 16px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
-    .ledger th { color: var(--faint); font-weight: 600; }
-    .ledger td:first-child { color: var(--primary-pale); white-space: nowrap; }
-    .ledger a { text-decoration: none; }
-    .ledger a:hover { text-decoration: underline; }
 
-    .disclaimer { margin-top: 40px; padding: 24px; border: 1px solid var(--line); color: var(--muted); font-size: .86rem; }
-    .disclaimer strong { color: var(--ink); }
     footer { padding-block: 36px 60px; color: var(--faint); font-size: .8rem; border-top: 1px solid var(--line); }
     .footer-inner { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
     .asset-credit { flex-basis: 100%; color: var(--faint); font-size: .74rem; }
     .asset-credit a { color: var(--muted); text-decoration-color: var(--line); text-underline-offset: 3px; }
 
     @media (max-width: 1080px) {
-      .nav { display: none; }
-      .hero { grid-template-columns: 1fr; min-height: auto; }
-      .hero h1 { max-width: 10ch; }
-      .market-grid { grid-template-columns: 1fr; }
       .build { grid-template-columns: 54px minmax(220px, .9fr) minmax(280px, 1.1fr); column-gap: clamp(8px, 1vw, 12px); }
       .build-main { margin-left: clamp(12px, 2vw, 22px); }
       .metrics { grid-column: 2 / -1; grid-template-columns: repeat(5, 1fr); margin-left: 0; }
@@ -378,13 +269,10 @@
 
     @media (max-width: 760px) {
       .shell { width: min(calc(100% - 28px), var(--max)); }
-      .nav { display: none; }
       .topbar-inner { gap: 10px; }
       .brand-cluster { width: 100%; justify-content: space-between; gap: 10px; }
       .wordmark span, .freshness { display: none; }
       .version-tab { padding-inline: 9px; font-size: .73rem; }
-      .hero { padding-block: 72px 90px; }
-      .hero h1 { font-size: clamp(3rem, 16vw, 5rem); }
       .section-heading { grid-template-columns: 1fr; gap: 22px; }
       .controls-wrap { position: static; }
       .controls-main { align-items: stretch; flex-wrap: wrap; }
@@ -401,17 +289,6 @@
       .metrics { grid-template-columns: repeat(2, 1fr); }
       .detail-body { grid-template-columns: 1fr; }
       .split { grid-template-columns: 1fr; gap: 8px; }
-      .watchlist { grid-template-columns: 1fr; }
-      .method-grid { grid-template-columns: 1fr; gap: 30px; }
-      .criterion { grid-template-columns: 42px 1fr; gap: 14px; }
-      .criterion span { grid-column: 2; }
-      .ledger-wrap { overflow-x: auto; }
-      .ledger { min-width: 700px; }
-      .signal-list li { grid-template-columns: 1fr; gap: 5px; }
-      .fubgun-toolbar { align-items: stretch; flex-wrap: wrap; }
-      .fubgun-toolbar .search { flex-basis: 100%; }
-      .fubgun-toolbar-note { margin-left: 0; white-space: normal; }
-      .fubgun-criteria li { grid-template-columns: 1fr; gap: 4px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -431,104 +308,17 @@
           <button class="version-tab" type="button" role="tab" id="fubgun-tab" aria-controls="fubgun-report" aria-selected="false" tabindex="-1" data-report-view="fubgun">Fubgun version</button>
         </div>
       </div>
-      <nav class="nav" aria-label="Разделы отчёта">
-        <a href="#market">Рынок</a>
-        <a href="#ranking">Рейтинг</a>
-        <a href="#watchlist">Ещё варианты</a>
-        <a href="#sources">Источники</a>
-      </nav>
       <div class="freshness"><span class="pulse" aria-hidden="true"></span>Срез: 22.07.2026</div>
     </div>
   </header>
 
   <main id="main">
     <div class="report-view" id="gpt-report" role="tabpanel" aria-labelledby="gpt-tab" data-report-panel="gpt">
-    <section class="shell hero" aria-labelledby="hero-title">
-      <div>
-        <h1 id="hero-title">Что стартовать в <em>Curse of the Allflame</em></h1>
-        <p class="dek">Не пересказ патчноутов, а решение перед стартом. 50+ свежих предложений после анонса 16 июля, новые видео ведущих билдмейкеров и практические прогоны сведены к одному рейтингу: сила на пустой экономике, цена ошибки, путь до T16 и реальная готовность гайда.</p>
-        <div class="hero-note">
-          <span><strong>Лига:</strong> Path of Exile 3.29</span>
-          <span><strong>Старт:</strong> 24 июля, 20:00 UTC</span>
-          <span><strong>Статус:</strong> pre-launch, PoB ещё догоняет патч</span>
-        </div>
-      </div>
-
-      <aside class="verdict-panel" aria-label="Короткий вердикт">
-        <p class="verdict-label">МОЙ КОРОТКИЙ ВЫБОР</p>
-        <div class="pick">
-          <span class="pick-num">01</span>
-          <div><h2>Kinetic Fusillade Totems</h2><p>Palsteron пересобрал дерево после nerf, а Fubgun поставил билд первым за дешёвый путь до четырёх voidstones.</p></div>
-          <span class="score">93</span>
-        </div>
-        <div class="pick">
-          <span class="pick-num">02</span>
-          <div><h2>Penance Brand Ignite</h2><p>Самый ровный универсал: проверен в 3.28, не понерфлен, есть отдельные SC- и HC-oriented гайды.</p></div>
-          <span class="score">90</span>
-        </div>
-        <div class="pick">
-          <span class="pick-num">03</span>
-          <div><h2>Chaos Minion Army</h2><p>Лучший первый minion-персонаж: понятная staged-прогрессия, постоянный boss uptime и прямой buff обычных миньонов.</p></div>
-          <span class="score">89</span>
-        </div>
-        <a class="hero-cta" href="#ranking">Открыть полный рейтинг <span aria-hidden="true">↓</span></a>
-      </aside>
-    </section>
-
-    <section class="section" id="market">
-      <div class="shell">
-        <div class="section-heading">
-          <h2>Рынок после патчноутов</h2>
-          <p>Главная ошибка этого окна — принять количество новых гайдов за доказательство силы. Свежий SC trade tier list вообще не называет ни одного безусловного outlier; поэтому здесь используется непрерывный score 0–100 и порядок 1–21, без буквенных тиров. 3.29 двигает self-cast и миньонов, но одновременно создаёт дорогую толпу вокруг Winter Orb.</p>
-        </div>
-        <div class="market-grid">
-          <div class="market-copy">
-            <h3>Три рынка, три разных уровня риска</h3>
-            <p>Верх рейтинга забирают не самые новые умения, а билды, где свежий патч усилил уже работающий каркас. Чем больше новая концепция зависит от AI наёмника, неизвестного unique или ещё не проверенной механики overlap, тем ниже уверенность.</p>
-            <ul class="signal-list">
-              <li><strong>Проверенное</strong><span>KF Totems, Penance Brand Ignite, миньон-армия и slams уже пережили реальный league start; свежие авторы пересчитали их под 3.29.</span></li>
-              <li><strong>Усиленное</strong><span>Absolution получил более быстрый cast; обычные minions больше не делают паузы между атаками; Winter Orb получил 2–3 проекта вместо одного.</span></li>
-              <li><strong>Перегретое</strong><span>Winter Orb и caster gear будут конкурировать за одни и те же ранние предметы. «Баффнут» не означает «дёшев».</span></li>
-              <li><strong>Теория</strong><span>Luminary Merc Bot и часть новых Holy Hammers зависят от непроверенного поведения AI, drop rate и механики попаданий.</span></li>
-            </ul>
-          </div>
-          <div class="market-plot">
-            <div class="plot-title"><strong>Карта риска</strong><span>правее — больше хайпа</span></div>
-            <svg class="market-svg" viewBox="0 0 460 360" role="img" aria-labelledby="plot-name plot-desc">
-              <title id="plot-name">Рыночная карта архетипов</title>
-              <desc id="plot-desc">Сравнение доказанности и рыночного хайпа пяти групп билдов.</desc>
-              <line class="axis" x1="48" y1="310" x2="430" y2="310" />
-              <line class="axis" x1="48" y1="310" x2="48" y2="28" />
-              <line class="gridline" x1="48" y1="216" x2="430" y2="216" />
-              <line class="gridline" x1="48" y1="122" x2="430" y2="122" />
-              <line class="gridline" x1="175" y1="28" x2="175" y2="310" />
-              <line class="gridline" x1="302" y1="28" x2="302" y2="310" />
-              <text class="svg-small" x="50" y="330">низкий хайп</text>
-              <text class="svg-small" x="364" y="330">высокий</text>
-              <text class="svg-small" transform="translate(18 307) rotate(-90)">мало доказательств</text>
-              <text class="svg-small" transform="translate(18 125) rotate(-90)">проверено</text>
-
-              <circle class="dot" cx="188" cy="73" r="8" fill="var(--score-accent)" />
-              <text class="svg-label" x="201" y="77">PBrand ignite</text>
-              <circle class="dot" cx="116" cy="92" r="8" fill="var(--good)" />
-              <text class="svg-label" x="129" y="96">minions</text>
-              <circle class="dot" cx="98" cy="136" r="8" fill="var(--info)" />
-              <text class="svg-label" x="111" y="140">melee proven</text>
-              <circle class="dot" cx="357" cy="151" r="8" fill="var(--warn)" />
-              <text class="svg-label" x="300" y="174">Winter Orb</text>
-              <circle class="dot" cx="393" cy="260" r="8" fill="var(--bad)" />
-              <text class="svg-label" x="303" y="283">Luminary / new tech</text>
-            </svg>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="ranking">
+      <section class="section" id="ranking">
       <div class="shell">
         <div class="section-heading">
           <h2>Рейтинг стартеров</h2>
-          <p>Итоговый score — не PoB DPS. Это вероятность получить хороший первый персонаж без заранее накопленной валюты. Открой «Разбор и ссылки» у любого билда: там перечислены все свежие материалы, которые вошли в оценку.</p>
+          <p>Итоговый score — не PoB DPS. Это вероятность получить хороший первый персонаж без заранее накопленной валюты. Разбор, плюсы, минусы и все свежие источники сразу показаны в каждой карточке.</p>
         </div>
       </div>
 
@@ -611,131 +401,34 @@
         <div class="rank-list" id="build-list"></div>
         <p class="empty" id="empty">По этому фильтру ничего не осталось.</p>
       </div>
-    </section>
-
-    <section class="section" id="watchlist">
-      <div class="shell">
-        <div class="section-heading">
-          <h2>Ещё в свежем предложении</h2>
-          <p>Эти варианты не вошли в основной топ либо из-за меньшей доказательной базы, либо потому что рядом есть более ясный гайд того же архетипа. Ссылки всё равно оставляю — рынок шире одного тир-листа.</p>
-        </div>
-        <div class="watchlist">
-          <article class="watchitem"><h3>Spectre Necromancer</h3><a href="https://maxroll.gg/poe/build-guides/forged-frostbearer-spectre-necromancer-league-starter" target="_blank" rel="noopener">Helm Breaker · Maxroll ↗</a><p>Свежий индекс поднял Spectres в верхнюю секцию для новичков. Сильнее завязан на правильный выбор и сохранение spectres, чем смешанная армия.</p></article>
-          <article class="watchitem"><h3>Carrion Golems + Zombies</h3><a href="https://maxroll.gg/poe/build-guides/carrion-golems-zombies-necromancer-league-starter" target="_blank" rel="noopener">Helm Breaker · Maxroll ↗</a><p>Простой постоянный minion core; архетип силён, но опытный carrion-игрок оспорил приоритеты предметов именно в этом гайде.</p></article>
-          <article class="watchitem"><h3>Holy Relic Necromancer</h3><a href="https://www.poe-vault.com/guides/holy-relic-necromancer-build-guide" target="_blank" rel="noopener">BalorMage · guide ↗</a><p>Проверенный all-content minion вариант с хорошим потолком, но playstyle через собственные атаки и breakpoints сложнее первого знакомства с миньонами.</p></article>
-          <article class="watchitem"><h3>Poison Ranged Animate Weapon</h3><a href="https://maxroll.gg/poe/build-guides/poison-ranged-animate-weapons-league-starter" target="_blank" rel="noopener">Maxroll ↗</a><p>Высокий потолок и хороший boss damage, но больше обслуживания и переходов, чем у minion army.</p></article>
-          <article class="watchitem"><h3>Popcorn SRS Necromancer</h3><div class="watchlinks"><a href="https://www.youtube.com/watch?v=jrld4-0AnTs" target="_blank" rel="noopener">Видео 3.29 ↗</a><a href="https://pobb.in/Z9IjdHBBM-s9" target="_blank" rel="noopener">PoB · 21.07 ↗</a></div><p>Свежий полный путь start→endgame; отдельная механика взрыва делает его не прямой заменой poison SRS.</p></article>
-          <article class="watchitem"><h3>Ice Crash Ignite Chieftain</h3><div class="watchlinks"><a href="https://www.youtube.com/watch?v=YTTcKnqipOM" target="_blank" rel="noopener">Crouching Tuna ↗</a><a href="https://maxroll.gg/poe/pob/6xhey40t" target="_blank" rel="noopener">Progression PoB ↗</a></div><p>Интересный ignite-melee гибрид; меньше рыночной конкуренции, но темп и ощущения очень специфичны.</p></article>
-          <article class="watchitem"><h3>Eviscerate Gladiator</h3><div class="watchlinks"><a href="https://www.youtube.com/watch?v=_yr67QUlRH0" target="_blank" rel="noopener">Goratha · видео ↗</a><a href="https://maxroll.gg/poe/build-guides/eviscerate-bleed-gladiator-league-starter" target="_blank" rel="noopener">Maxroll guide ↗</a><a href="https://maxroll.gg/poe/pob/jchn110x" target="_blank" rel="noopener">Progression PoB ↗</a></div><p>Block и retaliation дают прочность; механика реакции на удар нравится не всем и хуже контролируется.</p></article>
-          <article class="watchitem"><h3>Kinetic Blast of Clustering</h3><div class="watchlinks"><a href="https://www.youtube.com/watch?v=FRap20bTnYY" target="_blank" rel="noopener">Palsteron · Hierophant ↗</a><a href="https://maxroll.gg/poe/pob/i27we0a0" target="_blank" rel="noopener">PoB · normal block ↗</a><a href="https://maxroll.gg/poe/pob/r399r0ac" target="_blank" rel="noopener">PoB · Svalinn ↗</a><a href="https://maxroll.gg/poe/pob/k99ay0yu" target="_blank" rel="noopener">PoB · Mageblood ↗</a></div><p>Fubgun ставит KBoC в середину верхней группы: Necromancer лучше в первые сутки, Hierophant лучше масштабируется. Полные гайды старше анонса, поэтому пока watchlist.</p></article>
-          <article class="watchitem"><h3>Reap / Exsanguinate Mines</h3><div class="watchlinks"><a href="https://www.youtube.com/watch?v=ZEvuQ5krLwQ" target="_blank" rel="noopener">FearlessDumb0 ↗</a><a href="https://pobb.in/3J6Dm6pkA6-5" target="_blank" rel="noopener">PoB · league start ↗</a><a href="https://pobb.in/ZFC1itVixJSB" target="_blank" rel="noopener">PoB · day 3 ↗</a><a href="https://pobb.in/B2AMYCt2_deF" target="_blank" rel="noopener">PoB · day 6 ↗</a><a href="https://pobb.in/InYG0--lcpCG" target="_blank" rel="noopener">PoB · alt leveling ↗</a></div><p>В свежем SC trade tier list стоит выше Penance Brand по темпу четырёх voidstones; выбор конкретной mine-gem зависит от желаемого фарма.</p></article>
-          <article class="watchitem"><h3>Lightning Arrow Deadeye</h3><div class="watchlinks"><a href="https://www.youtube.com/watch?v=Ov5KpoNcvr4" target="_blank" rel="noopener">Fubgun · видео ↗</a><a href="https://mobalytics.gg/poe/builds/fubgun-s-bow-leveling-guide-for-deadeye" target="_blank" rel="noopener">Mobalytics guide ↗</a><a href="https://pobb.in/Uf5sipNg9Ehz" target="_blank" rel="noopener">PoB · leveling ↗</a><a href="https://pobb.in/0YXDuYOquaI5" target="_blank" rel="noopener">PoB · endgame ↗</a></div><p>По-прежнему быстрый trade-start mapper, но хрупкость и конкуренция за bow-gear не исчезли.</p></article>
-          <article class="watchitem"><h3>Energy Blade Inquisitor</h3><a href="https://mobalytics.gg/poe/builds/captainlance9-energy-blade-inquisitor" target="_blank" rel="noopener">CaptainLance9 · 3.29 ↗</a><p>Обновлённый универсальный caster-shell с высоким потолком. Сильный знакомый вариант, но заметно сложнее и дороже верхних starters.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="method">
-      <div class="shell">
-        <div class="section-heading">
-          <h2>Как посчитан рейтинг</h2>
-          <p>Одинаковая шкала нужна, чтобы не сравнивать «мой любимый билд» с «сильнейшим билдом» на уровне впечатлений. Вес даётся раннему прогрессу, а не зеркальному PoB.</p>
-        </div>
-        <div class="method-grid">
-          <p class="method-lede"><strong>Факт:</strong> патч ещё не запущен. Поэтому confidence и наличие честного WIP-disclaimer весят больше, чем обещание «Ubers на 10 div». После первых 48 часов экономики этот порядок может измениться.</p>
-          <ol class="criteria">
-            <li class="criterion"><b>30%</b><strong>Доказанность</strong><span>Был ли архетип реально сыгран на старте и пережил ли патч без критического nerf.</span></li>
-            <li class="criterion"><b>25%</b><strong>Fresh economy</strong><span>Работает ли билд на rares/доступных uniques и насколько опасна конкуренция за ключевые предметы.</span></li>
-            <li class="criterion"><b>20%</b><strong>Путь до T16</strong><span>Кампания, момент swap, voidstones, отсутствие болезненной ямы в yellow/red maps.</span></li>
-            <li class="criterion"><b>15%</b><strong>Ошибка игрока</strong><span>Защита, recovery, видимость механик, число обязательных кнопок и возможность исправить плохой gear.</span></li>
-            <li class="criterion"><b>10%</b><strong>Качество гайда</strong><span>Leveling trees, gear stages, crafting, video, PoB notes и честно обозначенные неизвестные.</span></li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="sources">
-      <div class="shell">
-        <div class="section-heading">
-          <h2>Опорные источники</h2>
-          <p>В выборку не включались дорелизные тир-листы, опубликованные до раскрытия 3.29. Старые архетипы попали сюда только через страницу или обновление, актуализированное после 16 июля.</p>
-        </div>
-        <div class="ledger-wrap">
-          <table class="ledger">
-            <thead><tr><th>Дата</th><th>Источник</th><th>Что подтверждает</th><th>Тип</th></tr></thead>
-            <tbody>
-              <tr><td>16.07</td><td><a href="https://www.pathofexile.com/forum/view-thread/3985332" target="_blank" rel="noopener">Официальные patch notes 3.29</a></td><td>Gem/ascendancy/item changes, новые умения, socket overhaul.</td><td>Первичный</td></tr>
-              <tr><td>16.07</td><td><a href="https://www.pathofexile.com/allflame" target="_blank" rel="noopener">Curse of the Allflame overview</a></td><td>Лига, Voyages, дата и ключевые системы.</td><td>Первичный</td></tr>
-              <tr><td>19.07</td><td><a href="https://poe.how/guides/curse-of-the-allflame" target="_blank" rel="noopener">PoeHow: economy guide</a></td><td>Сводка 14 изменений со ссылками на конкретные таймкоды GGG.</td><td>Агрегатор</td></tr>
-              <tr><td>21–22.07</td><td><a href="https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/" target="_blank" rel="noopener">3.29 League Start Build Index</a></td><td>40+ свежих guide links, верхние рекомендации для новичков и community sniff-test.</td><td>Индекс</td></tr>
-              <tr><td>21.07</td><td><a href="https://www.youtube.com/watch?v=lOnHH393bhQ" target="_blank" rel="noopener">Fubgun: SC trade tier list</a></td><td>Порядок по четырём voidstones и раннему фарму; KF #1, Static #4, Storm Burst #5, WOrb #6.</td><td>Первичный</td></tr>
-              <tr><td>19–21.07</td><td><a href="https://www.youtube.com/watch?v=7n0fMQ4NPlA" target="_blank" rel="noopener">Palsteron: KF и Assassin</a></td><td>Пересчёт KF после nerf и оценка новых возможностей Assassin.</td><td>Первичный</td></tr>
-              <tr><td>20–21.07</td><td><a href="https://www.youtube.com/watch?v=ThANqlWYJ98" target="_blank" rel="noopener">Zizaran: Boneshatter и Winter Orb</a></td><td>Два полных 3.29 build guide с progression PoB.</td><td>Первичный</td></tr>
-              <tr><td>20.07</td><td><a href="https://mobalytics.gg/poe/starter-builds" target="_blank" rel="noopener">Mobalytics starter catalog</a></td><td>Состояние verified/creator guides и даты обновлений.</td><td>Каталог</td></tr>
-              <tr><td>17–21.07</td><td><a href="https://www.reddit.com/r/PathOfExileBuilds/comments/1uyouu2/detailed_interactive_table_of_329_skill_gem/" target="_blank" rel="noopener">Интерактивная таблица gem changes</a></td><td>Проверка масштаба buffs/nerfs по отдельным камням.</td><td>Комьюнити</td></tr>
-              <tr><td>20.07</td><td><a href="https://www.reddit.com/r/PathOfExileBuilds/comments/1v1ki8f/329_a_few_battle_tested_offmeta_league_starters/" target="_blank" rel="noopener">Battle-tested off-meta starters</a></td><td>PoB и честная оценка трёх сыгранных альтернатив.</td><td>Практика</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="disclaimer"><strong>Граница уверенности.</strong> Это pre-launch отчёт на 22 июля 2026 года. Drop rate новых uniques, поведение Mercenary AI, точная экономика transfigured gems и первый hotfix ещё неизвестны. Любой guide с пометкой WIP оценён как незавершённый, даже если площадка показывает его как Featured или Verified.</div>
-      </div>
-    </section>
+      </section>
     </div>
 
     <div class="report-view" id="fubgun-report" role="tabpanel" aria-labelledby="fubgun-tab" data-report-panel="fubgun" hidden>
-      <section class="shell hero fubgun-hero" aria-labelledby="fubgun-title">
-        <div>
-          <p class="fubgun-kicker">FUBGUN VERSION · SC TRADE</p>
-          <h1 id="fubgun-title">Четыре камня, затем <em>нормальный фарм</em></h1>
-          <p class="dek">Отдельная версия отчёта по мнению Fubgun. Он ранжирует не абсолютную силу и не HC/SSF, а практичный week-one маршрут: закрыть четыре voidstones, затем превратить персонажа в рабочую ферму с бюджетом примерно 10–40 div.</p>
-          <div class="hero-note">
-            <span><strong>Источник:</strong> видео от 21 июля</span>
-            <span><strong>Формат:</strong> SC trade</span>
-            <span><strong>Порядок:</strong> соседние 2–3 места близки</span>
-          </div>
-          <a class="hero-cta" href="https://www.youtube.com/watch?v=lOnHH393bhQ" target="_blank" rel="noopener">Смотреть исходный tier list ↗</a>
-        </div>
-
-        <aside class="verdict-panel" aria-label="Критерии Fubgun">
-          <p class="verdict-label">КАК ЧИТАТЬ ЭТУ ВЕРСИЮ</p>
-          <ul class="fubgun-criteria">
-            <li><strong>Главное</strong><span>Скорость и надёжность пути до четырёх voidstones.</span></li>
-            <li><strong>После Atlas</strong><span>Есть ли подходящий ранний farm, а не только хороший PoB.</span></li>
-            <li><strong>Не HC/SSF</strong><span>В hardcore и solo-self-found порядок был бы другим.</span></li>
-            <li><strong>Pre-launch</strong><span>Видео записано до финальных dot-изменений; сам автор это подчёркивает.</span></li>
-          </ul>
-        </aside>
-      </section>
-
       <section class="section" id="fubgun-ranking" aria-labelledby="fubgun-ranking-title">
         <div class="shell">
           <div class="section-heading">
             <h2 id="fubgun-ranking-title">Рейтинг Fubgun</h2>
             <p>Тот же карточный формат, но без выдуманного score /100. Справа показаны только качественные выводы, которые Fubgun проговаривает в видео: старт, подходящий farm и потолок.</p>
           </div>
-          <div class="fubgun-toolbar" role="search">
-            <label class="search">
-              <span class="skip-link">Поиск в рейтинге Fubgun</span>
-              <input id="fubgun-search" type="search" placeholder="Найти билд, автора или фарм…" autocomplete="off">
-            </label>
-            <span class="fubgun-toolbar-note" id="fubgun-count">16 билдов · порядок автора</span>
+        </div>
+
+        <div class="controls-sentinel" aria-hidden="true"></div>
+        <div class="controls-wrap">
+          <div class="shell controls" role="group" aria-label="Фильтры рейтинга Fubgun">
+            <div class="controls-main">
+              <label class="search"><span class="skip-link">Поиск в рейтинге Fubgun</span><input id="fubgun-search" type="search" placeholder="Найти билд, автора или фарм…" autocomplete="off"></label>
+              <span class="result-count" id="fubgun-count" aria-live="polite">16 билдов · порядок автора</span>
+            </div>
+            <div class="ascendancy-filter" role="group" aria-label="Фильтр Fubgun по аскенданси; можно выбрать несколько">
+              <div class="ascendancy-rail" id="fubgun-ascendancy-rail"></div>
+            </div>
           </div>
+        </div>
+
+        <div class="shell">
           <div class="rank-list" id="fubgun-build-list"></div>
           <div class="empty" id="fubgun-empty">Ничего не найдено. Попробуй другой запрос.</div>
-
-          <div class="fubgun-specials">
-            <div class="section-heading">
-              <h2>Отдельные фермы</h2>
-              <p>Эти варианты Fubgun намеренно вынес из общего порядка: их ценность определяется одной конкретной механикой.</p>
-            </div>
-            <div class="watchlist">
-              <article class="watchitem"><h3>Heist · Toxic Rain</h3><a href="https://www.youtube.com/watch?v=lOnHH393bhQ&t=787s" target="_blank" rel="noopener">Fubgun · 13:07 ↗</a><p>Быстрый персонаж и привычный выбор для Heist; потенциально подходит и новой underwater-механике, но до запуска это неизвестно.</p></article>
-              <article class="watchitem"><h3>Sanctum · Shockwave Totems / PBrand</h3><a href="https://www.youtube.com/watch?v=lOnHH393bhQ&t=816s" target="_blank" rel="noopener">Fubgun · 13:36 ↗</a><p>Специализированный ranged damage и безопасная подача урона; ценность Sanctum может вырасти из-за новых наград.</p></article>
-              <article class="watchitem"><h3>Ultimatum · CWS</h3><a href="https://www.youtube.com/watch?v=lOnHH393bhQ&t=826s" target="_blank" rel="noopener">Fubgun · 13:46 ↗</a><p>Дешёвый Ultimatum требует отдельной сборки; Fubgun направляет к emiracles, который играет её регулярно.</p></article>
-            </div>
-          </div>
-
-          <div class="disclaimer fubgun-caveat"><strong>Не вошли в рейтинг.</strong> Luminary и Crab Totems оставлены за пределами списка из-за неизвестных механик; minions Fubgun не оценивает, потому что сам их не играет. BV/EK он не рекомендует стартовать напрямую — предлагает начать Winter Orb или Penance Brand Ignite и перейти позже, когда появится валюта.</div>
         </div>
       </section>
     </div>
@@ -1423,25 +1116,34 @@
       16: ['juggernaut', 'champion']
     });
 
+    const fubgunBuildAscendancyAlternatives = Object.freeze({
+      7: ['necromancer', 'hierophant'],
+      9: ['trickster', 'elementalist'],
+      11: ['berserker', 'slayer']
+    });
+
+    const gptAscendancyRail = document.querySelector('#gpt-report .ascendancy-rail');
+    const fubgunAscendancyRail = gptAscendancyRail.cloneNode(true);
+    fubgunAscendancyRail.id = 'fubgun-ascendancy-rail';
+    document.querySelector('#fubgun-ascendancy-rail').replaceWith(fubgunAscendancyRail);
+
     const list = document.querySelector('#build-list');
     const count = document.querySelector('#count');
     const empty = document.querySelector('#empty');
     const search = document.querySelector('#search');
     const sort = document.querySelector('#sort');
-    const controlsWrap = document.querySelector('.controls-wrap');
-    const controlsSentinel = document.querySelector('.controls-sentinel');
-    const ascendancyButtons = [...document.querySelectorAll('.ascendancy-option')];
-    const classButtons = [...document.querySelectorAll('.ascendancy-class')];
-    const disabledAscendancies = new Set(
-      ascendancyButtons.filter(button => button.disabled).map(button => button.dataset.ascendancy)
-    );
     const activeAscendancies = new Set();
+    const fubgunActiveAscendancies = new Set();
     const fubgunList = document.querySelector('#fubgun-build-list');
     const fubgunSearch = document.querySelector('#fubgun-search');
     const fubgunCount = document.querySelector('#fubgun-count');
     const fubgunEmpty = document.querySelector('#fubgun-empty');
     const reportTabs = [...document.querySelectorAll('.version-tab[data-report-view]')];
     const reportPanels = [...document.querySelectorAll('[data-report-panel]')];
+    const controlsPairs = [...document.querySelectorAll('.controls-sentinel')].map(sentinel => ({
+      sentinel,
+      wrap: sentinel.nextElementSibling
+    }));
     const skipLink = document.querySelector('.skip-link');
 
     const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
@@ -1584,7 +1286,9 @@
       const query = fubgunSearch.value.trim().toLocaleLowerCase('ru');
       const visible = fubgunBuilds.filter(build => {
         const haystack = `${build.name} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${build.signals.flat().join(' ')} ${build.sources.map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
-        return !query || haystack.includes(query);
+        const ascendancies = fubgunBuildAscendancyAlternatives[build.rank] || [build.art.ascendancy];
+        const filterMatch = fubgunActiveAscendancies.size === 0 || ascendancies.some(ascendancy => fubgunActiveAscendancies.has(ascendancy));
+        return filterMatch && (!query || haystack.includes(query));
       });
       fubgunCount.textContent = `${visible.length} ${visible.length === 1 ? 'билд' : visible.length >= 2 && visible.length <= 4 ? 'билда' : 'билдов'} · порядок автора`;
       fubgunEmpty.style.display = visible.length ? 'none' : 'block';
@@ -1622,49 +1326,85 @@
       return `<div class="metric"><span>${label}</span><b>${value}</b><div class="bar"><span style="width:${value}%"></span></div></div>`;
     }
 
-    ascendancyButtons.forEach(button => {
-      const label = button.lastElementChild.textContent.trim();
-      button.setAttribute('aria-label', label);
-      button.title = button.disabled ? `${label} — нет билдов в текущем рейтинге` : label;
-    });
-
-    function syncAscendancyControls() {
-      ascendancyButtons.forEach(button => {
-        button.setAttribute('aria-pressed', String(activeAscendancies.has(button.dataset.ascendancy)));
-      });
-      classButtons.forEach(button => {
-        const ascendancies = button.dataset.ascendancies.split(' ').filter(ascendancy => !disabledAscendancies.has(ascendancy));
-        const selectedCount = ascendancies.filter(ascendancy => activeAscendancies.has(ascendancy)).length;
-        button.setAttribute('aria-pressed', selectedCount === 0 ? 'false' : selectedCount === ascendancies.length ? 'true' : 'mixed');
-      });
+    function ascendanciesFor(build, alternatives, fallback) {
+      return alternatives[build.rank] || [fallback(build)];
     }
 
-    ascendancyButtons.forEach(button => button.addEventListener('click', () => {
-      const ascendancy = button.dataset.ascendancy;
-      if (activeAscendancies.has(ascendancy)) activeAscendancies.delete(ascendancy);
-      else activeAscendancies.add(ascendancy);
-      syncAscendancyControls();
-      render();
-    }));
+    function initAscendancyFilter(root, availableAscendancies, activeAscendancies, onChange) {
+      const ascendancyButtons = [...root.querySelectorAll('.ascendancy-option')];
+      const classButtons = [...root.querySelectorAll('.ascendancy-class')];
 
-    classButtons.forEach(button => button.addEventListener('click', () => {
-      const ascendancies = button.dataset.ascendancies.split(' ').filter(ascendancy => !disabledAscendancies.has(ascendancy));
-      const allSelected = ascendancies.every(ascendancy => activeAscendancies.has(ascendancy));
-      ascendancies.forEach(ascendancy => allSelected ? activeAscendancies.delete(ascendancy) : activeAscendancies.add(ascendancy));
-      syncAscendancyControls();
-      render();
-    }));
+      ascendancyButtons.forEach(button => {
+        const label = button.lastElementChild.textContent.trim();
+        button.disabled = !availableAscendancies.has(button.dataset.ascendancy);
+        button.setAttribute('aria-label', label);
+        button.setAttribute('aria-pressed', 'false');
+        button.title = button.disabled ? `${label} — нет билдов в текущем рейтинге` : label;
+      });
+
+      const enabledAscendancies = new Set(
+        ascendancyButtons.filter(button => !button.disabled).map(button => button.dataset.ascendancy)
+      );
+
+      function sync() {
+        ascendancyButtons.forEach(button => {
+          button.setAttribute('aria-pressed', String(activeAscendancies.has(button.dataset.ascendancy)));
+        });
+        classButtons.forEach(button => {
+          const ascendancies = button.dataset.ascendancies.split(' ').filter(ascendancy => enabledAscendancies.has(ascendancy));
+          const selectedCount = ascendancies.filter(ascendancy => activeAscendancies.has(ascendancy)).length;
+          button.disabled = ascendancies.length === 0;
+          button.title = button.disabled ? `${button.textContent.trim()} — нет билдов в текущем рейтинге` : button.textContent.trim();
+          button.setAttribute('aria-pressed', selectedCount === 0 ? 'false' : selectedCount === ascendancies.length ? 'true' : 'mixed');
+        });
+      }
+
+      ascendancyButtons.forEach(button => button.addEventListener('click', () => {
+        const ascendancy = button.dataset.ascendancy;
+        if (activeAscendancies.has(ascendancy)) activeAscendancies.delete(ascendancy);
+        else activeAscendancies.add(ascendancy);
+        sync();
+        onChange();
+      }));
+
+      classButtons.forEach(button => button.addEventListener('click', () => {
+        const ascendancies = button.dataset.ascendancies.split(' ').filter(ascendancy => enabledAscendancies.has(ascendancy));
+        const allSelected = ascendancies.every(ascendancy => activeAscendancies.has(ascendancy));
+        ascendancies.forEach(ascendancy => allSelected ? activeAscendancies.delete(ascendancy) : activeAscendancies.add(ascendancy));
+        sync();
+        onChange();
+      }));
+
+      sync();
+    }
+
+    const gptAvailableAscendancies = new Set(
+      builds.flatMap(build => ascendanciesFor(build, buildAscendancyAlternatives, item => buildArt[item.rank].ascendancy))
+    );
+    const fubgunAvailableAscendancies = new Set(
+      fubgunBuilds.flatMap(build => ascendanciesFor(build, fubgunBuildAscendancyAlternatives, item => item.art.ascendancy))
+    );
+
+    initAscendancyFilter(document.querySelector('#gpt-report .ascendancy-filter'), gptAvailableAscendancies, activeAscendancies, render);
+    initAscendancyFilter(document.querySelector('#fubgun-report .ascendancy-filter'), fubgunAvailableAscendancies, fubgunActiveAscendancies, renderFubgun);
 
     const stickyControlsMedia = window.matchMedia('(min-width: 761px)');
-    const setStickyControls = stuck => controlsWrap.classList.toggle('is-stuck', stuck);
     const syncStickyControls = () => {
-      setStickyControls(stickyControlsMedia.matches && controlsSentinel.getBoundingClientRect().top < 62);
+      controlsPairs.forEach(({ sentinel, wrap }) => {
+        const panel = wrap.closest('[data-report-panel]');
+        const stuck = stickyControlsMedia.matches && !panel.hidden && sentinel.getBoundingClientRect().top < 62;
+        wrap.classList.toggle('is-stuck', stuck);
+      });
     };
     if ('IntersectionObserver' in window) {
-      const stickyObserver = new IntersectionObserver(([entry]) => {
-        setStickyControls(stickyControlsMedia.matches && !entry.isIntersecting && entry.boundingClientRect.top < 62);
-      }, { rootMargin: '-62px 0px 0px 0px', threshold: 0 });
-      stickyObserver.observe(controlsSentinel);
+      controlsPairs.forEach(({ sentinel, wrap }) => {
+        const stickyObserver = new IntersectionObserver(([entry]) => {
+          const panel = wrap.closest('[data-report-panel]');
+          const stuck = stickyControlsMedia.matches && !panel.hidden && !entry.isIntersecting && entry.boundingClientRect.top < 62;
+          wrap.classList.toggle('is-stuck', stuck);
+        }, { rootMargin: '-62px 0px 0px 0px', threshold: 0 });
+        stickyObserver.observe(sentinel);
+      });
     } else {
       window.addEventListener('scroll', syncStickyControls, { passive: true });
     }
@@ -1682,6 +1422,7 @@
       reportPanels.forEach(panel => { panel.hidden = panel.dataset.reportPanel !== nextView; });
       skipLink.href = nextView === 'fubgun' ? '#fubgun-ranking' : '#ranking';
       document.title = nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : 'PoE 3.29 — что стартовать';
+      requestAnimationFrame(syncStickyControls);
       if (updateUrl) {
         const url = new URL(window.location.href);
         if (nextView === 'fubgun') url.searchParams.set('version', 'fubgun');
