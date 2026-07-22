@@ -247,7 +247,10 @@
     }
     .skill-frame::before { content: attr(data-fallback); font-size: .85rem; }
     .skill-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-    .build-title h3 { margin: 0 0 6px; font: 700 clamp(1.25rem, 2vw, 1.65rem)/1.08 Bahnschrift, sans-serif; letter-spacing: -.02em; text-wrap: balance; }
+    .build-title h3 { margin: 0 0 5px; font: 700 clamp(1.25rem, 2vw, 1.65rem)/1.08 Bahnschrift, sans-serif; letter-spacing: -.02em; text-wrap: balance; }
+    .authorline { margin: 0 0 3px; color: var(--muted); font-size: .78rem; line-height: 1.3; }
+    .authorline span { color: var(--faint); }
+    .authorline strong { color: var(--muted); font-weight: 600; }
     .classline { color: var(--muted); font-size: .87rem; }
     .statusline { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; }
     .tag { display: inline-flex; align-items: center; min-height: 24px; padding: 3px 8px; border: 1px solid var(--line); color: var(--muted); font-size: .72rem; }
@@ -1585,8 +1588,53 @@
       });
     }
 
+    const authorByBuildName = Object.freeze({
+      'Kinetic Fusillade Totems': 'Palsteron',
+      'Penance Brand Ignite': 'Goratha + Zeeboub',
+      'Chaos Minion Army': 'Helm Breaker',
+      'Earthshatter': 'Woolie',
+      'Static Strike': 'Alohaa',
+      'Storm Burst Totems': 'Aer0',
+      'Righteous Fire': 'Pohx',
+      'Winter Orb': 'Zizaran + Fubgun',
+      'Poison SRS': 'Helm Breaker',
+      'Shield Crush': 'Ignatius + IlNino',
+      'Poisonous Concoction → Viper Mamba': 'Jungroan',
+      'Rolling Magma Mines': 'Goratha',
+      'Holy Absolution': 'Ronarray',
+      'Shock Nova of Procession Archmage': 'Goratha',
+      'Toxic Rain': 'Path of Evening',
+      'Boneshatter': 'Zizaran + Woolie',
+      'Arc Ignite': 'BuffaloBaron',
+      'Cyclone Shockwave': 'Sanavixx',
+      'Holy Hammers of Spirals': 'Woolie',
+      'Flicker Strike': 'Magefist',
+      'Luminary Merc Bot': 'CaptainLance9 + Zizaran',
+      'Spellslinger → Cold DoT': 'Jungroan',
+      'Bleed Earthquake': 'Zizaran',
+      'Holy Flame Totem': 'Aer0',
+      'Vaal Ice Nova': 'Aer0',
+      'Spark Archmage': 'BigDucks',
+      'Cast when Stunned Chieftain': 'Emiracle',
+      'Slams → Righteous Fire': 'PhazePlays + Alkaizer + Pohx',
+      'PConc Assassin → Mamba Bino’s': 'Jungroan',
+      'Static Strike / Ele Hit Slayer': 'Alohaa',
+      'Winter Orb Elementalist': 'Fubgun + Zizaran',
+      'KBoC Necromancer / Hierophant': 'Jungroan + Palsteron',
+      'Lightning Arrow / EHoS Deadeye': 'Fubgun',
+      'Reap / Exsanguinate / GC Mines': 'FearlessDumb0 + Smokie',
+      'General’s Cry': 'Plexsu',
+      'Cyclone Shockwave Slayer': 'Sanavixx',
+      'Archmage Spellcaster': 'BigDucks',
+      'Venom Gyre Deadeye': 'Kankar',
+      'Bleed Boneshatter': 'Zizaran',
+      'Flicker Strike Slayer': 'Magefist'
+    });
+
     function buildIdentity(build) {
       const art = build.art || buildArt[build.rank];
+      const authors = build.author || authorByBuildName[build.name] || 'автор не указан';
+      const authorLabel = authors.includes('+') ? 'Авторы гайдов' : 'Автор гайда';
       const ascendancyInitial = art.label.charAt(0);
       const lazy = build.rank > 3 ? ' loading="lazy"' : '';
       return `
@@ -1601,6 +1649,7 @@
           </div>
           <div class="build-heading-copy">
             <h3>${esc(build.name)}</h3>
+            <div class="authorline"><span>${authorLabel}:</span> <strong>${esc(authors)}</strong></div>
             <div class="classline">${esc(build.className)}</div>
           </div>
         </div>`;
