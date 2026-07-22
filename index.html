@@ -181,23 +181,22 @@
     .sort-select { min-height: 42px; border: 1px solid var(--line); border-radius: 0; background: var(--surface); padding: 8px 12px; cursor: pointer; }
     .sort-select { color: var(--muted); }
     .result-count { color: var(--faint); font-size: .82rem; margin-left: auto; white-space: nowrap; }
-    .ascendancy-filter { display: flex; align-items: flex-start; gap: 12px; min-width: 0; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
-    .ascendancy-filter-label { flex: 0 0 auto; padding-top: 25px; color: var(--faint); font-size: .74rem; }
-    .ascendancy-rail { display: flex; gap: 12px; min-width: 0; overflow-x: auto; padding: 0 2px 5px; scrollbar-color: var(--line) transparent; scrollbar-width: thin; }
+    .ascendancy-filter { min-width: 0; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .ascendancy-rail { display: flex; flex-wrap: wrap; gap: 12px 16px; min-width: 0; }
     .ascendancy-group { flex: 0 0 auto; }
-    .ascendancy-class { display: block; margin: 0 0 5px 3px; color: var(--faint); font-size: .62rem; }
+    .ascendancy-class { display: block; margin: 0 0 6px 4px; color: var(--faint); font-size: .68rem; }
     .ascendancy-options { display: flex; isolation: isolate; }
     .ascendancy-option {
       position: relative;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      min-height: 38px;
-      padding: 3px 8px 3px 3px;
+      gap: 8px;
+      min-height: 46px;
+      padding: 4px 10px 4px 4px;
       border: 1px solid var(--line);
       color: var(--muted);
       background: var(--surface);
-      font-size: .7rem;
+      font-size: .8rem;
       white-space: nowrap;
       cursor: pointer;
     }
@@ -205,8 +204,7 @@
     .ascendancy-option[aria-pressed="true"] { z-index: 1; color: var(--ink); background: var(--surface-3); border-color: var(--primary-pale); }
     .ascendancy-option:disabled { color: var(--faint); cursor: not-allowed; opacity: .42; }
     .ascendancy-option:disabled img { filter: grayscale(1); }
-    .ascendancy-all { align-self: flex-end; min-height: 38px; padding: 3px 11px; }
-    .ascendancy-thumb { position: relative; display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; overflow: hidden; color: var(--faint); background: var(--surface-3); font: 700 .68rem/1 Bahnschrift, sans-serif; clip-path: polygon(12% 0, 88% 0, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0 88%, 0 12%); }
+    .ascendancy-thumb { position: relative; display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; overflow: hidden; color: var(--faint); background: var(--surface-3); font: 700 .74rem/1 Bahnschrift, sans-serif; clip-path: polygon(12% 0, 88% 0, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0 88%, 0 12%); }
     .ascendancy-thumb::before { content: attr(data-fallback); }
     .ascendancy-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
@@ -354,8 +352,7 @@
       .search { flex-basis: 100%; }
       .sort-select { max-width: calc(100vw - 124px); }
       .result-count { display: flex; align-items: center; }
-      .ascendancy-filter { gap: 9px; }
-      .ascendancy-filter-label { display: none; }
+      .ascendancy-rail { gap: 12px; }
       .build { grid-template-columns: 48px 1fr; column-gap: 6px; row-gap: 18px; padding: 28px 0; }
       .build-main, .metrics, .details { grid-column: 2 / -1; margin-left: 0; }
       .build-identity { grid-template-columns: 68px minmax(0, 1fr); gap: 13px; }
@@ -498,9 +495,7 @@
             </select></label>
             <span class="result-count" id="count" aria-live="polite">21 билд</span>
           </div>
-          <div class="ascendancy-filter" role="group" aria-label="Фильтр по аскенданси">
-            <span class="ascendancy-filter-label">Аскенданси</span>
-            <button class="ascendancy-option ascendancy-all" type="button" data-ascendancy="all" aria-pressed="true">Все</button>
+          <div class="ascendancy-filter" role="group" aria-label="Фильтр по аскенданси; можно выбрать несколько">
             <div class="ascendancy-rail">
               <div class="ascendancy-group">
                 <span class="ascendancy-class">Marauder</span>
@@ -1012,7 +1007,7 @@
     const search = document.querySelector('#search');
     const sort = document.querySelector('#sort');
     const ascendancyButtons = [...document.querySelectorAll('.ascendancy-option')];
-    let activeAscendancy = 'all';
+    const activeAscendancies = new Set();
 
     const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -1108,7 +1103,7 @@
       let visible = builds.filter(build => {
         const haystack = `${build.name} ${build.className} ${build.tags.map(t => t[0]).join(' ')}`.toLocaleLowerCase('ru');
         const ascendancies = buildAscendancyAlternatives[build.rank] || [buildArt[build.rank].ascendancy];
-        const filterMatch = activeAscendancy === 'all' || ascendancies.includes(activeAscendancy);
+        const filterMatch = activeAscendancies.size === 0 || ascendancies.some(ascendancy => activeAscendancies.has(ascendancy));
         return filterMatch && (!query || haystack.includes(query));
       });
 
@@ -1154,8 +1149,10 @@
     }
 
     ascendancyButtons.forEach(button => button.addEventListener('click', () => {
-      activeAscendancy = button.dataset.ascendancy;
-      ascendancyButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+      const ascendancy = button.dataset.ascendancy;
+      if (activeAscendancies.has(ascendancy)) activeAscendancies.delete(ascendancy);
+      else activeAscendancies.add(ascendancy);
+      button.setAttribute('aria-pressed', String(activeAscendancies.has(ascendancy)));
       render();
     }));
     search.addEventListener('input', render);
