@@ -80,6 +80,7 @@
       justify-content: space-between;
       gap: 20px;
     }
+    .brand-cluster { display: flex; align-items: center; gap: 20px; min-width: 0; }
     .wordmark {
       display: flex;
       align-items: baseline;
@@ -89,6 +90,10 @@
       letter-spacing: -0.02em;
     }
     .wordmark span { color: var(--primary-pale); font-size: .8rem; font-weight: 500; }
+    .version-tabs { display: inline-flex; flex: 0 0 auto; border: 1px solid var(--line); background: var(--surface); }
+    .version-tab { min-height: 34px; padding: 6px 11px; border: 0; color: var(--faint); background: transparent; cursor: pointer; font-size: .78rem; }
+    .version-tab + .version-tab { border-left: 1px solid var(--line); }
+    .version-tab[aria-selected="true"] { color: var(--ink); background: var(--surface-3); }
     .nav { display: flex; gap: 22px; }
     .nav a { color: var(--muted); text-decoration: none; font-size: .88rem; }
     .nav a:hover { color: var(--ink); }
@@ -146,6 +151,25 @@
     .score { color: var(--score-accent); font: 700 1rem/1 Bahnschrift, sans-serif; }
     .hero-cta { display: inline-flex; margin-top: 34px; align-items: center; gap: 10px; text-decoration: none; color: var(--bg); background: var(--primary-pale); padding: 12px 16px; font-weight: 700; }
     .hero-cta:hover { background: var(--ink); }
+
+    .report-view[hidden] { display: none !important; }
+    body[data-report-view="fubgun"] .nav { display: none; }
+    .fubgun-kicker { margin: 0 0 22px; color: var(--primary-pale); font: 700 .84rem/1 Bahnschrift, sans-serif; }
+    .fubgun-criteria { margin: 0; padding: 0; list-style: none; }
+    .fubgun-criteria li { display: grid; grid-template-columns: 100px 1fr; gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); }
+    .fubgun-criteria strong { color: var(--primary-pale); font-size: .82rem; }
+    .fubgun-criteria span { color: var(--muted); font-size: .86rem; }
+    .fubgun-toolbar { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+    .fubgun-toolbar .search { max-width: 680px; }
+    .fubgun-toolbar-note { margin-left: auto; color: var(--faint); font-size: .8rem; white-space: nowrap; }
+    .fubgun-signals { gap: 14px; }
+    .fubgun-signal { padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+    .fubgun-signal:last-child { padding-bottom: 0; border-bottom: 0; }
+    .fubgun-signal span { display: block; color: var(--faint); font-size: .68rem; }
+    .fubgun-signal strong { display: block; margin-top: 3px; color: var(--ink); font-size: .78rem; line-height: 1.35; }
+    .rank-source { color: var(--primary-pale); font: 700 .66rem/1 Bahnschrift, sans-serif; }
+    .fubgun-caveat { margin-top: 30px; }
+    .fubgun-specials { margin-top: 56px; }
 
     .section { padding-block: clamp(72px, 9vw, 128px); border-top: 1px solid var(--line); }
     .section-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr); gap: 48px; align-items: end; margin-bottom: 48px; }
@@ -342,6 +366,7 @@
     .asset-credit a { color: var(--muted); text-decoration-color: var(--line); text-underline-offset: 3px; }
 
     @media (max-width: 1080px) {
+      .nav { display: none; }
       .hero { grid-template-columns: 1fr; min-height: auto; }
       .hero h1 { max-width: 10ch; }
       .market-grid { grid-template-columns: 1fr; }
@@ -354,7 +379,10 @@
     @media (max-width: 760px) {
       .shell { width: min(calc(100% - 28px), var(--max)); }
       .nav { display: none; }
-      .freshness { font-size: .74rem; }
+      .topbar-inner { gap: 10px; }
+      .brand-cluster { width: 100%; justify-content: space-between; gap: 10px; }
+      .wordmark span, .freshness { display: none; }
+      .version-tab { padding-inline: 9px; font-size: .73rem; }
       .hero { padding-block: 72px 90px; }
       .hero h1 { font-size: clamp(3rem, 16vw, 5rem); }
       .section-heading { grid-template-columns: 1fr; gap: 22px; }
@@ -380,6 +408,10 @@
       .ledger-wrap { overflow-x: auto; }
       .ledger { min-width: 700px; }
       .signal-list li { grid-template-columns: 1fr; gap: 5px; }
+      .fubgun-toolbar { align-items: stretch; flex-wrap: wrap; }
+      .fubgun-toolbar .search { flex-basis: 100%; }
+      .fubgun-toolbar-note { margin-left: 0; white-space: normal; }
+      .fubgun-criteria li { grid-template-columns: 1fr; gap: 4px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -387,12 +419,18 @@
     }
   </style>
 </head>
-<body>
+<body data-report-view="gpt">
   <a class="skip-link" href="#ranking">К рейтингу</a>
 
   <header class="topbar">
     <div class="shell topbar-inner">
-      <div class="wordmark">POE / 3.29 <span>личный build brief</span></div>
+      <div class="brand-cluster">
+        <div class="wordmark">POE / 3.29 <span>личный build brief</span></div>
+        <div class="version-tabs" role="tablist" aria-label="Версия рейтинга">
+          <button class="version-tab" type="button" role="tab" id="gpt-tab" aria-controls="gpt-report" aria-selected="true" data-report-view="gpt">GPT version</button>
+          <button class="version-tab" type="button" role="tab" id="fubgun-tab" aria-controls="fubgun-report" aria-selected="false" tabindex="-1" data-report-view="fubgun">Fubgun version</button>
+        </div>
+      </div>
       <nav class="nav" aria-label="Разделы отчёта">
         <a href="#market">Рынок</a>
         <a href="#ranking">Рейтинг</a>
@@ -403,7 +441,8 @@
     </div>
   </header>
 
-  <main>
+  <main id="main">
+    <div class="report-view" id="gpt-report" role="tabpanel" aria-labelledby="gpt-tab" data-report-panel="gpt">
     <section class="shell hero" aria-labelledby="hero-title">
       <div>
         <h1 id="hero-title">Что стартовать в <em>Curse of the Allflame</em></h1>
@@ -641,6 +680,65 @@
         <div class="disclaimer"><strong>Граница уверенности.</strong> Это pre-launch отчёт на 22 июля 2026 года. Drop rate новых uniques, поведение Mercenary AI, точная экономика transfigured gems и первый hotfix ещё неизвестны. Любой guide с пометкой WIP оценён как незавершённый, даже если площадка показывает его как Featured или Verified.</div>
       </div>
     </section>
+    </div>
+
+    <div class="report-view" id="fubgun-report" role="tabpanel" aria-labelledby="fubgun-tab" data-report-panel="fubgun" hidden>
+      <section class="shell hero fubgun-hero" aria-labelledby="fubgun-title">
+        <div>
+          <p class="fubgun-kicker">FUBGUN VERSION · SC TRADE</p>
+          <h1 id="fubgun-title">Четыре камня, затем <em>нормальный фарм</em></h1>
+          <p class="dek">Отдельная версия отчёта по мнению Fubgun. Он ранжирует не абсолютную силу и не HC/SSF, а практичный week-one маршрут: закрыть четыре voidstones, затем превратить персонажа в рабочую ферму с бюджетом примерно 10–40 div.</p>
+          <div class="hero-note">
+            <span><strong>Источник:</strong> видео от 21 июля</span>
+            <span><strong>Формат:</strong> SC trade</span>
+            <span><strong>Порядок:</strong> соседние 2–3 места близки</span>
+          </div>
+          <a class="hero-cta" href="https://www.youtube.com/watch?v=lOnHH393bhQ" target="_blank" rel="noopener">Смотреть исходный tier list ↗</a>
+        </div>
+
+        <aside class="verdict-panel" aria-label="Критерии Fubgun">
+          <p class="verdict-label">КАК ЧИТАТЬ ЭТУ ВЕРСИЮ</p>
+          <ul class="fubgun-criteria">
+            <li><strong>Главное</strong><span>Скорость и надёжность пути до четырёх voidstones.</span></li>
+            <li><strong>После Atlas</strong><span>Есть ли подходящий ранний farm, а не только хороший PoB.</span></li>
+            <li><strong>Не HC/SSF</strong><span>В hardcore и solo-self-found порядок был бы другим.</span></li>
+            <li><strong>Pre-launch</strong><span>Видео записано до финальных dot-изменений; сам автор это подчёркивает.</span></li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="section" id="fubgun-ranking" aria-labelledby="fubgun-ranking-title">
+        <div class="shell">
+          <div class="section-heading">
+            <h2 id="fubgun-ranking-title">Рейтинг Fubgun</h2>
+            <p>Тот же карточный формат, но без выдуманного score /100. Справа показаны только качественные выводы, которые Fubgun проговаривает в видео: старт, подходящий farm и потолок.</p>
+          </div>
+          <div class="fubgun-toolbar" role="search">
+            <label class="search">
+              <span class="skip-link">Поиск в рейтинге Fubgun</span>
+              <input id="fubgun-search" type="search" placeholder="Найти билд, автора или фарм…" autocomplete="off">
+            </label>
+            <span class="fubgun-toolbar-note" id="fubgun-count">16 билдов · порядок автора</span>
+          </div>
+          <div class="rank-list" id="fubgun-build-list"></div>
+          <div class="empty" id="fubgun-empty">Ничего не найдено. Попробуй другой запрос.</div>
+
+          <div class="fubgun-specials">
+            <div class="section-heading">
+              <h2>Отдельные фермы</h2>
+              <p>Эти варианты Fubgun намеренно вынес из общего порядка: их ценность определяется одной конкретной механикой.</p>
+            </div>
+            <div class="watchlist">
+              <article class="watchitem"><h3>Heist · Toxic Rain</h3><a href="https://www.youtube.com/watch?v=lOnHH393bhQ&t=787s" target="_blank" rel="noopener">Fubgun · 13:07 ↗</a><p>Быстрый персонаж и привычный выбор для Heist; потенциально подходит и новой underwater-механике, но до запуска это неизвестно.</p></article>
+              <article class="watchitem"><h3>Sanctum · Shockwave Totems / PBrand</h3><a href="https://www.youtube.com/watch?v=lOnHH393bhQ&t=816s" target="_blank" rel="noopener">Fubgun · 13:36 ↗</a><p>Специализированный ranged damage и безопасная подача урона; ценность Sanctum может вырасти из-за новых наград.</p></article>
+              <article class="watchitem"><h3>Ultimatum · CWS</h3><a href="https://www.youtube.com/watch?v=lOnHH393bhQ&t=826s" target="_blank" rel="noopener">Fubgun · 13:46 ↗</a><p>Дешёвый Ultimatum требует отдельной сборки; Fubgun направляет к emiracles, который играет её регулярно.</p></article>
+            </div>
+          </div>
+
+          <div class="disclaimer fubgun-caveat"><strong>Не вошли в рейтинг.</strong> Luminary и Crab Totems оставлены за пределами списка из-за неизвестных механик; minions Fubgun не оценивает, потому что сам их не играет. BV/EK он не рекомендует стартовать напрямую — предлагает начать Winter Orb или Penance Brand Ignite и перейти позже, когда появится валюта.</div>
+        </div>
+      </section>
+    </div>
   </main>
 
   <footer>
@@ -1023,6 +1121,279 @@
       }
     ];
 
+    const fubgunBuilds = [
+      {
+        rank: 1, name: 'Kinetic Fusillade Totems', className: 'Hierophant · ballista totems',
+        art: { ascendancy: 'hierophant', label: 'Hierophant', skill: 'kinetic-fusillade', skillLabel: 'Kinetic Fusillade' },
+        tags: [['Fubgun #1','proven'], ['SC trade',''], ['Palsteron','']],
+        verdict: 'Один из лучших стартов даже после nerf: прошлогодний лидер потерял примерно 15–20%, но сохранил сильнейший общий пакет для четырёх камней, боссов и раннего фарма.',
+        pros: ['безопасный totem playstyle', 'Legion и Breach доступны рано', 'можно уйти в Ubers или позже перейти в KB'],
+        cons: ['нужно любить постановку тотемов', 'Fubgun не считает его безусловно сильнее соседних 2–3 мест'],
+        signals: [['4 stones','очень сильный'], ['Ранний farm','Legion / Breach'], ['Потолок','Ubers / KB pivot']],
+        analysis: 'Fubgun ставит KF первым, потому что небольшой nerf пришёлся по уже чрезмерно сильной базе. Билд остаётся комфортным и гибким: можно поставить тотемы и двигаться, фармить плотные механики либо направить прогрессию в bossing.',
+        sources: [
+          ['VIDEO','Fubgun · место #1 и аргументы','https://www.youtube.com/watch?v=lOnHH393bhQ&t=98s'],
+          ['VIDEO','Palsteron · полный build guide','https://www.youtube.com/watch?v=1W8Tnjkugko'],
+          ['GUIDE','Palsteron · Maxroll','https://maxroll.gg/poe/build-guides/kinetic-fusillade-ballista-hierophant-league-starter'],
+          ['POB','Palsteron · progression PoB','https://pobb.in/MpDjiqpnP2sV']
+        ]
+      },
+      {
+        rank: 2, name: 'Slams → Righteous Fire', className: 'Marauder · 4 stones → mapper',
+        art: { ascendancy: 'chieftain', label: 'Chieftain / Marauder', skill: 'righteous-fire', skillLabel: 'Righteous Fire' },
+        tags: [['Fubgun #2','proven'], ['двухэтапный маршрут',''], ['Ben / Pohx / Sushi','']],
+        verdict: 'Slams дают одну из лучших прогрессий до четырёх камней, но в SC быстро теряют подходящие фермы. Решение Fubgun — закрыть Atlas, заработать первые деньги и перейти в RF для Breach/Abyss.',
+        pros: ['очень надёжный Atlas progression', 'RF дешёво и спокойно фармит плотные карты', 'можно остаться pure Slams или pure RF'],
+        cons: ['нужен запланированный respec/pivot', 'pure Slams после day 2–3 хуже используют SC-экономику'],
+        signals: [['4 stones','один из лучших'], ['Ранний farm','Breach / Abyss на RF'], ['Потолок','дешёвый mapper']],
+        analysis: 'Это намеренно два билда в одном. Fubgun ценит силу Slams на пустом Atlas, но считает RF более полезным после первых камней: текущие Breach/Abyss-фермы хорошо совпадают с дешёвым круговым clear и живучестью Chieftain.',
+        sources: [
+          ['VIDEO','Fubgun · Slams → RF','https://www.youtube.com/watch?v=lOnHH393bhQ&t=152s'],
+          ['VIDEO','PhazePlays · Bleed Slams','https://www.youtube.com/watch?v=3kmz88dm5Zw'],
+          ['POB','PhazePlays · Bleed Slams PoB','https://pobb.in/QKoFv0repDMz'],
+          ['VIDEO','Alkaizer · Slams plan','https://www.youtube.com/watch?v=rxYHrYgAOW0'],
+          ['VIDEO','Pohx · RF league-start guide','https://www.youtube.com/watch?v=7flriI9ltHM'],
+          ['GUIDE','Pohx · RF wiki и FAQ','https://pohx.net/']
+        ]
+      },
+      {
+        rank: 3, name: 'PConc Assassin → Mamba Bino’s', className: 'Assassin · poison transition',
+        art: { ascendancy: 'assassin', label: 'Assassin', skill: 'poisonous-concoction', skillLabel: 'Poisonous Concoction' },
+        tags: [['Fubgun #3','proven'], ['experienced players','wip'], ['Jungroan','']],
+        verdict: 'Очень быстрый маршрут для опытного игрока: PConc закрывает дешёвую прогрессию, затем Bino’s превращает Mamba в мгновенный Legion/Breach clearer.',
+        pros: ['старт без оружия', 'Bino proliferation чистит целые экраны', 'подходит Legion, Breach и Abyss'],
+        cons: ['Bino’s — tier-zero unique', 'цена в первые дни может задержать переход', 'ошибка в poison setup дорого стоит'],
+        signals: [['4 stones','сильный через PConc'], ['Ранний farm','Legion / Breach / Abyss'], ['Потолок','Mamba + Bino’s']],
+        analysis: 'Fubgun отдельно предупреждает: это выбор для человека, который понимает переходы. До покупки Bino’s играется PConc; после покупки трёхметровая proliferation-зона способна раскрывать Legion одним заражённым монстром.',
+        sources: [
+          ['VIDEO','Fubgun · место #3','https://www.youtube.com/watch?v=lOnHH393bhQ&t=232s'],
+          ['VIDEO','Jungroan · PConc starter','https://www.youtube.com/watch?v=jyVJ1qGd9Fw'],
+          ['POB','Jungroan · PConc PoB','https://pobb.in/oI4me6qfpJAX'],
+          ['VIDEO','Jungroan · Mamba / Bino’s','https://www.youtube.com/watch?v=FzGUSetP99o'],
+          ['POB','Jungroan · Mamba PoB','https://pobb.in/Nri6OJD1SmV4']
+        ]
+      },
+      {
+        rank: 4, name: 'Static Strike / Ele Hit Slayer', className: 'Slayer · snapshot strike skills',
+        art: { ascendancy: 'slayer', label: 'Slayer', skill: 'static-strike', skillLabel: 'Static Strike' },
+        tags: [['Fubgun #4','proven'], ['snapshotting','hype'], ['Alohaa','']],
+        verdict: 'Static Strike очень силён на входе в maps и мгновенно убивает обычные пачки, если правильно сделать pre-buff и зафиксировать усиленный удар.',
+        pros: ['сильная четырёхкаменная прогрессия', 'быстрый clear после запуска beams', 'можно выбрать Ele Hit, Smite или другой strike'],
+        cons: ['snapshot rotation не всем понравится', 'до удара надо подготовить баффы', 'Ele Hit уже получил nerf'],
+        signals: [['4 stones','очень сильный'], ['Ранний farm','универсальный mapping'], ['Потолок','strike skill scaling']],
+        analysis: 'Fubgun ставит Static Strike четвёртым и подчёркивает не секретную математику, а snapshotting: сначала усилить персонажа, затем ударить и позволить beams работать. Для привычного strike-игрока это один из лучших value-вариантов.',
+        sources: [
+          ['VIDEO','Fubgun · место #4','https://www.youtube.com/watch?v=lOnHH393bhQ&t=296s'],
+          ['VIDEO','Alohaa · полный guide 3.29','https://www.youtube.com/watch?v=jQy7qtUnQHM'],
+          ['POB','Alohaa · browser PoB','https://pobb.in/hRixktqVbF0v'],
+          ['POB','Alohaa · Maxroll import','https://maxroll.gg/poe/pob/6bipck0t']
+        ]
+      },
+      {
+        rank: 5, name: 'Storm Burst Totems', className: 'Hierophant · boss-oriented totems',
+        art: { ascendancy: 'hierophant', label: 'Hierophant', skill: 'storm-burst', skillLabel: 'Storm Burst' },
+        tags: [['Fubgun #5','proven'], ['new-player friendly','proven'], ['Aer0','']],
+        verdict: 'Проще и дешевле большинства boss starters: выше boss damage, чем у KF, но хуже clear, coverage и общий farm вне боссов.',
+        pros: ['низкий бюджет для Ubers', 'безопасная постановка тотемов', 'понятный новичку core'],
+        cons: ['заметно слабее KF в clear', 'специализация почти целиком в bosses'],
+        signals: [['4 stones','лёгкий'], ['Ранний farm','boss rushing'], ['Потолок','все Ubers']],
+        analysis: 'Fubgun противопоставляет его KF Totems: Storm Burst выигрывает чистый boss damage, но проигрывает всё, что требует coverage. Выбирать, если цель — камни и боссы, а не Legion/Breach mapping.',
+        sources: [
+          ['VIDEO','Fubgun · место #5','https://www.youtube.com/watch?v=lOnHH393bhQ&t=343s'],
+          ['VIDEO','Aer0 · Storm Burst 3.29','https://www.youtube.com/watch?v=fCnYDU84q18'],
+          ['VIDEO','Aer0 · 5:20 progression run','https://www.youtube.com/watch?v=85v6P2fwZNw'],
+          ['POB','Aer0 · финальный PoB run','https://pobb.in/VM85osVHyC5g']
+        ]
+      },
+      {
+        rank: 6, name: 'Winter Orb Elementalist', className: 'Elementalist · cold clear-speed caster',
+        art: { ascendancy: 'elementalist', label: 'Elementalist', skill: 'winter-orb', skillLabel: 'Winter Orb' },
+        tags: [['Fubgun #6','proven'], ['его личный старт','proven'], ['слабее day 1','hype']],
+        verdict: 'Ранний этап слабее топ-5, зато mid/late-game — один из сильнейших вариантов лиги: огромный clear, AoE и достаточный boss damage.',
+        pros: ['один из лучших clear-speed потолков', 'сильно масштабируется после day 1', 'Fubgun лично тестировал и стартует им'],
+        cons: ['уступает лидерам на пустом gear', 'массовый hype разгонит цены', 'channeling остаётся частью boss rotation'],
+        signals: [['4 stones','слабее топ-5'], ['Ранний farm','быстрый mapping'], ['Потолок','один из лучших mid/late']],
+        analysis: 'Fubgun не ставит Winter Orb первым именно из-за day-one критерия. Его ставка — не стартовая эффективность, а то, насколько резко билд раскрывается после первых вложений и превращается в один из лучших mapper-ов.',
+        sources: [
+          ['VIDEO','Fubgun · место #6','https://www.youtube.com/watch?v=lOnHH393bhQ&t=367s'],
+          ['VOD','Fubgun · Winter Orb practice','https://www.youtube.com/watch?v=zWstZwrHEF0'],
+          ['VIDEO','Zizaran · Elementalist guide','https://www.youtube.com/watch?v=OZypCJ-5Bog'],
+          ['POB','Zizaran · progression PoB','https://maxroll.gg/poe/pob/p9jndn0t']
+        ]
+      },
+      {
+        rank: 7, name: 'KBoC Necromancer / Hierophant', className: 'Necromancer / Hierophant · wander',
+        art: { ascendancy: 'necromancer', label: 'Necromancer / Hierophant', skill: 'kinetic-blast-clustering', skillLabel: 'Kinetic Blast of Clustering' },
+        tags: [['Fubgun #7','proven'], ['Necro day 1',''], ['Hiero ceiling','']],
+        verdict: 'Necromancer лучше начинает, Hierophant лучше масштабируется. Около 20% nerf не убивает архетип, который был слишком силён в двух предыдущих лигах.',
+        pros: ['выбор между быстрым стартом и потолком', 'сильный wander clear', 'проверенный core пережил умеренный nerf'],
+        cons: ['Hiero слабее на day 1', 'актуальные полные гайды в основном старше анонса'],
+        signals: [['4 stones','Necro лучше'], ['Ранний farm','wander mapping'], ['Потолок','Hiero выше']],
+        analysis: 'Fubgun объединяет две ascendancy в одну позицию. Necromancer — практичный выбор на первые сутки; Hierophant — выбор с расчётом на последующие вложения. Nerf он оценивает примерно в 20%, то есть как неприятный, но не критический.',
+        sources: [
+          ['VIDEO','Fubgun · место #7','https://www.youtube.com/watch?v=lOnHH393bhQ&t=422s'],
+          ['VIDEO','Jungroan · KBoC Necro guide','https://www.youtube.com/watch?v=Qek-RQz6dC0'],
+          ['GUIDE','Jungroan · Mobalytics','https://mobalytics.gg/poe/builds/jungroan-kinetic-blast-of-clustering-necromancer'],
+          ['POB','Jungroan · Necro PoB','https://poe.ninja/pob/7f4dd'],
+          ['VIDEO','Palsteron · KBoC Hierophant','https://www.youtube.com/watch?v=FRap20bTnYY'],
+          ['POB','Palsteron · normal block','https://maxroll.gg/poe/pob/i27we0a0'],
+          ['POB','Palsteron · Svalinn','https://maxroll.gg/poe/pob/r399r0ac']
+        ]
+      },
+      {
+        rank: 8, name: 'Lightning Arrow / EHoS Deadeye', className: 'Deadeye · ranged bow mapper',
+        art: { ascendancy: 'deadeye', label: 'Deadeye', skill: 'lightning-arrow', skillLabel: 'Lightning Arrow' },
+        tags: [['Fubgun #8','proven'], ['mapping meta','proven'], ['squishy','hype']],
+        verdict: 'Endgame mapping сейчас не слишком суров, поэтому bow clear снова ценнее его слабого bossing. Legion, Breach и Abyss подходят отлично; Nightmare/Ubers — нет.',
+        pros: ['максимальная дистанция упрощает выживание', 'очень быстрый T16 clear', 'готовый Fubgun guide с leveling/endgame PoB'],
+        cons: ['хрупкий персонаж', 'плохо подходит Nightmare bosses и Ubers', 'сила падает в bossing meta'],
+        signals: [['4 stones','рабочий'], ['Ранний farm','Legion / Breach / Abyss'], ['Потолок','T16 speed mapper']],
+        analysis: 'Fubgun считает Deadeye дружелюбнее, чем выглядит его EHP: персонаж играет на максимальной дистанции и часто не входит в опасную зону. Но это ставка на mapping meta — при смещении экономики к тяжёлым боссам позиция резко ухудшится.',
+        sources: [
+          ['VIDEO','Fubgun · место #8','https://www.youtube.com/watch?v=lOnHH393bhQ&t=455s'],
+          ['VIDEO','Fubgun · полный LA guide','https://www.youtube.com/watch?v=Ov5KpoNcvr4'],
+          ['GUIDE','Fubgun · Mobalytics','https://mobalytics.gg/poe/builds/fubgun-s-bow-leveling-guide-for-deadeye'],
+          ['POB','Fubgun · leveling PoB','https://pobb.in/Uf5sipNg9Ehz'],
+          ['POB','Fubgun · endgame PoB','https://pobb.in/0YXDuYOquaI5']
+        ]
+      },
+      {
+        rank: 9, name: 'Reap / Exsanguinate / GC Mines', className: 'Trickster / Elementalist · mine family',
+        art: { ascendancy: 'trickster', label: 'Trickster / Elementalist', skill: 'exsanguinate', skillLabel: 'Exsanguinate' },
+        tags: [['Fubgun #9','proven'], ['выбор под farm',''], ['несколько авторов','']],
+        verdict: 'Не один билд, а семейство: Eye of Winter — чистый bossing, Glacial Cascade — all-rounder, Reap/Exsanguinate — лучший mapping из трёх.',
+        pros: ['можно подобрать mine под конкретную ферму', 'высокий ранний boss damage', 'Reap/Exsang хорошо раскрывают Legion'],
+        cons: ['detonation playstyle', 'Breach подходит хуже', 'легко взять PoB не под свою задачу'],
+        signals: [['4 stones','сильный'], ['Ранний farm','Legion / Essence / bosses'], ['Потолок','зависит от выбранной mine']],
+        analysis: 'Fubgun ставит варианты рядом, потому что различие не столько в силе, сколько в назначении. GC — самый ровный; Reap/Exsanguinate — картографический; Eye of Winter — боссовый. Выбирать нужно от желаемой экономики.',
+        sources: [
+          ['VIDEO','Fubgun · место #9','https://www.youtube.com/watch?v=lOnHH393bhQ&t=516s'],
+          ['VIDEO','FearlessDumb0 · Reap/Exsang','https://www.youtube.com/watch?v=ZEvuQ5krLwQ'],
+          ['POB','Reap/Exsang · league start','https://pobb.in/3J6Dm6pkA6-5'],
+          ['POB','Reap/Exsang · day 3','https://pobb.in/ZFC1itVixJSB'],
+          ['POB','Reap/Exsang · day 6','https://pobb.in/B2AMYCt2_deF'],
+          ['VIDEO','Smokie · GC Mines · ссылка из описания Fubgun','https://www.youtube.com/watch?v=Juvl3aa_udg'],
+          ['VIDEO','Smokie · GC Mines update 3.29','https://www.youtube.com/watch?v=XbPkEupMSbo'],
+          ['POB','GC Mines · leveling','https://poe.ninja/poe1/pob/9244a'],
+          ['POB','GC Mines · league start','https://poe.ninja/poe1/pob/9244b'],
+          ['POB','GC Mines · midgame','https://poe.ninja/poe1/pob/9244c'],
+          ['POB','GC Mines · endgame LL','https://poe.ninja/poe1/pob/9244d']
+        ]
+      },
+      {
+        rank: 10, name: 'Penance Brand Ignite', className: 'Elementalist · delayed ignite / autobomber',
+        art: { ascendancy: 'elementalist', label: 'Elementalist', skill: 'penance-brand', skillLabel: 'Penance Brand' },
+        tags: [['Fubgun #10','proven'], ['слабее рано','hype'], ['Zeeboub / Goratha','']],
+        verdict: 'Day 1 хуже верхних вариантов из-за двойной задержки brand→ignite, зато масштабирование приводит к почти autobomber-геймплею.',
+        pros: ['очень сильный поздний clear', 'Elementalist оставляет много pivot-ов', 'после ключевых покупок почти не надо кастовать'],
+        cons: ['двойная задержка урона', 'главный ранний upgrade может стоить 4–5 div', 'не такой гладкий первый день'],
+        signals: [['4 stones','средний'], ['Ранний farm','mapping после upgrade'], ['Потолок','pseudo-autobomber']],
+        analysis: 'Fubgun опускает PBrand не за слабость, а за форму кривой силы. Пока бренд взрывается, а ignite дотикает, лидеры уже двигаются дальше; после дорогого раннего апгрейда билд резко переходит в другой уровень комфорта.',
+        sources: [
+          ['VIDEO','Fubgun · место #10','https://www.youtube.com/watch?v=lOnHH393bhQ&t=563s'],
+          ['VIDEO','Goratha · guide 3.29','https://www.youtube.com/watch?v=42t9yK-9_Go'],
+          ['POB','Goratha · progression PoB','https://maxroll.gg/poe/pob/nbjrhj0x'],
+          ['VIDEO','Zeeboub · SC guide','https://www.youtube.com/watch?v=SFdN0JkcnQ0'],
+          ['DOC','Zeeboub · письменный guide','https://docs.google.com/document/d/1PLVVn2f-hRhdgmUNy3VsHB8wN0qiMfOTw9miL3PP3XM/edit?hl=fr&tab=t.mfg1aqqe2983']
+        ]
+      },
+      {
+        rank: 11, name: 'General’s Cry', className: 'Berserker / Slayer · pseudo-minion boss rush',
+        art: { ascendancy: 'berserker', label: 'Berserker / Slayer', skill: 'generals-cry', skillLabel: 'General’s Cry' },
+        tags: [['Fubgun #11',''], ['мало игроков','hype'], ['boss rusher','proven']],
+        verdict: 'Возможно, заслуживает более высокого места, но у Fubgun мало свежих референсов. Сильный чистый boss rusher, который почти не подходит Legion/Breach.',
+        pros: ['сильные обычные, Uber и Nightmare bosses', 'может фармить Harvest и Essence', 'урон доставляют призванные mirages'],
+        cons: ['очень мало актуальных авторов', 'плохой выбор для плотного wide-area clear', 'corpse/warcry loop специфичен'],
+        signals: [['4 stones','сильный'], ['Ранний farm','boss rush / Harvest / Essence'], ['Потолок','Uber / Nightmare bosses']],
+        analysis: 'Fubgun описывает General’s Cry как pseudo-minion melee: создать corpses, поднять mirages и отправить их атаковать. Низкая позиция отражает недостаток свежих примеров, а не слабый boss damage.',
+        sources: [
+          ['VIDEO','Fubgun · место #11','https://www.youtube.com/watch?v=lOnHH393bhQ&t=619s'],
+          ['VIDEO','Plexsu · план 3.29','https://www.youtube.com/watch?v=xx6k7mZDfEE'],
+          ['POB','Plexsu · tree и gear','https://poe.ninja/poe1/pob/92c95']
+        ]
+      },
+      {
+        rank: 12, name: 'Cyclone Shockwave Slayer', className: 'Slayer · moving melee all-rounder',
+        art: { ascendancy: 'slayer', label: 'Slayer', skill: 'cyclone', skillLabel: 'Cyclone' },
+        tags: [['Fubgun #12',''], ['4 stones viable','proven'], ['Sanavixx','']],
+        verdict: 'Не лидер ни в одном направлении, зато понятный, весёлый и полностью жизнеспособный all-rounder от кампании до четырёх камней.',
+        pros: ['наносит урон в движении', 'Slayer — сильная общая ascendancy', 'есть свежие SSF/HCSSF тесты'],
+        cons: ['средний clear и средний bossing', 'Shockwave ограничивает оружие', 'выбор ради Cyclone-feel, не ради meta edge'],
+        signals: [['4 stones','уверенно'], ['Ранний farm','универсальный mapping'], ['Потолок','добротный, не лучший']],
+        analysis: 'Формулировка Fubgun почти буквальная: fun build, campaign viable, четыре камня закрывает, overall decent. Это положительная рекомендация без обещания скрытой имбы.',
+        sources: [
+          ['VIDEO','Fubgun · место #12','https://www.youtube.com/watch?v=lOnHH393bhQ&t=661s'],
+          ['VIDEO','Sanavixx · guide 3.29','https://www.youtube.com/watch?v=JFsK67lgLhI'],
+          ['POB','Sanavixx · актуальный PoB','https://pobb.in/Lo9MjLWzdRLk'],
+          ['VIDEO','Sanavixx · SSF test','https://www.youtube.com/live/tI1yQOw41VY'],
+          ['POB','Sanavixx · SSF snapshot','https://pobb.in/nd7TEDrd5eK5']
+        ]
+      },
+      {
+        rank: 13, name: 'Archmage Spellcaster', className: 'Hierophant · Spark / mana caster shell',
+        art: { ascendancy: 'hierophant', label: 'Hierophant', skill: 'spark', skillLabel: 'Spark' },
+        tags: [['Fubgun #13',''], ['day 1 clunky','hype'], ['BigDucks','']],
+        verdict: 'Архетип всё ещё очень силён, но первый день проигрывает более гладким стартерам. После 20–40 div ощущение персонажа резко улучшается.',
+        pros: ['высокий caster ceiling', 'после вложений сильный универсал', 'баффы и nerfs примерно взаимно компенсировались'],
+        cons: ['mana sustain и gearing неприятны day 1', 'до инвестиций заметно более clunky'],
+        signals: [['4 stones','рабочий, но clunky'], ['Ранний farm','после базового gear'], ['Потолок','очень высокий на 20–40 div']],
+        analysis: 'По оценке Fubgun, итоговый DPS mana-shell примерно остался на уровне предыдущего патча. Причина #13 — не слабый endgame, а плохое совпадение с его week-one критерием: сильное ощущение приходит позже.',
+        sources: [
+          ['VIDEO','Fubgun · место #13','https://www.youtube.com/watch?v=lOnHH393bhQ&t=688s'],
+          ['VIDEO','BigDucks · Spark Archmage core','https://www.youtube.com/watch?v=9wr3f1Khdio'],
+          ['GUIDE','BigDucks · Mobalytics','https://mobalytics.gg/poe/builds/bigducks-spark-archmage-heirophant']
+        ]
+      },
+      {
+        rank: 14, name: 'Venom Gyre Deadeye', className: 'Deadeye · dex-stacking zoom mapper',
+        art: { ascendancy: 'deadeye', label: 'Deadeye', skill: 'venom-gyre', skillLabel: 'Venom Gyre' },
+        tags: [['Fubgun #14',''], ['Kankar update 19.07','proven'], ['squishy','wip']],
+        verdict: 'Dex-stacking zoomer для Breach/Legion: очень быстрый, но часто живёт ниже 4K HP на evasion и suppression — и не получает bow-build freeze как защиту.',
+        pros: ['высокая скорость и экранный clear', 'хорошо совпадает с mapping meta', 'есть свежий PoB и PConc leveling'],
+        cons: ['хрупче bow Deadeye', 'нет freeze-защиты', 'dex-stacking требует дисциплины в gear'],
+        signals: [['4 stones','рабочий'], ['Ранний farm','Breach / Legion'], ['Потолок','max-zoom mapper']],
+        analysis: 'Fubgun направляет к Kankar, который обновляет Venom Gyre почти каждую лигу. Билд остаётся сильным map blaster, но его защита ещё тоньше, чем у Lightning Arrow: урон и скорость должны компенсировать отсутствие запаса ошибки.',
+        sources: [
+          ['VIDEO','Fubgun · место #14','https://www.youtube.com/watch?v=lOnHH393bhQ&t=726s'],
+          ['VIDEO','Kankar · план 3.29','https://www.youtube.com/watch?v=pdFpksjrre4'],
+          ['POB','Kankar · основной PoB','https://pobb.in/Drc5TQP28FUJ'],
+          ['POB','Kankar · PConc leveling','https://pobb.in/kWgBqoCWt777'],
+          ['SHEET','Kankar · farms spreadsheet','https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vTWVRB3-ZYjhdjTdLd4s_U8k1RlhVMYHsgG84Rzp8opjDe0cPsvyChfrs-QzaALEdAlDkqxtGtczVXi/pubhtml']
+        ]
+      },
+      {
+        rank: 15, name: 'Bleed Boneshatter', className: 'Juggernaut · tanky melee progression',
+        art: { ascendancy: 'juggernaut', label: 'Juggernaut', skill: 'boneshatter', skillLabel: 'Boneshatter' },
+        tags: [['Fubgun #15',''], ['new-player friendly','proven'], ['Zizaran','']],
+        verdict: 'Очень ровный, толстый и понятный melee starter для четырёх камней. Выбор для человека, который хочет melee, но не хочет warcry-ритм Slams.',
+        pros: ['высокая живучесть', 'лёгкая четырёхкаменная прогрессия', 'полный Zizaran guide и PoB'],
+        cons: ['ниже по SC farm value', 'оружие и self-damage требуют внимания', 'clear не конкурирует с bow/caster mapper-ами'],
+        signals: [['4 stones','надёжный'], ['Ранний farm','обычный Atlas / melee'], ['Потолок','solid, не zoom']],
+        analysis: 'Fubgun оценивает билд положительно, но его система награждает не только надёжность, а ещё и прибыльный farm после камней. Поэтому толстый Boneshatter оказывается ниже более быстрых, хотя остаётся хорошим новичковым выбором.',
+        sources: [
+          ['VIDEO','Fubgun · место #15','https://www.youtube.com/watch?v=lOnHH393bhQ&t=750s'],
+          ['VIDEO','Zizaran · Boneshatter guide','https://www.youtube.com/watch?v=ThANqlWYJ98'],
+          ['GUIDE','Zizaran · Maxroll guide','https://maxroll.gg/poe/build-guides/boneshatter-juggernaut-league-starter'],
+          ['POB','Zizaran · progression PoB','https://maxroll.gg/poe/pob/tcjqpe0t']
+        ]
+      },
+      {
+        rank: 16, name: 'Flicker Strike Slayer', className: 'Slayer · teleporting strike',
+        art: { ascendancy: 'slayer', label: 'Slayer', skill: 'flicker-strike', skillLabel: 'Flicker Strike' },
+        tags: [['Fubgun #16',''], ['acquired taste','wip'], ['Magefist','']],
+        verdict: 'Фанатский выбор внизу рабочего списка. Если уже играл Flicker — понимаешь сделку; если нет, Fubgun буквально желает удачи.',
+        pros: ['экстремальный clear и скорость', 'Magefist дал progression route', 'Slayer поддерживает sustain'],
+        cons: ['почти нет контроля позиции', 'нужны переходы через uniques', 'playstyle подходит далеко не всем'],
+        signals: [['4 stones','возможно, но рискованно'], ['Ранний farm','очень быстрый mapping'], ['Потолок','высокий с uniques']],
+        analysis: 'Это не скрытая антирекомендация: Flicker остаётся рабочим. Но Fubgun не пытается убедить нового игрока — удовольствие от телепортации важнее табличной эффективности, а цена ошибки выше всех соседей.',
+        sources: [
+          ['VIDEO','Fubgun · место #16','https://www.youtube.com/watch?v=lOnHH393bhQ&t=768s'],
+          ['VIDEO','Magefist · starter 3.29','https://www.youtube.com/watch?v=ZxXjPVJQyk8'],
+          ['POB','Magefist · campaign→Oro’s→Farrul’s','https://pobb.in/OIn3OsF4nVvR']
+        ]
+      }
+    ];
+
     const buildArt = Object.freeze({
       1:  { ascendancy: 'hierophant', label: 'Hierophant', skill: 'kinetic-fusillade', skillLabel: 'Kinetic Fusillade' },
       2:  { ascendancy: 'elementalist', label: 'Elementalist', skill: 'penance-brand', skillLabel: 'Penance Brand' },
@@ -1065,6 +1436,13 @@
       ascendancyButtons.filter(button => button.disabled).map(button => button.dataset.ascendancy)
     );
     const activeAscendancies = new Set();
+    const fubgunList = document.querySelector('#fubgun-build-list');
+    const fubgunSearch = document.querySelector('#fubgun-search');
+    const fubgunCount = document.querySelector('#fubgun-count');
+    const fubgunEmpty = document.querySelector('#fubgun-empty');
+    const reportTabs = [...document.querySelectorAll('.version-tab[data-report-view]')];
+    const reportPanels = [...document.querySelectorAll('[data-report-panel]')];
+    const skipLink = document.querySelector('.skip-link');
 
     const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -1135,7 +1513,7 @@
     }
 
     function buildIdentity(build) {
-      const art = buildArt[build.rank];
+      const art = build.art || buildArt[build.rank];
       const ascendancyInitial = art.label.charAt(0);
       const lazy = build.rank > 3 ? ' loading="lazy"' : '';
       return `
@@ -1199,6 +1577,45 @@
         </article>
       `).join('');
       initSourceFavicons(list);
+      initAscendancyPortraits(list);
+    }
+
+    function renderFubgun() {
+      const query = fubgunSearch.value.trim().toLocaleLowerCase('ru');
+      const visible = fubgunBuilds.filter(build => {
+        const haystack = `${build.name} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${build.signals.flat().join(' ')} ${build.sources.map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
+        return !query || haystack.includes(query);
+      });
+      fubgunCount.textContent = `${visible.length} ${visible.length === 1 ? 'билд' : visible.length >= 2 && visible.length <= 4 ? 'билда' : 'билдов'} · порядок автора`;
+      fubgunEmpty.style.display = visible.length ? 'none' : 'block';
+
+      fubgunList.innerHTML = visible.map(build => `
+        <article class="build fubgun-build">
+          <div class="rankbox"><span class="ranknum">${String(build.rank).padStart(2, '0')}</span><span class="rank-source">FUBGUN</span></div>
+          <div class="build-title">
+            ${buildIdentity(build)}
+            <div class="statusline">${build.tags.map(([label, cls]) => `<span class="tag ${esc(cls)}">${esc(label)}</span>`).join('')}</div>
+          </div>
+          <div class="build-main">
+            <p>${esc(build.verdict)}</p>
+            <div class="split">
+              <ul class="pros">${build.pros.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+              <ul class="cons">${build.cons.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="metrics fubgun-signals" aria-label="Качественная оценка Fubgun">
+            ${build.signals.map(([label, value]) => `<div class="fubgun-signal"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('')}
+          </div>
+          <div class="details">
+            <div class="detail-body">
+              <p>${esc(build.analysis)}</p>
+              <div class="sources">${build.sources.map(sourceLink).join('')}</div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      initSourceFavicons(fubgunList);
+      initAscendancyPortraits(fubgunList);
     }
 
     function metric(label, value) {
@@ -1254,12 +1671,46 @@
     stickyControlsMedia.addEventListener('change', syncStickyControls);
     syncStickyControls();
 
+    function setReportView(view, { updateUrl = true, scroll = false } = {}) {
+      const nextView = view === 'fubgun' ? 'fubgun' : 'gpt';
+      document.body.dataset.reportView = nextView;
+      reportTabs.forEach(tab => {
+        const selected = tab.dataset.reportView === nextView;
+        tab.setAttribute('aria-selected', String(selected));
+        tab.tabIndex = selected ? 0 : -1;
+      });
+      reportPanels.forEach(panel => { panel.hidden = panel.dataset.reportPanel !== nextView; });
+      skipLink.href = nextView === 'fubgun' ? '#fubgun-ranking' : '#ranking';
+      document.title = nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : 'PoE 3.29 — что стартовать';
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        if (nextView === 'fubgun') url.searchParams.set('version', 'fubgun');
+        else url.searchParams.delete('version');
+        history.replaceState(null, '', url);
+      }
+      if (scroll) window.scrollTo({ top: 0, left: 0 });
+    }
+
+    reportTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => setReportView(tab.dataset.reportView, { scroll: true }));
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const targetIndex = event.key === 'Home' ? 0 : event.key === 'End' ? reportTabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + reportTabs.length) % reportTabs.length;
+        reportTabs[targetIndex].focus();
+        setReportView(reportTabs[targetIndex].dataset.reportView, { scroll: true });
+      });
+    });
+
     search.addEventListener('input', render);
     sort.addEventListener('change', render);
+    fubgunSearch.addEventListener('input', renderFubgun);
     initExternalLinkFavicons(document);
     initSourceFavicons(document);
     initAscendancyPortraits(document);
     render();
+    renderFubgun();
+    setReportView(new URLSearchParams(window.location.search).get('version'), { updateUrl: false });
   </script>
 </body>
 </html>
