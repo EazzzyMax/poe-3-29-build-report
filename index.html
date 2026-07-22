@@ -173,15 +173,42 @@
     .svg-small { fill: var(--faint); font: 10px Aptos, sans-serif; }
 
     .controls-wrap { position: sticky; top: 62px; z-index: 8; padding-block: 14px; background: oklch(0.085 0 0 / .95); border-block: 1px solid var(--line); }
-    .controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .controls { display: block; }
+    .controls-main { display: flex; align-items: center; gap: 12px; }
     .search { flex: 1 1 280px; min-width: 0; position: relative; }
     .search input { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 0; color: var(--ink); background: var(--surface); padding: 10px 14px 10px 39px; }
     .search::before { content: "⌕"; position: absolute; left: 14px; top: 8px; color: var(--faint); font-size: 1.25rem; }
-    .filters { display: flex; gap: 7px; flex-wrap: wrap; }
-    .filter, .sort-select { min-height: 42px; border: 1px solid var(--line); border-radius: 0; background: var(--surface); padding: 8px 12px; cursor: pointer; }
-    .filter[aria-pressed="true"] { color: var(--bg); background: var(--primary-pale); border-color: var(--primary-pale); font-weight: 700; }
+    .sort-select { min-height: 42px; border: 1px solid var(--line); border-radius: 0; background: var(--surface); padding: 8px 12px; cursor: pointer; }
     .sort-select { color: var(--muted); }
     .result-count { color: var(--faint); font-size: .82rem; margin-left: auto; white-space: nowrap; }
+    .ascendancy-filter { display: flex; align-items: flex-start; gap: 12px; min-width: 0; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+    .ascendancy-filter-label { flex: 0 0 auto; padding-top: 25px; color: var(--faint); font-size: .74rem; }
+    .ascendancy-rail { display: flex; gap: 12px; min-width: 0; overflow-x: auto; padding: 0 2px 5px; scrollbar-color: var(--line) transparent; scrollbar-width: thin; }
+    .ascendancy-group { flex: 0 0 auto; }
+    .ascendancy-class { display: block; margin: 0 0 5px 3px; color: var(--faint); font-size: .62rem; }
+    .ascendancy-options { display: flex; isolation: isolate; }
+    .ascendancy-option {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      min-height: 38px;
+      padding: 3px 8px 3px 3px;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      background: var(--surface);
+      font-size: .7rem;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .ascendancy-option + .ascendancy-option { margin-left: -1px; }
+    .ascendancy-option[aria-pressed="true"] { z-index: 1; color: var(--ink); background: var(--surface-3); border-color: var(--primary-pale); }
+    .ascendancy-option:disabled { color: var(--faint); cursor: not-allowed; opacity: .42; }
+    .ascendancy-option:disabled img { filter: grayscale(1); }
+    .ascendancy-all { align-self: flex-end; min-height: 38px; padding: 3px 11px; }
+    .ascendancy-thumb { position: relative; display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; overflow: hidden; color: var(--faint); background: var(--surface-3); font: 700 .68rem/1 Bahnschrift, sans-serif; clip-path: polygon(12% 0, 88% 0, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0 88%, 0 12%); }
+    .ascendancy-thumb::before { content: attr(data-fallback); }
+    .ascendancy-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
     .rank-list { margin-top: 28px; border-top: 1px solid var(--line); }
     .build {
@@ -323,11 +350,12 @@
       .hero h1 { font-size: clamp(3rem, 16vw, 5rem); }
       .section-heading { grid-template-columns: 1fr; gap: 22px; }
       .controls-wrap { position: static; }
-      .controls { align-items: stretch; }
-      .filters { width: 100%; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 3px; }
-      .filter { white-space: nowrap; }
-      .sort-select { flex: 1; }
+      .controls-main { align-items: stretch; flex-wrap: wrap; }
+      .search { flex-basis: 100%; }
+      .sort-select { max-width: calc(100vw - 124px); }
       .result-count { display: flex; align-items: center; }
+      .ascendancy-filter { gap: 9px; }
+      .ascendancy-filter-label { display: none; }
       .build { grid-template-columns: 48px 1fr; column-gap: 6px; row-gap: 18px; padding: 28px 0; }
       .build-main, .metrics, .details { grid-column: 2 / -1; margin-left: 0; }
       .build-identity { grid-template-columns: 68px minmax(0, 1fr); gap: 13px; }
@@ -459,19 +487,77 @@
 
       <div class="controls-wrap">
         <div class="shell controls" role="group" aria-label="Фильтры рейтинга">
-          <label class="search"><span class="skip-link">Поиск билда</span><input id="search" type="search" placeholder="Умение, класс или автор…" autocomplete="off"></label>
-          <div class="filters" aria-label="Фильтр списка">
-            <button class="filter" type="button" data-filter="all" aria-pressed="true">Все</button>
-            <button class="filter" type="button" data-filter="risk" aria-pressed="false">Риск / WIP</button>
+          <div class="controls-main">
+            <label class="search"><span class="skip-link">Поиск билда</span><input id="search" type="search" placeholder="Умение, класс или автор…" autocomplete="off"></label>
+            <label><span class="skip-link">Сортировка</span><select class="sort-select" id="sort">
+              <option value="rank">По общему рейтингу</option>
+              <option value="safety">По надёжности</option>
+              <option value="map">По маппингу</option>
+              <option value="boss">По боссам</option>
+              <option value="budget">По дешевизне</option>
+            </select></label>
+            <span class="result-count" id="count" aria-live="polite">21 билд</span>
           </div>
-          <label><span class="skip-link">Сортировка</span><select class="sort-select" id="sort">
-            <option value="rank">По общему рейтингу</option>
-            <option value="safety">По надёжности</option>
-            <option value="map">По маппингу</option>
-            <option value="boss">По боссам</option>
-            <option value="budget">По дешевизне</option>
-          </select></label>
-          <span class="result-count" id="count" aria-live="polite">21 билд</span>
+          <div class="ascendancy-filter" role="group" aria-label="Фильтр по аскенданси">
+            <span class="ascendancy-filter-label">Аскенданси</span>
+            <button class="ascendancy-option ascendancy-all" type="button" data-ascendancy="all" aria-pressed="true">Все</button>
+            <div class="ascendancy-rail">
+              <div class="ascendancy-group">
+                <span class="ascendancy-class">Marauder</span>
+                <div class="ascendancy-options">
+                  <button class="ascendancy-option" type="button" data-ascendancy="juggernaut" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="J"><img src="assets/ascendancies/juggernaut.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Juggernaut</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="berserker" aria-pressed="false" disabled title="Нет билдов в текущем рейтинге"><span class="ascendancy-thumb" data-fallback="B"><img src="assets/ascendancies/berserker.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Berserker</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="chieftain" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="C"><img src="assets/ascendancies/chieftain.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Chieftain</span></button>
+                </div>
+              </div>
+              <div class="ascendancy-group">
+                <span class="ascendancy-class">Ranger</span>
+                <div class="ascendancy-options">
+                  <button class="ascendancy-option" type="button" data-ascendancy="warden" aria-pressed="false" disabled title="Нет билдов в текущем рейтинге"><span class="ascendancy-thumb" data-fallback="W"><img src="assets/ascendancies/warden.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Warden</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="deadeye" aria-pressed="false" disabled title="Нет билдов в текущем рейтинге"><span class="ascendancy-thumb" data-fallback="D"><img src="assets/ascendancies/deadeye.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Deadeye</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="pathfinder" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="P"><img src="assets/ascendancies/pathfinder.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Pathfinder</span></button>
+                </div>
+              </div>
+              <div class="ascendancy-group">
+                <span class="ascendancy-class">Witch</span>
+                <div class="ascendancy-options">
+                  <button class="ascendancy-option" type="button" data-ascendancy="elementalist" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="E"><img src="assets/ascendancies/elementalist.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Elementalist</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="occultist" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="O"><img src="assets/ascendancies/occultist.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Occultist</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="necromancer" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="N"><img src="assets/ascendancies/necromancer.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Necromancer</span></button>
+                </div>
+              </div>
+              <div class="ascendancy-group">
+                <span class="ascendancy-class">Duelist</span>
+                <div class="ascendancy-options">
+                  <button class="ascendancy-option" type="button" data-ascendancy="slayer" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="S"><img src="assets/ascendancies/slayer.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Slayer</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="champion" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="C"><img src="assets/ascendancies/champion.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Champion</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="gladiator" aria-pressed="false" disabled title="Нет билдов в текущем рейтинге"><span class="ascendancy-thumb" data-fallback="G"><img src="assets/ascendancies/gladiator.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Gladiator</span></button>
+                </div>
+              </div>
+              <div class="ascendancy-group">
+                <span class="ascendancy-class">Templar</span>
+                <div class="ascendancy-options">
+                  <button class="ascendancy-option" type="button" data-ascendancy="inquisitor" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="I"><img src="assets/ascendancies/inquisitor.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Inquisitor</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="hierophant" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="H"><img src="assets/ascendancies/hierophant.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Hierophant</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="guardian" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="G"><img src="assets/ascendancies/guardian.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Guardian</span></button>
+                </div>
+              </div>
+              <div class="ascendancy-group">
+                <span class="ascendancy-class">Shadow</span>
+                <div class="ascendancy-options">
+                  <button class="ascendancy-option" type="button" data-ascendancy="assassin" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="A"><img src="assets/ascendancies/assassin.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Assassin</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="saboteur" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="S"><img src="assets/ascendancies/saboteur.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Saboteur</span></button>
+                  <button class="ascendancy-option" type="button" data-ascendancy="trickster" aria-pressed="false" disabled title="Нет билдов в текущем рейтинге"><span class="ascendancy-thumb" data-fallback="T"><img src="assets/ascendancies/trickster.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Trickster</span></button>
+                </div>
+              </div>
+              <div class="ascendancy-group">
+                <span class="ascendancy-class">Scion</span>
+                <div class="ascendancy-options">
+                  <button class="ascendancy-option" type="button" data-ascendancy="ascendant" aria-pressed="false"><span class="ascendancy-thumb" data-fallback="A"><img src="assets/ascendancies/ascendant.jpeg" width="30" height="30" alt="" aria-hidden="true" decoding="async"></span><span>Ascendant / Luminary</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -915,13 +1001,18 @@
       21: { ascendancy: 'ascendant', label: 'Ascendant / Luminary', skill: 'righteous-fire', skillLabel: 'Righteous Fire до merc' }
     });
 
+    const buildAscendancyAlternatives = Object.freeze({
+      8: ['elementalist', 'occultist'],
+      16: ['juggernaut', 'champion']
+    });
+
     const list = document.querySelector('#build-list');
     const count = document.querySelector('#count');
     const empty = document.querySelector('#empty');
     const search = document.querySelector('#search');
     const sort = document.querySelector('#sort');
-    const filterButtons = [...document.querySelectorAll('.filter')];
-    let activeFilter = 'all';
+    const ascendancyButtons = [...document.querySelectorAll('.ascendancy-option')];
+    let activeAscendancy = 'all';
 
     const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -975,6 +1066,14 @@
       });
     }
 
+    function initAscendancyPortraits(root) {
+      root.querySelectorAll('.ascendancy-thumb img').forEach(image => {
+        const handleError = () => { image.hidden = true; };
+        image.addEventListener('error', handleError, { once: true });
+        if (image.complete && image.naturalWidth === 0) handleError();
+      });
+    }
+
     function initExternalLinkFavicons(root) {
       root.querySelectorAll('a[href^="http"]').forEach(link => {
         if (link.classList.contains('source') || link.querySelector('.source-icon')) return;
@@ -1008,7 +1107,8 @@
       const query = search.value.trim().toLocaleLowerCase('ru');
       let visible = builds.filter(build => {
         const haystack = `${build.name} ${build.className} ${build.tags.map(t => t[0]).join(' ')}`.toLocaleLowerCase('ru');
-        const filterMatch = activeFilter === 'all' || (activeFilter === 'risk' && build.risk);
+        const ascendancies = buildAscendancyAlternatives[build.rank] || [buildArt[build.rank].ascendancy];
+        const filterMatch = activeAscendancy === 'all' || ascendancies.includes(activeAscendancy);
         return filterMatch && (!query || haystack.includes(query));
       });
 
@@ -1018,7 +1118,7 @@
       empty.style.display = visible.length ? 'none' : 'block';
 
       list.innerHTML = visible.map(build => `
-        <article class="build" data-risk="${build.risk}">
+        <article class="build">
           <div class="rankbox"><span class="ranknum">${String(build.rank).padStart(2, '0')}</span><span class="overall-score">${build.score}<small>/100</small></span></div>
           <div class="build-title">
             ${buildIdentity(build)}
@@ -1053,15 +1153,16 @@
       return `<div class="metric"><span>${label}</span><b>${value}</b><div class="bar"><span style="width:${value}%"></span></div></div>`;
     }
 
-    filterButtons.forEach(button => button.addEventListener('click', () => {
-      activeFilter = button.dataset.filter;
-      filterButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    ascendancyButtons.forEach(button => button.addEventListener('click', () => {
+      activeAscendancy = button.dataset.ascendancy;
+      ascendancyButtons.forEach(item => item.setAttribute('aria-pressed', String(item === button)));
       render();
     }));
     search.addEventListener('input', render);
     sort.addEventListener('change', render);
     initExternalLinkFavicons(document);
     initSourceFavicons(document);
+    initAscendancyPortraits(document);
     render();
   </script>
 </body>
