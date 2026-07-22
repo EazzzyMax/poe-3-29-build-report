@@ -107,6 +107,37 @@
     .fubgun-signal strong { display: block; margin-top: 3px; color: var(--ink); font-size: .78rem; line-height: 1.35; }
     .rank-source { color: var(--primary-pale); font: 700 .66rem/1 Bahnschrift, sans-serif; }
 
+    .version-delta {
+      margin: -12px 0 42px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .version-delta summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      min-height: 58px;
+      padding: 14px 18px;
+      color: var(--ink);
+      cursor: pointer;
+      font: 700 .95rem/1.25 Bahnschrift, sans-serif;
+      list-style: none;
+    }
+    .version-delta summary::-webkit-details-marker { display: none; }
+    .version-delta summary::after { content: "+"; color: var(--primary-pale); font: 500 1.35rem/1 Bahnschrift, sans-serif; }
+    .version-delta[open] summary::after { content: "−"; }
+    .version-delta[open] summary { border-bottom: 1px solid var(--line); }
+    .delta-body { padding: 22px 18px 24px; }
+    .delta-lead { margin: 0 0 20px; color: var(--muted); max-width: 92ch; }
+    .delta-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); }
+    .delta-card { min-width: 0; padding: 16px; background: var(--surface-2); }
+    .delta-card span { display: block; margin-bottom: 7px; color: var(--faint); font: 700 .66rem/1 Bahnschrift, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+    .delta-card strong { display: block; margin-bottom: 6px; color: var(--ink); font: 700 .92rem/1.25 Bahnschrift, sans-serif; }
+    .delta-card p { margin: 0; color: var(--muted); font-size: .82rem; line-height: 1.48; }
+    .delta-card.up strong { color: var(--good); }
+    .delta-card.caution strong { color: var(--warn); }
+
     .section { padding-block: clamp(72px, 9vw, 128px); border-top: 1px solid var(--line); }
     .section-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(320px, 1.2fr); gap: 48px; align-items: end; margin-bottom: 48px; }
     .section-heading h2 { margin: 0; font: 700 clamp(2.1rem, 4.2vw, 4.2rem)/.98 Bahnschrift, sans-serif; letter-spacing: -0.035em; text-wrap: balance; }
@@ -271,9 +302,12 @@
       .shell { width: min(calc(100% - 28px), var(--max)); }
       .topbar-inner { gap: 10px; }
       .brand-cluster { width: 100%; justify-content: space-between; gap: 10px; }
-      .wordmark span, .freshness { display: none; }
-      .version-tab { padding-inline: 9px; font-size: .73rem; }
+      .wordmark, .freshness { display: none; }
+      .version-tabs { width: 100%; }
+      .version-tab { flex: 1 1 0; padding-inline: 7px; font-size: .71rem; white-space: nowrap; }
       .section-heading { grid-template-columns: 1fr; gap: 22px; }
+      .version-delta { margin-top: -4px; }
+      .delta-grid { grid-template-columns: 1fr; }
       .controls-wrap { position: static; }
       .controls-main { align-items: stretch; flex-wrap: wrap; }
       .search { flex-basis: 100%; }
@@ -305,6 +339,7 @@
         <div class="wordmark">POE / 3.29 <span>личный build brief</span></div>
         <div class="version-tabs" role="tablist" aria-label="Версия рейтинга">
           <button class="version-tab" type="button" role="tab" id="gpt-tab" aria-controls="gpt-report" aria-selected="true" data-report-view="gpt">GPT version</button>
+          <button class="version-tab" type="button" role="tab" id="gpt2-tab" aria-controls="gpt2-report" aria-selected="false" tabindex="-1" data-report-view="gpt2">GPT version 2</button>
           <button class="version-tab" type="button" role="tab" id="fubgun-tab" aria-controls="fubgun-report" aria-selected="false" tabindex="-1" data-report-view="fubgun">Fubgun version</button>
         </div>
       </div>
@@ -401,6 +436,60 @@
         <div class="rank-list" id="build-list"></div>
         <p class="empty" id="empty">По этому фильтру ничего не осталось.</p>
       </div>
+      </section>
+    </div>
+
+    <div class="report-view" id="gpt2-report" role="tabpanel" aria-labelledby="gpt2-tab" data-report-panel="gpt2" hidden>
+      <section class="section" id="gpt2-ranking" aria-labelledby="gpt2-ranking-title">
+        <div class="shell">
+          <div class="section-heading">
+            <h2 id="gpt2-ranking-title">Рейтинг стартеров v2</h2>
+            <p>Повторный предстаротовый аудит после финального патчноут-пасса 22 июля и новых полноценных гайдов. Старая GPT version сохранена как исторический срез; здесь оценки пересчитаны заново.</p>
+          </div>
+
+          <details class="version-delta" open>
+            <summary>Что изменилось по сравнению с GPT version</summary>
+            <div class="delta-body">
+              <p class="delta-lead">Главное изменение — появились данные, которых не было в первом срезе: финальные численные правки GGG, свежие zero-to-stones тесты и законченные progression-гайды. Поэтому новые места отражают не популярность роликов, а уменьшившуюся или выросшую неопределённость.</p>
+              <div class="delta-grid">
+                <div class="delta-card up"><span>Новый лидер второго плана</span><strong>Cold DoT сразу на #2</strong><p>GGG усилила всю связку Cold Snap / Vortex / Wintertide, а Jungroan показал 4:48 до двух камней ещё до этих buff-ов.</p></div>
+                <div class="delta-card up"><span>Подтверждение #1</span><strong>KF Totems: 93 → 94</strong><p>Palsteron выпустил полный 3.29 progression guide и новый PoB; после nerf это всё ещё самый доказанный путь zero → 4 stones.</p></div>
+                <div class="delta-card up"><span>Безопасный melee</span><strong>Boneshatter: #16 → #7</strong><p>Финальный гайд Zizaran и обновлённый community index подтвердили его как простой, толстый и не зависящий от рынка старт.</p></div>
+                <div class="delta-card"><span>Пять новых карточек</span><strong>Cold DoT, Bleed EQ, HFT, Ice Nova, CWS</strong><p>Добавлены только варианты с опубликованным планом развития, PoB или письменным гайдом — одной идеи для входа в рейтинг недостаточно.</p></div>
+                <div class="delta-card caution"><span>Рыночный риск</span><strong>Winter Orb: #8 → #11</strong><p>Гайдов стало больше, но они сходятся на дорогом power-charge gear; leveling Fubgun всё ещё был WIP на момент среза.</p></div>
+                <div class="delta-card caution"><span>Строгий отсев</span><strong>Shock Nova убран из v2</strong><p>Свежий Spark Archmage получил более цельный маршрут, тогда как автор Shock Nova сам помечает обновление как потенциальный bait.</p></div>
+                <div class="delta-card"><span>Не nerf, а конкуренция</span><strong>Storm Burst: #6 → #12</strong><p>Билд не стал хуже; его вытеснили новые варианты с более свежими тестами и более полной документацией.</p></div>
+                <div class="delta-card caution"><span>Эксперимент</span><strong>Luminary: #21 → #26</strong><p>Планов стало больше, но Zizaran прямо называет старт рискованным и допускает ранний reroll в Earthshatter.</p></div>
+                <div class="delta-card"><span>Размер выборки</span><strong>21 → 26 билдов</strong><p>Score остаётся оценкой практичности первого персонажа, а не DPS. Новые места нельзя читать как буквальный nerf старых билдов.</p></div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="controls-sentinel" aria-hidden="true"></div>
+        <div class="controls-wrap">
+          <div class="shell controls" role="group" aria-label="Фильтры рейтинга GPT version 2">
+            <div class="controls-main">
+              <label class="search"><span class="skip-link">Поиск билда в GPT version 2</span><input id="gpt2-search" type="search" placeholder="Умение, класс или автор…" autocomplete="off"></label>
+              <label><span class="skip-link">Сортировка GPT version 2</span><select class="sort-select" id="gpt2-sort">
+                <option value="rank">По общему рейтингу</option>
+                <option value="safety">По надёжности</option>
+                <option value="map">По маппингу</option>
+                <option value="boss">По боссам</option>
+                <option value="budget">По дешевизне</option>
+              </select></label>
+              <span class="result-count" id="gpt2-count" aria-live="polite">26 билдов</span>
+            </div>
+            <div class="ascendancy-filter" role="group" aria-label="Фильтр GPT version 2 по аскенданси; можно выбрать несколько">
+              <div class="ascendancy-rail" id="gpt2-ascendancy-rail"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shell">
+          <div class="rank-list" id="gpt2-build-list"></div>
+          <p class="empty" id="gpt2-empty">По этому фильтру ничего не осталось.</p>
+        </div>
       </section>
     </div>
 
@@ -1122,7 +1211,283 @@
       11: ['berserker', 'slayer']
     });
 
+    function refreshedBuild(name, overrides = {}) {
+      const source = builds.find(build => build.name === name);
+      if (!source) throw new Error(`Не найден исходный билд: ${name}`);
+      const { extraSources = [], ...next } = overrides;
+      return {
+        ...source,
+        ...next,
+        art: { ...buildArt[source.rank] },
+        tags: next.tags || source.tags.map(tag => [...tag]),
+        pros: next.pros || [...source.pros],
+        cons: next.cons || [...source.cons],
+        metrics: { ...source.metrics, ...(next.metrics || {}) },
+        sources: next.sources || [...source.sources.map(item => [...item]), ...extraSources]
+      };
+    }
+
+    const gpt2Builds = [
+      refreshedBuild('Kinetic Fusillade Totems', {
+        rank: 1, score: 94,
+        tags: [['Полный guide 22.07','proven'], ['Fubgun #1','proven'], ['SSF-tested','proven']],
+        verdict: 'Самый доказанный zero→4 stones маршрут стал ещё безопаснее как рекомендация: Palsteron закончил отдельный 3.29 guide, обновил PoB и разобрал ловушки прогрессии. Nerf урона остаётся, но больше не создаёт опасных attack-speed breakpoints.',
+        metrics: { safety: 90, map: 91, boss: 94, budget: 92, guide: 98 },
+        analysis: 'Первое место теперь держится не на раннем tier list. Есть полный маршрут campaign→maps→Aegis, новый PoB и независимая высокая оценка Fubgun. Главные неопределённости — стартовая цена Wilma’s Requital и неприязнь к ballista-плейстайлу, а не жизнеспособность каркаса.',
+        extraSources: [
+          ['VIDEO','Palsteron · полный guide 3.29 от 22.07','https://www.youtube.com/watch?v=_oBZ-N5Fg9Y'],
+          ['POB','Palsteron · новый progression PoB 3.29','https://pobb.in/b5wa2I5Aec7f']
+        ]
+      }),
+      {
+        rank: 2, score: 92, risk: false,
+        name: 'Spellslinger → Cold DoT', className: 'Elementalist · Cold Snap / Vortex / Wintertide',
+        art: { ascendancy: 'elementalist', label: 'Elementalist', skill: 'vortex', skillLabel: 'Vortex' },
+        tags: [['Новый buff-пасс 22.07','proven'], ['4:48 two-stone test','proven'], ['Jungroan guide','proven']],
+        verdict: 'Главный новый победитель v2. Spellslinger одновременно запускает четыре DoT-умения и делает ранний Atlas быстрым и простым; после 2–4 камней сборка переходит в более сильный self-cast вариант.',
+        pros: ['сильный урон почти на одних уровнях gem', 'можно двигаться, пока DoT и chilling areas работают', 'дешёвый Spellslinger-этап закрывает слабое место кампании'],
+        cons: ['нужно вовремя перейти со Spellslinger на self-cast', 'потолок ниже специализированных bosser-ов', 'взаимодействие новых pact/keystone ещё не проверено на live'],
+        metrics: { safety: 92, map: 90, boss: 81, budget: 94, guide: 95 },
+        analysis: 'Jungroan показал Eater/Exarch за 4:48 ещё до финального усиления. Затем GGG подняла базовый DoT Cold Snap, Vortex, Wintertide Brand и Vaal Cold Snap, ускорила касты и добавила Bitter Frost. Это редкая комбинация: старый проверенный каркас, свежий практический тест и прямой численный buff сразу нескольких кнопок.',
+        sources: [
+          ['VIDEO','Jungroan · Spellslinger Cold DoT guide 3.29','https://www.youtube.com/watch?v=a0qmdTU8PLI'],
+          ['GUIDE','Jungroan · письменный Mobalytics guide','https://mobalytics.gg/poe/profile/jungroan/builds/coldslinger-x-cold-dot-elementalist-league-start-guide'],
+          ['POB','Jungroan · campaign→self-cast progression','https://pobb.in/AadCGMhml9fa'],
+          ['PATCH','GGG · финальные изменения умений 22.07','https://www.pathofexile.com/forum/view-thread/3985332'],
+          ['INDEX','Community league-start index','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      refreshedBuild('Penance Brand Ignite', {
+        rank: 3, score: 90,
+        tags: [['Проверен в 3.28','proven'], ['SC + HC guides','proven'], ['не зависит от новых механик','']],
+        verdict: 'Остаётся самым ровным универсалом. Он уступил одну позицию только потому, что Cold DoT получил крупный подтверждённый buff; собственная надёжность Penance Brand не изменилась.',
+        metrics: { safety: 91, map: 92, boss: 69, budget: 87, guide: 95 }
+      }),
+      refreshedBuild('Chaos Minion Army', {
+        rank: 4, score: 89,
+        tags: [['Лучший первый minion build','proven'], ['Battle-tested','proven'], ['обычные minions buffed','proven']],
+        verdict: 'По-прежнему лучшая точка входа в миньонов: staged-прогрессия не требует одного редкого unique, армия держит boss uptime, а 3.29 убрала паузы между атаками у обычных minions.',
+        extraSources: [
+          ['INDEX','Актуальный minion-раздел community index','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      }),
+      refreshedBuild('Earthshatter', {
+        rank: 5, score: 88,
+        tags: [['4-stone progression','proven'], ['HC/SSF shell','proven'], ['warcry rotation','']],
+        verdict: 'Самый сильный строгий melee-выбор, если warcry-ритм не раздражает. Низкая зависимость от рынка, хороший boss damage и понятное улучшение rare weapon сохраняют его в верхней пятёрке.'
+      }),
+      refreshedBuild('Static Strike', {
+        rank: 6, score: 87,
+        tags: [['2-stone test','proven'], ['snapshot mechanic','proven'], ['нужен 2% CDR jewel','hype']],
+        verdict: 'Свежий гайд и двухкаменный тест закрепили билд выше середины списка. Snapshot превращает один melee-hit в продолжительный мобильный clear, но механика требует точно выполнить gearing checklist.',
+        extraSources: [
+          ['VIDEO','Alohaa · полный Void Shockwave guide 3.29','https://www.youtube.com/watch?v=6H8-ZmZZXoI'],
+          ['POB','Alohaa · актуальный PoB','https://pobb.in/0KGECHX4Ud3P'],
+          ['VIDEO','Alohaa · two-stone progression run','https://www.youtube.com/watch?v=eh30wxYxVFQ'],
+          ['SHEET','Alohaa · progression spreadsheet','https://docs.google.com/spreadsheets/d/1UGBybGpDGgNuewBudqyATyZwY-i81vjFpufj0020DvQ/edit?usp=sharing']
+        ]
+      }),
+      refreshedBuild('Boneshatter', {
+        rank: 7, score: 86,
+        tags: [['Zizaran final guide','proven'], ['Beginner-safe','proven'], ['рынок почти не важен','proven']],
+        verdict: 'Самый простой защищённый melee-стартер без обязательного warcry-пианино. Он проигрывает лидерам в скорости фарма, но сильно выигрывает по цене ошибки и качеству финального гайда.',
+        metrics: { safety: 94, map: 75, boss: 82, budget: 91, guide: 97 },
+        analysis: 'Подъём с #16 — это пересмотр критерия, а не внезапный buff. Для личного первого minion-less/melee опыта важнее не farm ceiling, а шанс безболезненно пройти кампанию и камни. Zizaran дал полный PoB, crafting route и объяснил Complex Trauma; community index отдельно вынес Boneshatter в безопасные рекомендации.',
+        extraSources: [
+          ['INDEX','Community index · safe melee suggestion','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      }),
+      refreshedBuild('Righteous Fire', {
+        rank: 8, score: 85,
+        tags: [['Pohx ecosystem','proven'], ['новичковый маршрут','proven'], ['медленный bossing','hype']],
+        verdict: 'Самая документированная безопасная прогулка по Atlas. RF не выигрывает гонку за камни, зато почти невозможно остаться без ответа на вопрос по gear, крафту или переходам.',
+        metrics: { safety: 95, map: 86, boss: 60, budget: 86, guide: 100 },
+        extraSources: [
+          ['VIDEO','Pohx · разбор RF в 3.29','https://www.youtube.com/watch?v=y8E0vji4m_g'],
+          ['GUIDE','Pohx · актуальный Mobalytics guide','https://mobalytics.gg/poe/builds/pohx-righteous-fire-chieftain'],
+          ['WIKI','Pohx RF Wiki / FAQ','https://www.pohx.net/']
+        ]
+      }),
+      {
+        rank: 9, score: 84, risk: false,
+        name: 'Bleed Earthquake', className: 'Gladiator · bleed slam / block',
+        art: { ascendancy: 'gladiator', label: 'Gladiator', skill: 'earthquake', skillLabel: 'Earthquake' },
+        tags: [['Zizaran guide 22.07','proven'], ['очень толстый mapper','proven'], ['Sunder до swap','']],
+        verdict: 'Новый защищённый mapper для тех, кому нужен slam без постоянного warcry-ритма Earthshatter. Bleed и aftershock чистят во время движения, block даёт большой запас ошибки.',
+        pros: ['высокая физическая живучесть и block', 'bleed продолжает наносить урон после удара', 'готовый leveling→swap PoB'],
+        cons: ['не быстрый pinnacle bosser', 'на Earthquake переходят не сразу', 'ощущение зависит от attack speed и задержки aftershock'],
+        metrics: { safety: 93, map: 86, boss: 70, budget: 88, guide: 91 },
+        analysis: 'Zizaran рекомендует начинать Sunder и переходить в EQ/Lacerate после появления подходящего weapon/gear. Главное преимущество — не рекордный DPS, а почти неубиваемый mapper с понятной rare-прогрессией. Для SC это ниже более быстрых лидеров, но выше экспериментальных caster-ов.',
+        sources: [
+          ['VIDEO','Zizaran · Bleed Earthquake guide 3.29','https://www.youtube.com/watch?v=izLrG4YH3aE'],
+          ['POB','Zizaran · leveling и endgame PoB','https://pobb.in/CQjwpiUqHfs1'],
+          ['INDEX','Community league-start index','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      {
+        rank: 10, score: 84, risk: false,
+        name: 'Holy Flame Totem', className: 'Hierophant · spell totems / fire',
+        art: { ascendancy: 'hierophant', label: 'Hierophant', skill: 'holy-flame-totem', skillLabel: 'Holy Flame Totem' },
+        tags: [['Aer0 guide 21.07','proven'], ['few-chaos entry','proven'], ['Legion-friendly','']],
+        verdict: 'Практичный новый totem-вариант: начинает работать с первого акта, не просит дорогого unique и хорошо совпадает с плотным ранним mapping. Чуть меньше доказательств, чем у KF, зато проще fantasy и gearing.',
+        pros: ['тотемы доступны почти сразу', 'урон и regen одновременно помогают прогрессии', 'готовые guide и PoB с бюджетными этапами'],
+        cons: ['totem placement остаётся отдельным playstyle', 'меньше endgame-доказательств, чем у KF/Storm Burst', 'потолок не выглядит исключительным'],
+        metrics: { safety: 87, map: 86, boss: 80, budget: 92, guide: 90 },
+        analysis: 'Aer0 позиционирует билд как плавный маршрут от Act 1 до maps за несколько chaos и отдельно показывает Legion-сценарий. Это не новая механическая лотерея: Holy Flame Totem давно понятен, а свежий материал закрывает именно progression.',
+        sources: [
+          ['VIDEO','Aer0 · Holy Flame Totem guide 3.29','https://www.youtube.com/watch?v=9JlXC_nTF8Y'],
+          ['GUIDE','Aer0 · полный Maxroll guide','https://maxroll.gg/poe/build-guides/holy-flame-totem-hierophant-league-starter'],
+          ['POB','Aer0 · progression PoB','https://pobb.in/SA6Lvy43S9yx'],
+          ['INDEX','Community league-start index','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      refreshedBuild('Winter Orb', {
+        rank: 11, score: 83,
+        tags: [['Сырой урон подтверждён','proven'], ['power-charge tax','hype'], ['leveling ещё расходится','wip']],
+        verdict: 'Вероятно, один из лучших поздних mapper-ов лиги, но уже не один из самых безопасных первых персонажей. Несколько авторов независимо ожидают дорогую power-charge базу, а лучшие гайды расходятся в раннем маршруте.',
+        metrics: { safety: 67, map: 98, boss: 76, budget: 60, guide: 88 },
+        analysis: 'Финальные buff-ы и Bitter Frost усилили механику, Fubgun и Zizaran дали полноценные endgame-сборки, Jungroan показал быстрый SSF two-stone run. Но Aer0 убедительно показывает рыночную проблему: Elementalist/Occultist/Assassin одновременно хотят Ralakesh, charge-corruptions и те же jewels. Это отличный билд, но рискованный дешёвый старт.',
+        extraSources: [
+          ['VIDEO','Fubgun · полный Winter Orb guide 22.07','https://www.youtube.com/watch?v=--XDhqSlwPA'],
+          ['POB','Fubgun · endgame PoB','https://pobb.in/cd6A9tg8QjrJ'],
+          ['VIDEO','Zizaran · Winter Orb Elementalist guide','https://www.youtube.com/watch?v=OZypCJ-5Bog'],
+          ['POB','Zizaran · Winter Orb PoB','https://pobb.in/221_ZcVSEO7G'],
+          ['VIDEO','Aer0 · почему не стоит слепо стартовать WOrb','https://www.youtube.com/watch?v=YKQp36JiJPE'],
+          ['VIDEO','Jungroan · SSF Eater/Exarch менее чем за 5 часов','https://www.youtube.com/watch?v=xpsV4hSIwqs'],
+          ['GUIDE','Peuget2 · Mobalytics starter','https://mobalytics.gg/poe/builds/winter-orb-elementalist-league-starter-peuget2'],
+          ['PATCH','GGG · Winter Orb и Bitter Frost','https://www.pathofexile.com/forum/view-thread/3985332']
+        ]
+      }),
+      refreshedBuild('Storm Burst Totems', {
+        rank: 12, score: 82,
+        tags: [['5:20 stress-test','proven'], ['низкий бюджет','proven'], ['вытеснен свежими guide-ами','']],
+        verdict: 'Всё ещё сильный, дешёвый и дружелюбный totem all-rounder. Падение с #6 отражает появление более свежих доказательств у конкурентов, а не новую проблему Storm Burst.',
+        metrics: { safety: 86, map: 78, boss: 88, budget: 92, guide: 84 }
+      }),
+      refreshedBuild('Poison SRS', {
+        rank: 13, score: 82,
+        tags: [['Boss uptime','proven'], ['2 автора','proven'], ['animate/minion economy','hype']],
+        verdict: 'Надёжная специализированная minion-линия с сильным boss uptime. Ниже mixed army только потому, что poison-переход и конкретные предметы требуют больше понимания рынка.'
+      }),
+      {
+        rank: 14, score: 81, risk: true,
+        name: 'Vaal Ice Nova', className: 'Elementalist · self-cast cold mapper',
+        art: { ascendancy: 'elementalist', label: 'Elementalist', skill: 'ice-nova', skillLabel: 'Vaal Ice Nova' },
+        tags: [['Aer0 guide 22.07','proven'], ['сильный Legion clear','proven'], ['boss ceiling неизвестен','wip']],
+        verdict: 'Очень эффектный mapper с настоящим экранным clear и понятным staff-crafting route. Для четырёх камней план выглядит рабочим, но автор честно не обещает ранние Ubers и ещё проверяет стоимость ключевого setup.',
+        pros: ['Vaal Ice Nova стирает плотные экраны', 'хорошо подходит Legion и обычному Atlas', 'есть cheap +7 staff progression'],
+        cons: ['single target не доказан на live', 'цены Nadir Mode / Overloaded Intensity неизвестны', 'новый starter без league-history'],
+        metrics: { safety: 73, map: 96, boss: 68, budget: 78, guide: 88 },
+        analysis: 'Aer0 прямо ограничивает обещание: это mapper и four-stone starter, а не готовый дешёвый Uber-killer. Сильная сторона материала — конкретный путь staff crafting; слабая — пока теоретические цены и отсутствие живой экономики.',
+        sources: [
+          ['VIDEO','Aer0 · Vaal Ice Nova guide 3.29','https://www.youtube.com/watch?v=mKrqlBj-SbA'],
+          ['GUIDE','Aer0 · полный Maxroll guide','https://maxroll.gg/poe/build-guides/ice-nova-elementalist-league-starter'],
+          ['INDEX','Community league-start index','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      refreshedBuild('Shield Crush', {
+        rank: 15, score: 81,
+        tags: [['Battle-tested','proven'], ['cheap rare shield','proven'], ['ниже по clear','']],
+        verdict: 'Надёжный физический all-rounder остался почти без изменений: дешёвый старт, понятный апгрейд щита, средний clear. Его просто обошли варианты с более свежими 3.29 материалами.'
+      }),
+      {
+        rank: 16, score: 80, risk: false,
+        name: 'Spark Archmage', className: 'Hierophant · mana caster / Spark',
+        art: { ascendancy: 'hierophant', label: 'Hierophant', skill: 'spark', skillLabel: 'Spark' },
+        tags: [['BigDucks guide','proven'], ['высокий ceiling','proven'], ['day 1 clunky','hype']],
+        verdict: 'Лучший документированный Archmage-маршрут нового среза. Spark хорошо масштабируется и чистит закрытые арены, но mana/gear проблемы первого дня никуда не исчезли.',
+        pros: ['очень высокий потолок после вложений', 'один mana-shell закрывает урон и защиту', 'готовый интерактивный guide'],
+        cons: ['первый день слабее верхних стартеров', 'качество clear зависит от геометрии карты', 'сильное ощущение приходит после базовых покупок'],
+        metrics: { safety: 76, map: 84, boss: 82, budget: 68, guide: 90 },
+        analysis: 'BigDucks обновил Spark под 3.29 и вынес progression в Mobalytics. Это более цельная рекомендация, чем старый Shock Nova of Procession: у Spark понятнее endgame identity, хотя цена остаётся той же — неудобный ранний mana gearing.',
+        sources: [
+          ['VIDEO','BigDucks · Spark Archmage guide 3.29','https://www.youtube.com/watch?v=DpHXNVNeH88'],
+          ['GUIDE','BigDucks · Mobalytics build и PoB','https://mobalytics.gg/poe/builds/bigducks-spark-archmage-heirophant'],
+          ['VIDEO','Fubgun · Archmage family в tier list','https://www.youtube.com/watch?v=lOnHH393bhQ&t=688s']
+        ]
+      },
+      refreshedBuild('Poisonous Concoction → Viper Mamba', {
+        rank: 17, score: 80,
+        tags: [['быстрый leveling','proven'], ['двухэтапный build','hype'], ['Assassin rework','']],
+        verdict: 'Сильный leveling-shell с интересным poison pivot, но переход в Mamba остаётся более сложным, чем прямые starter-маршруты выше.'
+      }),
+      refreshedBuild('Rolling Magma Mines', {
+        rank: 18, score: 79,
+        tags: [['Goratha update','proven'], ['mine bossing','proven'], ['detonation feel','hype']],
+        verdict: 'Мощный бюджетный bossing и честный SSF-каркас. Ограничение прежнее: mine detonation и Rolling Magma нравятся не всем, поэтому практический score ниже чистых all-rounder-ов.'
+      }),
+      refreshedBuild('Holy Absolution', {
+        rank: 19, score: 78,
+        tags: [['cast speed buff','proven'], ['minion hybrid',''], ['меньше свежих тестов','hype']],
+        verdict: 'Прямые buff-ы делают ранний каст приятнее, но по полноте свежего материала Absolution уступает mixed army и Poison SRS.'
+      }),
+      {
+        rank: 20, score: 76, risk: true,
+        name: 'Cast when Stunned Chieftain', className: 'Chieftain · RF leveling → CWS autobomber',
+        art: { ascendancy: 'chieftain', label: 'Chieftain', skill: 'righteous-fire', skillLabel: 'Righteous Fire / CWS' },
+        tags: [['Ultimatum specialist','proven'], ['RF до ~70',''], ['day-1 defenses WIP','wip']],
+        verdict: 'Не универсальный starter, а экономическая стратегия: slams → RF → CWS и ранний Ultimatum. Потенциал большой, но переходы и защита до Bloodnotch требуют дисциплины.',
+        pros: ['очень сильный специализированный Ultimatum farm', 'после сборки почти автоматический clear', 'есть подробные guide, PoB и whiteboard'],
+        cons: ['два перехода до целевого билда', 'ранний вариант зависит от block/flask recovery', 'автор ещё проверяет Glancing Blows setup'],
+        metrics: { safety: 69, map: 82, boss: 55, budget: 72, guide: 91 },
+        analysis: 'Emiracle предлагает не просто билд, а маршрут к Mageblood через Ultimatum. Это полезно, если ты сознательно выбираешь эту ферму; как нейтральный первый персонаж он хуже RF, потому что цена неверного перехода выше и day-one defense ещё не закрыта окончательно.',
+        sources: [
+          ['VIDEO','Emiracle · CWS Chieftain guide 3.29','https://www.youtube.com/watch?v=2fMifC2ZAao'],
+          ['GUIDE','Emiracle · Mobalytics guide','https://mobalytics.gg/poe/builds/cws-chieftain-emiracles'],
+          ['POB','Emiracle · progression PoB','https://pobb.in/nCxD7ANcl5qx'],
+          ['BOARD','Emiracle · leveling / transition whiteboard','https://canva.link/7b2u9in6itszy2o']
+        ]
+      },
+      refreshedBuild('Toxic Rain', {
+        rank: 21, score: 75,
+        tags: [['старый надёжный shell','proven'], ['без 3.29 edge',''], ['gear pressure','hype']],
+        verdict: 'Рабочий и знакомый bow DoT, но в этом патче Cold DoT предлагает больше прямых buff-ов, а быстрые attack builds — больше экономического upside.'
+      }),
+      refreshedBuild('Arc Ignite', {
+        rank: 22, score: 73,
+        tags: [['приятный clear','proven'], ['тонкий bossing','hype'], ['мало свежих evidence','wip']],
+        verdict: 'Комфортный визуальный mapper остаётся рабочим, но Penance Brand и новые Cold/Ice варианты лучше документированы и увереннее идут к камням.'
+      }),
+      refreshedBuild('Cyclone Shockwave', {
+        rank: 23, score: 72,
+        tags: [['fun all-rounder',''], ['4 stones viable','proven'], ['без meta edge','']],
+        verdict: 'Хороший выбор ради Cyclone-feel и урона в движении. Он жизнеспособен от кампании до камней, но не выигрывает ни bossing, ни ранний mapping.'
+      }),
+      refreshedBuild('Holy Hammers of Spirals', {
+        rank: 24, score: 68,
+        tags: [['новая механика','wip'], ['overlap неизвестен','wip'], ['без live-proof','wip']],
+        verdict: 'Интересный эксперимент всё ещё не прошёл главный тест: реальный overlap, доступность gear и поведение в плохих аренах. Для первого персонажа это лишний риск.'
+      }),
+      refreshedBuild('Flicker Strike', {
+        rank: 25, score: 62,
+        tags: [['Magefist route','proven'], ['acquired taste','wip'], ['unique transitions','hype']],
+        verdict: 'Рабочий фанатский старт, но не рациональная первая рекомендация человеку без опыта Flicker. Берётся ради телепортационного gameplay, а не ради надёжности.'
+      }),
+      refreshedBuild('Luminary Merc Bot', {
+        rank: 26, score: 57,
+        tags: [['Zizaran: risky starter','wip'], ['PoB support incomplete','wip'], ['планов стало больше','']],
+        verdict: 'Самый подробно разобранный эксперимент списка — и всё ещё худший практический blind start. Zizaran прямо допускает тяжёлую кампанию и reroll в Earthshatter; CaptainLance продолжает обновлять план почти до запуска.',
+        metrics: { safety: 38, map: 62, boss: 60, budget: 48, guide: 80 },
+        analysis: 'Новые материалы повысили качество документации, но не сняли базовые вопросы: слабый Scion leveling, неизвестный AI/gear mercenary и неполная поддержка Luminary в PoB. Это хороший второй проект для человека, который хочет исследовать механику, а не совет «что стартовать».',
+        extraSources: [
+          ['VIDEO','Zizaran · личный Luminary starter с предупреждением','https://www.youtube.com/watch?v=vq-ui0FGZxE'],
+          ['POB','Zizaran · экспериментальный PoB','https://pobb.in/AwKOubsBxjUi'],
+          ['VIDEO','CaptainLance · leveling plan','https://www.youtube.com/watch?v=zNeTIMbxqco'],
+          ['VIDEO','CaptainLance · later progression 22.07','https://www.youtube.com/watch?v=22j3LA8c4qI'],
+          ['VIDEO','CaptainLance · финальная подготовка 22.07','https://www.youtube.com/watch?v=axZq__btH8M'],
+          ['GUIDE','CaptainLance · живой Mobalytics guide','https://mobalytics.gg/poe/builds/captainlance9-luminary-merc-bot']
+        ]
+      })
+    ];
+
+    const gpt2BuildAscendancyAlternatives = Object.freeze({
+      11: ['elementalist', 'occultist']
+    });
+
     const gptAscendancyRail = document.querySelector('#gpt-report .ascendancy-rail');
+    const gpt2AscendancyRail = gptAscendancyRail.cloneNode(true);
+    gpt2AscendancyRail.id = 'gpt2-ascendancy-rail';
+    document.querySelector('#gpt2-ascendancy-rail').replaceWith(gpt2AscendancyRail);
     const fubgunAscendancyRail = gptAscendancyRail.cloneNode(true);
     fubgunAscendancyRail.id = 'fubgun-ascendancy-rail';
     document.querySelector('#fubgun-ascendancy-rail').replaceWith(fubgunAscendancyRail);
@@ -1133,7 +1498,13 @@
     const search = document.querySelector('#search');
     const sort = document.querySelector('#sort');
     const activeAscendancies = new Set();
+    const gpt2ActiveAscendancies = new Set();
     const fubgunActiveAscendancies = new Set();
+    const gpt2List = document.querySelector('#gpt2-build-list');
+    const gpt2Search = document.querySelector('#gpt2-search');
+    const gpt2Sort = document.querySelector('#gpt2-sort');
+    const gpt2Count = document.querySelector('#gpt2-count');
+    const gpt2Empty = document.querySelector('#gpt2-empty');
     const fubgunList = document.querySelector('#fubgun-build-list');
     const fubgunSearch = document.querySelector('#fubgun-search');
     const fubgunCount = document.querySelector('#fubgun-count');
@@ -1322,6 +1693,53 @@
       initAscendancyPortraits(fubgunList);
     }
 
+    function renderGpt2() {
+      const query = gpt2Search.value.trim().toLocaleLowerCase('ru');
+      let visible = gpt2Builds.filter(build => {
+        const haystack = `${build.name} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${build.sources.map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
+        const ascendancies = gpt2BuildAscendancyAlternatives[build.rank] || [build.art.ascendancy];
+        const filterMatch = gpt2ActiveAscendancies.size === 0 || ascendancies.some(ascendancy => gpt2ActiveAscendancies.has(ascendancy));
+        return filterMatch && (!query || haystack.includes(query));
+      });
+
+      const sortKey = gpt2Sort.value;
+      visible.sort((a, b) => sortKey === 'rank' ? a.rank - b.rank : b.metrics[sortKey] - a.metrics[sortKey]);
+      gpt2Count.textContent = `${visible.length} ${visible.length === 1 ? 'билд' : visible.length >= 2 && visible.length <= 4 ? 'билда' : 'билдов'}`;
+      gpt2Empty.style.display = visible.length ? 'none' : 'block';
+
+      gpt2List.innerHTML = visible.map(build => `
+        <article class="build">
+          <div class="rankbox"><span class="ranknum">${String(build.rank).padStart(2, '0')}</span><span class="overall-score">${build.score}<small>/100</small></span></div>
+          <div class="build-title">
+            ${buildIdentity(build)}
+            <div class="statusline">${build.tags.map(([label, cls]) => `<span class="tag ${esc(cls)}">${esc(label)}</span>`).join('')}</div>
+          </div>
+          <div class="build-main">
+            <p>${esc(build.verdict)}</p>
+            <div class="split">
+              <ul class="pros">${build.pros.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+              <ul class="cons">${build.cons.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="metrics" aria-label="Оценки билда">
+            ${metric('Надёжность', build.metrics.safety)}
+            ${metric('Маппинг', build.metrics.map)}
+            ${metric('Боссы', build.metrics.boss)}
+            ${metric('Дешевизна', build.metrics.budget)}
+            ${metric('Гайд', build.metrics.guide)}
+          </div>
+          <div class="details">
+            <div class="detail-body">
+              <p>${esc(build.analysis)}</p>
+              <div class="sources">${build.sources.map(sourceLink).join('')}</div>
+            </div>
+          </div>
+        </article>
+      `).join('');
+      initSourceFavicons(gpt2List);
+      initAscendancyPortraits(gpt2List);
+    }
+
     function metric(label, value) {
       return `<div class="metric"><span>${label}</span><b>${value}</b><div class="bar"><span style="width:${value}%"></span></div></div>`;
     }
@@ -1381,11 +1799,15 @@
     const gptAvailableAscendancies = new Set(
       builds.flatMap(build => ascendanciesFor(build, buildAscendancyAlternatives, item => buildArt[item.rank].ascendancy))
     );
+    const gpt2AvailableAscendancies = new Set(
+      gpt2Builds.flatMap(build => ascendanciesFor(build, gpt2BuildAscendancyAlternatives, item => item.art.ascendancy))
+    );
     const fubgunAvailableAscendancies = new Set(
       fubgunBuilds.flatMap(build => ascendanciesFor(build, fubgunBuildAscendancyAlternatives, item => item.art.ascendancy))
     );
 
     initAscendancyFilter(document.querySelector('#gpt-report .ascendancy-filter'), gptAvailableAscendancies, activeAscendancies, render);
+    initAscendancyFilter(document.querySelector('#gpt2-report .ascendancy-filter'), gpt2AvailableAscendancies, gpt2ActiveAscendancies, renderGpt2);
     initAscendancyFilter(document.querySelector('#fubgun-report .ascendancy-filter'), fubgunAvailableAscendancies, fubgunActiveAscendancies, renderFubgun);
 
     const stickyControlsMedia = window.matchMedia('(min-width: 761px)');
@@ -1412,7 +1834,7 @@
     syncStickyControls();
 
     function setReportView(view, { updateUrl = true, scroll = false } = {}) {
-      const nextView = view === 'fubgun' ? 'fubgun' : 'gpt';
+      const nextView = ['gpt', 'gpt2', 'fubgun'].includes(view) ? view : 'gpt';
       document.body.dataset.reportView = nextView;
       reportTabs.forEach(tab => {
         const selected = tab.dataset.reportView === nextView;
@@ -1420,13 +1842,13 @@
         tab.tabIndex = selected ? 0 : -1;
       });
       reportPanels.forEach(panel => { panel.hidden = panel.dataset.reportPanel !== nextView; });
-      skipLink.href = nextView === 'fubgun' ? '#fubgun-ranking' : '#ranking';
-      document.title = nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : 'PoE 3.29 — что стартовать';
+      skipLink.href = nextView === 'fubgun' ? '#fubgun-ranking' : nextView === 'gpt2' ? '#gpt2-ranking' : '#ranking';
+      document.title = nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : nextView === 'gpt2' ? 'PoE 3.29 — GPT version 2' : 'PoE 3.29 — что стартовать';
       requestAnimationFrame(syncStickyControls);
       if (updateUrl) {
         const url = new URL(window.location.href);
-        if (nextView === 'fubgun') url.searchParams.set('version', 'fubgun');
-        else url.searchParams.delete('version');
+        if (nextView === 'gpt') url.searchParams.delete('version');
+        else url.searchParams.set('version', nextView);
         history.replaceState(null, '', url);
       }
       if (scroll) window.scrollTo({ top: 0, left: 0 });
@@ -1445,11 +1867,14 @@
 
     search.addEventListener('input', render);
     sort.addEventListener('change', render);
+    gpt2Search.addEventListener('input', renderGpt2);
+    gpt2Sort.addEventListener('change', renderGpt2);
     fubgunSearch.addEventListener('input', renderFubgun);
     initExternalLinkFavicons(document);
     initSourceFavicons(document);
     initAscendancyPortraits(document);
     render();
+    renderGpt2();
     renderFubgun();
     setReportView(new URLSearchParams(window.location.search).get('version'), { updateUrl: false });
   </script>
