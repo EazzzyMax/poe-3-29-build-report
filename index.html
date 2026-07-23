@@ -296,7 +296,7 @@
       position: fixed;
       top: 15vh;
       bottom: 5vh;
-      left: max(10px, calc((100vw - var(--max)) / 2 - 92px));
+      right: max(10px, calc((100vw - var(--max)) / 2 - 92px));
       z-index: 11;
       display: none;
       width: 80px;
@@ -319,13 +319,13 @@
       scroll-padding-block: var(--minimap-edge-buffer);
       scroll-behavior: smooth;
       scrollbar-width: thin;
-      scrollbar-color: var(--primary) transparent;
+      scrollbar-color: oklch(0.72 0 0 / .22) transparent;
       pointer-events: auto;
     }
-    .scroll-minimap-track::-webkit-scrollbar { width: 5px; }
+    .scroll-minimap-track::-webkit-scrollbar { width: 4px; }
     .scroll-minimap-track::-webkit-scrollbar:horizontal { display: none; height: 0; }
     .scroll-minimap-track::-webkit-scrollbar-track { background: transparent; }
-    .scroll-minimap-track::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 0; }
+    .scroll-minimap-track::-webkit-scrollbar-thumb { background: oklch(0.72 0 0 / .22); border-radius: 0; }
     .scroll-minimap-track::before {
       content: "";
       position: absolute;
@@ -412,12 +412,12 @@
       content: "";
       position: absolute;
       top: 50%;
-      left: -5px;
+      right: -5px;
       width: 8px;
       height: 8px;
       background: var(--surface-3);
-      border-bottom: 1px solid var(--primary-pale);
-      border-left: 1px solid var(--primary-pale);
+      border-top: 1px solid var(--primary-pale);
+      border-right: 1px solid var(--primary-pale);
       transform: translateY(-50%) rotate(45deg);
     }
     .scroll-minimap-tooltip[hidden] { display: none; }
@@ -2050,7 +2050,7 @@
         window.innerHeight - tooltipRect.height - 8,
         Math.max(8, buttonRect.top + (buttonRect.height - tooltipRect.height) / 2)
       );
-      scrollMinimapTooltip.style.left = `${Math.round(buttonRect.right + 10)}px`;
+      scrollMinimapTooltip.style.left = `${Math.round(Math.max(8, buttonRect.left - tooltipRect.width - 10))}px`;
       scrollMinimapTooltip.style.top = `${Math.round(top)}px`;
     }
 
