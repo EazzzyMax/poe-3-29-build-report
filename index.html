@@ -318,15 +318,33 @@
       overscroll-behavior-x: none;
       scroll-padding-block: var(--minimap-edge-buffer);
       scroll-behavior: smooth;
-      scrollbar-width: thin;
-      scrollbar-color: oklch(0.72 0 0 / .22) transparent;
+      scrollbar-width: none;
       pointer-events: auto;
     }
-    .scroll-minimap-track::-webkit-scrollbar { width: 4px; }
-    .scroll-minimap-track::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
-    .scroll-minimap-track::-webkit-scrollbar:horizontal { display: none; height: 0; }
-    .scroll-minimap-track::-webkit-scrollbar-track { background: transparent; }
-    .scroll-minimap-track::-webkit-scrollbar-thumb { background: oklch(0.72 0 0 / .22); border-radius: 0; }
+    .scroll-minimap-track::-webkit-scrollbar { display: none; width: 0; height: 0; }
+    .scroll-minimap-scrollbar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 8px;
+      pointer-events: auto;
+      touch-action: none;
+      cursor: pointer;
+    }
+    .scroll-minimap-scrollbar[hidden] { display: none; }
+    .scroll-minimap-thumb {
+      position: absolute;
+      top: 0;
+      right: 2px;
+      width: 3px;
+      min-height: 32px;
+      background: oklch(0.72 0 0 / .22);
+      pointer-events: none;
+      will-change: transform, height;
+    }
+    .scroll-minimap-scrollbar:hover .scroll-minimap-thumb,
+    .scroll-minimap-scrollbar:focus-visible .scroll-minimap-thumb { background: oklch(0.78 0 0 / .36); }
     .scroll-minimap-item {
       position: relative;
       display: grid;
@@ -467,7 +485,10 @@
 <body data-report-view="gpt">
   <a class="skip-link" href="#ranking">К рейтингу</a>
   <nav class="scroll-minimap" aria-label="Быстрая навигация по видимым билдам" hidden>
-    <div class="scroll-minimap-track"></div>
+    <div class="scroll-minimap-track" id="scroll-minimap-track"></div>
+    <div class="scroll-minimap-scrollbar" role="scrollbar" aria-label="Прокрутка мини-карты" aria-controls="scroll-minimap-track" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0" hidden>
+      <span class="scroll-minimap-thumb"></span>
+    </div>
     <div class="scroll-minimap-tooltip" id="scroll-minimap-tooltip" role="tooltip" hidden></div>
   </nav>
 
@@ -1656,12 +1677,16 @@
     const skipLink = document.querySelector('.skip-link');
     const scrollMinimap = document.querySelector('.scroll-minimap');
     const scrollMinimapTrack = scrollMinimap.querySelector('.scroll-minimap-track');
+    const scrollMinimapScrollbar = scrollMinimap.querySelector('.scroll-minimap-scrollbar');
+    const scrollMinimapThumb = scrollMinimap.querySelector('.scroll-minimap-thumb');
     const scrollMinimapTooltip = scrollMinimap.querySelector('.scroll-minimap-tooltip');
     const scrollMinimapState = new Map();
     const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
     let scrollMinimapFrame = 0;
     let scrollMinimapTooltipAnchor = null;
     let pageScrollAnimationFrame = 0;
+    let scrollMinimapDragging = false;
+    let scrollMinimapDragOffset = 0;
 
     const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -2027,6 +2052,47 @@
       });
     }
 
+    function scrollMinimapScrollbarMetrics() {
+      scrollMinimapScrollbar.hidden = false;
+      const maxScroll = Math.max(0, scrollMinimapTrack.scrollHeight - scrollMinimapTrack.clientHeight);
+      const railHeight = scrollMinimapScrollbar.clientHeight;
+      const thumbHeight = Math.min(
+        railHeight,
+        Math.max(32, railHeight * (scrollMinimapTrack.clientHeight / Math.max(1, scrollMinimapTrack.scrollHeight)))
+      );
+      return {
+        maxScroll,
+        railHeight,
+        thumbHeight,
+        travel: Math.max(0, railHeight - thumbHeight)
+      };
+    }
+
+    function syncScrollMinimapScrollbar() {
+      const metrics = scrollMinimapScrollbarMetrics();
+      if (metrics.maxScroll <= 1 || metrics.railHeight <= 0) {
+        scrollMinimapScrollbar.hidden = true;
+        scrollMinimapScrollbar.setAttribute('aria-valuenow', '0');
+        return;
+      }
+
+      const progress = scrollMinimapTrack.scrollTop / metrics.maxScroll;
+      scrollMinimapThumb.style.height = `${Math.round(metrics.thumbHeight)}px`;
+      scrollMinimapThumb.style.transform = `translateY(${Math.round(metrics.travel * progress)}px)`;
+      scrollMinimapScrollbar.setAttribute('aria-valuenow', String(Math.round(progress * 100)));
+    }
+
+    function setScrollMinimapFromPointer(clientY) {
+      const metrics = scrollMinimapScrollbarMetrics();
+      if (metrics.maxScroll <= 1 || metrics.travel <= 0) return;
+      const railRect = scrollMinimapScrollbar.getBoundingClientRect();
+      const thumbTop = Math.min(
+        metrics.travel,
+        Math.max(0, clientY - railRect.top - scrollMinimapDragOffset)
+      );
+      scrollMinimapTrack.scrollTop = metrics.maxScroll * (thumbTop / metrics.travel);
+    }
+
     function hideScrollMinimapTooltip() {
       scrollMinimapTooltipAnchor = null;
       scrollMinimapTooltip.hidden = true;
@@ -2093,6 +2159,7 @@
           behavior: reducedMotionMedia.matches ? 'auto' : 'smooth'
         });
       }
+      syncScrollMinimapScrollbar();
       if (scrollMinimapTooltipAnchor) positionScrollMinimapTooltip(scrollMinimapTooltipAnchor);
     }
 
@@ -2106,6 +2173,7 @@
       if (!state || !state.builds.length) {
         hideScrollMinimapTooltip();
         scrollMinimap.hidden = true;
+        scrollMinimapScrollbar.hidden = true;
         scrollMinimapTrack.innerHTML = '';
         return;
       }
@@ -2118,7 +2186,10 @@
         return `<button class="scroll-minimap-item" type="button" data-target="${esc(target)}" data-tooltip="#${rank} · ${esc(build.name)}" aria-label="Перейти к месту ${rank}: ${esc(build.name)}" aria-describedby="scroll-minimap-tooltip">${scrollMinimapArt(build)}</button>`;
       }).join('');
       initScrollMinimapImages();
-      requestScrollMinimapSync();
+      requestAnimationFrame(() => {
+        requestScrollMinimapSync();
+        syncScrollMinimapScrollbar();
+      });
     }
 
     function updateScrollMinimap(view, visibleBuilds, listRoot) {
@@ -2154,6 +2225,53 @@
       pageScrollAnimationFrame = requestAnimationFrame(step);
     }
 
+    scrollMinimapScrollbar.addEventListener('pointerdown', event => {
+      const metrics = scrollMinimapScrollbarMetrics();
+      if (metrics.maxScroll <= 1) return;
+      const railRect = scrollMinimapScrollbar.getBoundingClientRect();
+      const currentThumbTop = metrics.travel * (scrollMinimapTrack.scrollTop / metrics.maxScroll);
+      const localY = event.clientY - railRect.top;
+      const hitThumb = localY >= currentThumbTop && localY <= currentThumbTop + metrics.thumbHeight;
+      scrollMinimapDragOffset = hitThumb ? localY - currentThumbTop : metrics.thumbHeight / 2;
+      scrollMinimapDragging = true;
+      scrollMinimapScrollbar.setPointerCapture(event.pointerId);
+      setScrollMinimapFromPointer(event.clientY);
+      event.preventDefault();
+    });
+
+    scrollMinimapScrollbar.addEventListener('pointermove', event => {
+      if (!scrollMinimapDragging) return;
+      setScrollMinimapFromPointer(event.clientY);
+    });
+
+    const stopScrollMinimapDrag = event => {
+      if (!scrollMinimapDragging) return;
+      scrollMinimapDragging = false;
+      if (scrollMinimapScrollbar.hasPointerCapture(event.pointerId)) {
+        scrollMinimapScrollbar.releasePointerCapture(event.pointerId);
+      }
+    };
+    scrollMinimapScrollbar.addEventListener('pointerup', stopScrollMinimapDrag);
+    scrollMinimapScrollbar.addEventListener('pointercancel', stopScrollMinimapDrag);
+
+    scrollMinimapScrollbar.addEventListener('keydown', event => {
+      const maxScroll = Math.max(0, scrollMinimapTrack.scrollHeight - scrollMinimapTrack.clientHeight);
+      const commands = {
+        ArrowUp: scrollMinimapTrack.scrollTop - 67,
+        ArrowDown: scrollMinimapTrack.scrollTop + 67,
+        PageUp: scrollMinimapTrack.scrollTop - scrollMinimapTrack.clientHeight * .8,
+        PageDown: scrollMinimapTrack.scrollTop + scrollMinimapTrack.clientHeight * .8,
+        Home: 0,
+        End: maxScroll
+      };
+      if (!(event.key in commands)) return;
+      event.preventDefault();
+      scrollMinimapTrack.scrollTo({
+        top: commands[event.key],
+        behavior: reducedMotionMedia.matches ? 'auto' : 'smooth'
+      });
+    });
+
     scrollMinimapTrack.addEventListener('pointerover', event => {
       const button = event.target.closest('.scroll-minimap-item');
       if (!button || button === scrollMinimapTooltipAnchor) return;
@@ -2176,6 +2294,7 @@
     });
 
     scrollMinimapTrack.addEventListener('scroll', () => {
+      syncScrollMinimapScrollbar();
       if (scrollMinimapTooltipAnchor) positionScrollMinimapTooltip(scrollMinimapTooltipAnchor);
     }, { passive: true });
 
