@@ -296,7 +296,7 @@
       position: fixed;
       top: 15vh;
       bottom: 5vh;
-      right: max(10px, calc((100vw - var(--max)) / 2 - 92px));
+      right: max(10px, calc((100vw - var(--max)) / 2 - 104px));
       z-index: 11;
       display: none;
       width: 80px;
@@ -311,7 +311,7 @@
       gap: 3px;
       width: 100%;
       height: 100%;
-      padding: var(--minimap-edge-buffer) 9px var(--minimap-edge-buffer) 4px;
+      padding: 0 9px 0 4px;
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior: contain;
@@ -326,15 +326,11 @@
     .scroll-minimap-track::-webkit-scrollbar:horizontal { display: none; height: 0; }
     .scroll-minimap-track::-webkit-scrollbar-track { background: transparent; }
     .scroll-minimap-track::-webkit-scrollbar-thumb { background: oklch(0.72 0 0 / .22); border-radius: 0; }
-    .scroll-minimap-track::before {
+    .scroll-minimap-track::before,
+    .scroll-minimap-track::after {
       content: "";
-      position: absolute;
-      top: 8px;
-      bottom: 8px;
-      left: 50%;
-      width: 1px;
-      background: var(--line);
-      transform: translateX(-50%);
+      flex: 0 0 var(--minimap-edge-buffer);
+      width: 100%;
       pointer-events: none;
     }
     .scroll-minimap-item {
@@ -438,7 +434,7 @@
     }
 
     @media (min-width: 1180px) {
-      .shell { width: min(calc(100% - 192px), var(--max)); }
+      .shell { width: min(calc(100% - 228px), var(--max)); }
       .scroll-minimap { display: flex; }
     }
 
