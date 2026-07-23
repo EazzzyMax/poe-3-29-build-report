@@ -326,13 +326,6 @@
     .scroll-minimap-track::-webkit-scrollbar:horizontal { display: none; height: 0; }
     .scroll-minimap-track::-webkit-scrollbar-track { background: transparent; }
     .scroll-minimap-track::-webkit-scrollbar-thumb { background: oklch(0.72 0 0 / .22); border-radius: 0; }
-    .scroll-minimap-track::before,
-    .scroll-minimap-track::after {
-      content: "";
-      flex: 0 0 var(--minimap-edge-buffer);
-      width: 100%;
-      pointer-events: none;
-    }
     .scroll-minimap-item {
       position: relative;
       display: grid;
