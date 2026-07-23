@@ -296,10 +296,10 @@
       position: fixed;
       top: 72px;
       bottom: 14px;
-      left: max(10px, calc((100vw - var(--max)) / 2 - 52px));
-      z-index: 7;
+      left: max(10px, calc((100vw - var(--max)) / 2 - 92px));
+      z-index: 11;
       display: none;
-      width: 38px;
+      width: 80px;
       pointer-events: none;
     }
     .scroll-minimap[hidden] { display: none !important; }
@@ -311,13 +311,16 @@
       width: 100%;
       max-height: 100%;
       margin-block: auto;
-      padding: 4px;
+      padding: 4px 9px 4px 4px;
       overflow-y: auto;
       overscroll-behavior: contain;
-      scrollbar-width: none;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) transparent;
       pointer-events: auto;
     }
-    .scroll-minimap-track::-webkit-scrollbar { display: none; }
+    .scroll-minimap-track::-webkit-scrollbar { width: 5px; }
+    .scroll-minimap-track::-webkit-scrollbar-track { background: transparent; }
+    .scroll-minimap-track::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 0; }
     .scroll-minimap-track::before {
       content: "";
       position: absolute;
@@ -333,10 +336,10 @@
       position: relative;
       display: grid;
       place-items: center;
-      flex: 0 0 32px;
-      width: 32px;
-      height: 32px;
-      padding: 2px;
+      flex: 0 0 64px;
+      width: 64px;
+      height: 64px;
+      padding: 4px;
       border: 1px solid transparent;
       border-radius: 0;
       color: var(--ink);
@@ -352,19 +355,19 @@
       border-color: var(--primary-pale);
       background: var(--surface-3);
     }
-    .scroll-minimap-art { position: relative; display: block; width: 27px; height: 27px; isolation: isolate; }
+    .scroll-minimap-art { position: relative; display: block; width: 54px; height: 54px; isolation: isolate; }
     .scroll-minimap-ascendancy {
       position: relative;
       display: grid;
       place-items: center;
-      width: 25px;
-      height: 25px;
+      width: 50px;
+      height: 50px;
       overflow: hidden;
       color: var(--faint);
       background: var(--surface-3);
       border: 1px solid var(--line);
       clip-path: polygon(12% 0, 88% 0, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0 88%, 0 12%);
-      font: 700 .55rem/1 Bahnschrift, sans-serif;
+      font: 700 .8rem/1 Bahnschrift, sans-serif;
     }
     .scroll-minimap-ascendancy::before { content: attr(data-fallback); }
     .scroll-minimap-ascendancy img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -375,18 +378,44 @@
       z-index: 2;
       display: grid;
       place-items: center;
-      width: 14px;
-      height: 14px;
+      width: 28px;
+      height: 28px;
       overflow: hidden;
       color: var(--faint);
       background: var(--surface);
       border: 1px solid var(--line);
       border-radius: 50%;
-      box-shadow: 0 3px 8px oklch(0 0 0 / .55);
-      font: 700 .48rem/1 Bahnschrift, sans-serif;
+      box-shadow: 0 5px 12px oklch(0 0 0 / .58), inset 0 0 0 1px oklch(0 0 0 / .24);
+      font: 700 .64rem/1 Bahnschrift, sans-serif;
     }
     .scroll-minimap-skill::before { content: attr(data-fallback); }
     .scroll-minimap-skill img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+    .scroll-minimap-tooltip {
+      position: fixed;
+      z-index: 12;
+      max-width: min(320px, calc(100vw - 120px));
+      padding: 8px 11px;
+      color: var(--ink);
+      background: var(--surface-3);
+      border: 1px solid var(--primary-pale);
+      box-shadow: 0 10px 28px oklch(0 0 0 / .48);
+      font: 650 .82rem/1.25 Bahnschrift, sans-serif;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .scroll-minimap-tooltip::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: -5px;
+      width: 8px;
+      height: 8px;
+      background: var(--surface-3);
+      border-bottom: 1px solid var(--primary-pale);
+      border-left: 1px solid var(--primary-pale);
+      transform: translateY(-50%) rotate(45deg);
+    }
+    .scroll-minimap-tooltip[hidden] { display: none; }
 
 
 
@@ -404,7 +433,7 @@
     }
 
     @media (min-width: 1180px) {
-      .shell { width: min(calc(100% - 116px), var(--max)); }
+      .shell { width: min(calc(100% - 192px), var(--max)); }
       .scroll-minimap { display: flex; }
     }
 
@@ -444,6 +473,7 @@
   <a class="skip-link" href="#ranking">К рейтингу</a>
   <nav class="scroll-minimap" aria-label="Быстрая навигация по видимым билдам" hidden>
     <div class="scroll-minimap-track"></div>
+    <div class="scroll-minimap-tooltip" id="scroll-minimap-tooltip" role="tooltip" hidden></div>
   </nav>
 
   <header class="topbar">
@@ -1631,9 +1661,11 @@
     const skipLink = document.querySelector('.skip-link');
     const scrollMinimap = document.querySelector('.scroll-minimap');
     const scrollMinimapTrack = scrollMinimap.querySelector('.scroll-minimap-track');
+    const scrollMinimapTooltip = scrollMinimap.querySelector('.scroll-minimap-tooltip');
     const scrollMinimapState = new Map();
     const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
     let scrollMinimapFrame = 0;
+    let scrollMinimapTooltipAnchor = null;
 
     const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -1983,10 +2015,10 @@
       return `
         <span class="scroll-minimap-art" aria-hidden="true">
           <span class="scroll-minimap-ascendancy" data-fallback="${esc(art.label.charAt(0))}">
-            <img src="assets/ascendancies/${esc(art.ascendancy)}.jpeg" width="25" height="25" alt="" decoding="async">
+            <img src="assets/ascendancies/${esc(art.ascendancy)}.jpeg" width="50" height="50" alt="" decoding="async">
           </span>
           <span class="scroll-minimap-skill" data-fallback="✦">
-            <img src="assets/skills/${esc(art.skill)}.png?v=square-1" width="14" height="14" alt="" decoding="async">
+            <img src="assets/skills/${esc(art.skill)}.png?v=square-1" width="28" height="28" alt="" decoding="async">
           </span>
         </span>`;
     }
@@ -1997,6 +2029,31 @@
         image.addEventListener('error', handleError, { once: true });
         if (image.complete && image.naturalWidth === 0) handleError();
       });
+    }
+
+    function hideScrollMinimapTooltip() {
+      scrollMinimapTooltipAnchor = null;
+      scrollMinimapTooltip.hidden = true;
+    }
+
+    function positionScrollMinimapTooltip(button) {
+      if (!button?.isConnected || scrollMinimapTooltip.hidden) return;
+      const buttonRect = button.getBoundingClientRect();
+      const tooltipRect = scrollMinimapTooltip.getBoundingClientRect();
+      const top = Math.min(
+        window.innerHeight - tooltipRect.height - 8,
+        Math.max(8, buttonRect.top + (buttonRect.height - tooltipRect.height) / 2)
+      );
+      scrollMinimapTooltip.style.left = `${Math.round(buttonRect.right + 10)}px`;
+      scrollMinimapTooltip.style.top = `${Math.round(top)}px`;
+    }
+
+    function showScrollMinimapTooltip(button) {
+      if (!button) return;
+      scrollMinimapTooltipAnchor = button;
+      scrollMinimapTooltip.textContent = button.dataset.tooltip;
+      scrollMinimapTooltip.hidden = false;
+      positionScrollMinimapTooltip(button);
     }
 
     function syncScrollMinimapActive() {
@@ -2028,6 +2085,7 @@
       else if (itemBottom > scrollMinimapTrack.scrollTop + scrollMinimapTrack.clientHeight) {
         scrollMinimapTrack.scrollTop = itemBottom - scrollMinimapTrack.clientHeight + 4;
       }
+      if (scrollMinimapTooltipAnchor) positionScrollMinimapTooltip(scrollMinimapTooltipAnchor);
     }
 
     function requestScrollMinimapSync() {
@@ -2038,16 +2096,18 @@
     function renderActiveScrollMinimap() {
       const state = scrollMinimapState.get(document.body.dataset.reportView);
       if (!state || !state.builds.length) {
+        hideScrollMinimapTooltip();
         scrollMinimap.hidden = true;
         scrollMinimapTrack.innerHTML = '';
         return;
       }
 
+      hideScrollMinimapTooltip();
       scrollMinimap.hidden = false;
       scrollMinimapTrack.innerHTML = state.builds.map(build => {
         const rank = String(build.rank).padStart(2, '0');
         const target = scrollMinimapBuildId(state.view, build);
-        return `<button class="scroll-minimap-item" type="button" data-target="${esc(target)}" title="#${rank} · ${esc(build.name)}" aria-label="Перейти к месту ${rank}: ${esc(build.name)}">${scrollMinimapArt(build)}</button>`;
+        return `<button class="scroll-minimap-item" type="button" data-target="${esc(target)}" data-tooltip="#${rank} · ${esc(build.name)}" aria-label="Перейти к месту ${rank}: ${esc(build.name)}" aria-describedby="scroll-minimap-tooltip">${scrollMinimapArt(build)}</button>`;
       }).join('');
       initScrollMinimapImages();
       requestScrollMinimapSync();
@@ -2057,6 +2117,31 @@
       scrollMinimapState.set(view, { view, builds: visibleBuilds, listRoot });
       if (document.body.dataset.reportView === view) renderActiveScrollMinimap();
     }
+
+    scrollMinimapTrack.addEventListener('pointerover', event => {
+      const button = event.target.closest('.scroll-minimap-item');
+      if (!button || button === scrollMinimapTooltipAnchor) return;
+      showScrollMinimapTooltip(button);
+    });
+
+    scrollMinimapTrack.addEventListener('pointerout', event => {
+      const button = event.target.closest('.scroll-minimap-item');
+      if (!button || (event.relatedTarget && button.contains(event.relatedTarget))) return;
+      hideScrollMinimapTooltip();
+    });
+
+    scrollMinimapTrack.addEventListener('focusin', event => {
+      showScrollMinimapTooltip(event.target.closest('.scroll-minimap-item'));
+    });
+
+    scrollMinimapTrack.addEventListener('focusout', event => {
+      if (event.relatedTarget?.closest?.('.scroll-minimap-item')) return;
+      hideScrollMinimapTooltip();
+    });
+
+    scrollMinimapTrack.addEventListener('scroll', () => {
+      if (scrollMinimapTooltipAnchor) positionScrollMinimapTooltip(scrollMinimapTooltipAnchor);
+    }, { passive: true });
 
     scrollMinimapTrack.addEventListener('click', event => {
       const button = event.target.closest('.scroll-minimap-item');
