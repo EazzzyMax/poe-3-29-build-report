@@ -304,18 +304,19 @@
     }
     .scroll-minimap[hidden] { display: none !important; }
     .scroll-minimap-track {
+      --minimap-edge-buffer: 201px;
       position: relative;
       display: flex;
       flex-direction: column;
       gap: 3px;
       width: 100%;
       height: 100%;
-      padding: 18px 9px 18px 4px;
+      padding: var(--minimap-edge-buffer) 9px var(--minimap-edge-buffer) 4px;
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior: contain;
       overscroll-behavior-x: none;
-      scroll-padding-block: 18px;
+      scroll-padding-block: var(--minimap-edge-buffer);
       scroll-behavior: smooth;
       scrollbar-width: thin;
       scrollbar-color: var(--primary) transparent;
@@ -353,7 +354,7 @@
       transform: scale(1);
       transition: opacity .16s var(--ease), border-color .16s var(--ease), background-color .16s var(--ease), transform .18s var(--ease);
     }
-    .scroll-minimap-item:hover { opacity: .82; background: var(--surface); }
+    .scroll-minimap-item:hover { opacity: .82; }
     .scroll-minimap-item[aria-current="true"] {
       z-index: 1;
       opacity: 1;
@@ -2086,7 +2087,11 @@
       if (!activeButton) return;
       const itemTop = activeButton.offsetTop;
       const itemBottom = itemTop + activeButton.offsetHeight;
-      const edgePadding = 18;
+      const requestedEdgePadding = Number.parseFloat(
+        getComputedStyle(scrollMinimapTrack).getPropertyValue('--minimap-edge-buffer')
+      ) || 201;
+      const maximumEdgePadding = Math.max(0, (scrollMinimapTrack.clientHeight - activeButton.offsetHeight) / 2);
+      const edgePadding = Math.min(requestedEdgePadding, maximumEdgePadding);
       const visibleTop = scrollMinimapTrack.scrollTop + edgePadding;
       const visibleBottom = scrollMinimapTrack.scrollTop + scrollMinimapTrack.clientHeight - edgePadding;
       let nextScrollTop = null;
