@@ -295,7 +295,7 @@
     .scroll-minimap {
       position: fixed;
       top: 15vh;
-      bottom: 5vh;
+      bottom: 0;
       right: max(10px, calc((100vw - var(--max)) / 2 - 104px));
       z-index: 11;
       display: none;
@@ -323,6 +323,7 @@
       pointer-events: auto;
     }
     .scroll-minimap-track::-webkit-scrollbar { width: 4px; }
+    .scroll-minimap-track::-webkit-scrollbar-button { display: none; width: 0; height: 0; }
     .scroll-minimap-track::-webkit-scrollbar:horizontal { display: none; height: 0; }
     .scroll-minimap-track::-webkit-scrollbar-track { background: transparent; }
     .scroll-minimap-track::-webkit-scrollbar-thumb { background: oklch(0.72 0 0 / .22); border-radius: 0; }
