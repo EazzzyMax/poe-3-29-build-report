@@ -294,8 +294,8 @@
 
     .scroll-minimap {
       position: fixed;
-      top: 72px;
-      bottom: 14px;
+      top: 15vh;
+      bottom: 5vh;
       left: max(10px, calc((100vw - var(--max)) / 2 - 92px));
       z-index: 11;
       display: none;
@@ -309,11 +309,13 @@
       flex-direction: column;
       gap: 3px;
       width: 100%;
-      max-height: 100%;
-      margin-block: auto;
-      padding: 4px 9px 4px 4px;
+      height: 100%;
+      padding: 18px 9px 18px 4px;
+      overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior: contain;
+      scroll-padding-block: 18px;
+      scroll-behavior: smooth;
       scrollbar-width: thin;
       scrollbar-color: var(--primary) transparent;
       pointer-events: auto;
@@ -346,7 +348,8 @@
       background: var(--bg);
       cursor: pointer;
       opacity: .46;
-      transition: opacity .16s var(--ease), border-color .16s var(--ease), background-color .16s var(--ease);
+      transform: scale(1);
+      transition: opacity .16s var(--ease), border-color .16s var(--ease), background-color .16s var(--ease), transform .18s var(--ease);
     }
     .scroll-minimap-item:hover { opacity: .82; background: var(--surface); }
     .scroll-minimap-item[aria-current="true"] {
@@ -354,6 +357,7 @@
       opacity: 1;
       border-color: var(--primary-pale);
       background: var(--surface-3);
+      transform: scale(1.08);
     }
     .scroll-minimap-art { position: relative; display: block; width: 54px; height: 54px; isolation: isolate; }
     .scroll-minimap-ascendancy {
@@ -1666,6 +1670,7 @@
     const reducedMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
     let scrollMinimapFrame = 0;
     let scrollMinimapTooltipAnchor = null;
+    let pageScrollAnimationFrame = 0;
 
     const esc = (text) => String(text).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[char]));
 
@@ -2081,9 +2086,17 @@
       if (!activeButton) return;
       const itemTop = activeButton.offsetTop;
       const itemBottom = itemTop + activeButton.offsetHeight;
-      if (itemTop < scrollMinimapTrack.scrollTop) scrollMinimapTrack.scrollTop = Math.max(0, itemTop - 4);
-      else if (itemBottom > scrollMinimapTrack.scrollTop + scrollMinimapTrack.clientHeight) {
-        scrollMinimapTrack.scrollTop = itemBottom - scrollMinimapTrack.clientHeight + 4;
+      const edgePadding = 18;
+      const visibleTop = scrollMinimapTrack.scrollTop + edgePadding;
+      const visibleBottom = scrollMinimapTrack.scrollTop + scrollMinimapTrack.clientHeight - edgePadding;
+      let nextScrollTop = null;
+      if (itemTop < visibleTop) nextScrollTop = Math.max(0, itemTop - edgePadding);
+      else if (itemBottom > visibleBottom) nextScrollTop = itemBottom - scrollMinimapTrack.clientHeight + edgePadding;
+      if (nextScrollTop !== null) {
+        scrollMinimapTrack.scrollTo({
+          top: nextScrollTop,
+          behavior: reducedMotionMedia.matches ? 'auto' : 'smooth'
+        });
       }
       if (scrollMinimapTooltipAnchor) positionScrollMinimapTooltip(scrollMinimapTooltipAnchor);
     }
@@ -2116,6 +2129,34 @@
     function updateScrollMinimap(view, visibleBuilds, listRoot) {
       scrollMinimapState.set(view, { view, builds: visibleBuilds, listRoot });
       if (document.body.dataset.reportView === view) renderActiveScrollMinimap();
+    }
+
+    function cancelPageScrollAnimation() {
+      if (!pageScrollAnimationFrame) return;
+      cancelAnimationFrame(pageScrollAnimationFrame);
+      pageScrollAnimationFrame = 0;
+    }
+
+    function animatePageScroll(targetTop) {
+      cancelPageScrollAnimation();
+      const startTop = window.scrollY;
+      const distance = targetTop - startTop;
+      if (reducedMotionMedia.matches || Math.abs(distance) < 2) {
+        window.scrollTo({ top: targetTop, left: 0 });
+        return;
+      }
+
+      const duration = Math.min(900, Math.max(440, Math.abs(distance) * .18));
+      let startedAt = 0;
+      const step = time => {
+        if (!startedAt) startedAt = time;
+        const progress = Math.min(1, (time - startedAt) / duration);
+        const eased = 1 - Math.pow(1 - progress, 4);
+        window.scrollTo(0, startTop + distance * eased);
+        if (progress < 1) pageScrollAnimationFrame = requestAnimationFrame(step);
+        else pageScrollAnimationFrame = 0;
+      };
+      pageScrollAnimationFrame = requestAnimationFrame(step);
     }
 
     scrollMinimapTrack.addEventListener('pointerover', event => {
@@ -2151,10 +2192,15 @@
       const controls = target.closest('.report-view').querySelector('.controls-wrap');
       const offset = 74 + (controls?.offsetHeight || 0);
       const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - offset);
-      button.setAttribute('aria-current', 'true');
-      window.scrollTo({ top, left: 0, behavior: reducedMotionMedia.matches ? 'auto' : 'smooth' });
+      scrollMinimapTrack.querySelectorAll('.scroll-minimap-item').forEach(item => {
+        if (item === button) item.setAttribute('aria-current', 'true');
+        else item.removeAttribute('aria-current');
+      });
+      animatePageScroll(top);
     });
 
+    window.addEventListener('wheel', cancelPageScrollAnimation, { passive: true });
+    window.addEventListener('touchstart', cancelPageScrollAnimation, { passive: true });
     window.addEventListener('scroll', requestScrollMinimapSync, { passive: true });
     window.addEventListener('resize', requestScrollMinimapSync, { passive: true });
 
@@ -2409,7 +2455,7 @@
         else url.searchParams.set('version', nextView);
         history.replaceState(null, '', url);
       }
-      if (scroll) window.scrollTo({ top: 0, left: 0 });
+      if (scroll) animatePageScroll(0);
     }
 
     reportTabs.forEach((tab, index) => {
