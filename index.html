@@ -314,6 +314,7 @@
       overflow-x: hidden;
       overflow-y: auto;
       overscroll-behavior: contain;
+      overscroll-behavior-x: none;
       scroll-padding-block: 18px;
       scroll-behavior: smooth;
       scrollbar-width: thin;
@@ -321,6 +322,7 @@
       pointer-events: auto;
     }
     .scroll-minimap-track::-webkit-scrollbar { width: 5px; }
+    .scroll-minimap-track::-webkit-scrollbar:horizontal { display: none; height: 0; }
     .scroll-minimap-track::-webkit-scrollbar-track { background: transparent; }
     .scroll-minimap-track::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 0; }
     .scroll-minimap-track::before {
