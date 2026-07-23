@@ -1637,6 +1637,111 @@
       'Flicker Strike Slayer': 'Magefist'
     });
 
+    // Fresh links recovered from guide/video descriptions on 2026-07-23.
+    // The original GPT dataset stays frozen; these supplements are used by GPT v2 and Fubgun.
+    const sourceSupplementsByBuildName = Object.freeze({
+      'Kinetic Fusillade Totems': [
+        ['POB', 'Palsteron · актуальный PoB после правок 23.07', 'https://pobb.in/VYkCtsG0KTaF']
+      ],
+      'Boneshatter': [
+        ['GUIDE', 'Woolie · Mobalytics guide + встроенный PoB', 'https://mobalytics.gg/poe/profile/woolie/builds/3-29-woolie-s-spineshatter-champion'],
+        ['GUIDE', 'Woolie · Sunder leveling до Boneshatter', 'https://mobalytics.gg/poe/builds/woolie-sunder-leveling']
+      ],
+      'Static Strike': [
+        ['POB', 'Alohaa · актуальный guide PoB', 'https://pobb.in/pCocYg9C6vAC'],
+        ['POB', 'Alohaa · снимок после двух voidstones', 'https://pobb.in/kdizb6e8c2Md']
+      ],
+      'Static Strike / Ele Hit Slayer': [
+        ['POB', 'Alohaa · актуальный guide PoB', 'https://pobb.in/pCocYg9C6vAC'],
+        ['POB', 'Alohaa · снимок после двух voidstones', 'https://pobb.in/kdizb6e8c2Md']
+      ],
+      'Arc Ignite': [
+        ['POB', 'BuffaloBaron · обновлённый 22.07 PoB с guide в Notes', 'https://pobb.in/BJhcIXdDu6zv']
+      ],
+      'Cyclone Shockwave': [
+        ['POB', 'Sanavixx · актуальный PoB', 'https://pobb.in/I-XnxcgUkN2j'],
+        ['GUIDE', 'Sanavixx · Mobalytics build page', 'https://mobalytics.gg/poe/profile/grim-key-9npusx/builds/182c4c45-176a-45d2-b1f3-c4b327cb8e58']
+      ],
+      'Cyclone Shockwave Slayer': [
+        ['POB', 'Sanavixx · актуальный PoB', 'https://pobb.in/I-XnxcgUkN2j'],
+        ['GUIDE', 'Sanavixx · Mobalytics build page', 'https://mobalytics.gg/poe/profile/grim-key-9npusx/builds/182c4c45-176a-45d2-b1f3-c4b327cb8e58']
+      ],
+      'Winter Orb': [
+        ['POB', 'Fubgun · leveling PoB', 'https://pobb.in/Lt3xXcXzAp10'],
+        ['POB', 'Jungroan · level 77 Elementalist snapshot', 'https://pobb.in/UfyYiIJsvOxE'],
+        ['POB', 'Jungroan · power-charge PoB', 'https://pobb.in/9nzqKm3VGifa'],
+        ['POB', 'Peuget2 · all-variant PoB из Mobalytics', 'https://pobb.in/230ymClOaxDh']
+      ],
+      'Winter Orb Elementalist': [
+        ['POB', 'Fubgun · leveling PoB', 'https://pobb.in/Lt3xXcXzAp10'],
+        ['POB', 'Zizaran · актуальный 3.29 PoB', 'https://pobb.in/221_ZcVSEO7G']
+      ],
+      'Reap / Exsanguinate / GC Mines': [
+        ['POB', 'FearlessDumb0 · альтернативный leveling без Rolling Magma', 'https://pobb.in/InYG0--lcpCG']
+      ],
+      'Venom Gyre Deadeye': [
+        ['POB', 'Kankar · PoE Ninja fallback PoB', 'https://poe.ninja/poe1/pob/92a27']
+      ],
+      'Lightning Arrow / EHoS Deadeye': [
+        ['GUIDE', 'Fubgun · Mobalytics Lightning Arrow / EHoS guide', 'https://mobalytics.gg/poe/profile/fubgun/builds/lightning-arrow-ele-hit-deadeye-guide'],
+        ['PROFILE', 'Fubgun · day-1 персонаж на PoE Ninja', 'https://poe.ninja/poe1/builds/mirage/character/fubgun-1755/FubgunDSF?i=0&search=class%3DDeadeye%26name%3Dfubgun&timemachine=day-1']
+      ],
+      'KBoC Necromancer / Hierophant': [
+        ['POB', 'Palsteron · финальный Svalinn + Mageblood snapshot', 'https://maxroll.gg/poe/pob/k99ay0yu']
+      ],
+      'Shield Crush': [
+        ['POB', 'Ignatius · финальная версия персонажа', 'https://poe.ninja/poe1/pob/8c3d4'],
+        ['FILTER', 'Ignatius · FilterBlade для кампании', 'https://www.filterblade.xyz/?profile=IgnatiusHS&saveState=Q86T46OC3GXZFC&isPreset=false&game=Poe1'],
+        ['FILTER', 'Ignatius · FilterBlade для mapping / delve', 'https://www.filterblade.xyz/?profile=IgnatiusHS&saveState=H52Y1TBLKEU0RS&isPreset=false&game=Poe1'],
+        ['TOOL', 'IlNino · Timeless Jewel preset', 'https://vilsol.github.io/timeless-jewels/tree?jewel=2&conqueror=Kiloava&seed=15545&location=26725&mode=stats&stat=117&stat=124&stat=573&stat=1294&stat=2031']
+      ],
+      'Earthshatter': [
+        ['POB', 'Woolie · endgame Berserker PoB', 'https://pobb.in/QAiQavXGmLKD'],
+        ['GUIDE', 'Woolie · Sunder leveling для slam-перехода', 'https://mobalytics.gg/poe/builds/woolie-sunder-leveling']
+      ],
+      'Holy Hammers of Spirals': [
+        ['GUIDE', 'Woolie · Sunder leveling до перехода', 'https://mobalytics.gg/poe/builds/woolie-sunder-leveling']
+      ],
+      'Holy Absolution': [
+        ['POB', 'Ronarray · Necromancer PoB из Mobalytics', 'https://pobb.in/MBGDY0AJSHce']
+      ],
+      'Spark Archmage': [
+        ['POB', 'BigDucks · campaign PoB', 'https://pobb.in/oLWVUO1gqaMo'],
+        ['POB', 'BigDucks · endgame PoB', 'https://pobb.in/W0IqCph20qR0']
+      ],
+      'Archmage Spellcaster': [
+        ['POB', 'BigDucks · campaign PoB', 'https://pobb.in/oLWVUO1gqaMo'],
+        ['POB', 'BigDucks · endgame PoB', 'https://pobb.in/W0IqCph20qR0']
+      ],
+      'PConc Assassin → Mamba Bino’s': [
+        ['GUIDE', 'Jungroan · PConc Assassin Mobalytics', 'https://mobalytics.gg/poe/profile/jungroan/builds/perfect-agony-poisonous-concoction-assassin'],
+        ['GUIDE', 'Jungroan · Nightblade Mamba Mobalytics', 'https://mobalytics.gg/poe/profile/jungroan/builds/nightblade-mamba']
+      ],
+      'Luminary Merc Bot': [
+        ['GUIDE', 'CaptainLance9 · актуальная профильная страница Mobalytics', 'https://mobalytics.gg/poe/profile/captainlance/builds/captainlance9-s-luminary-merc-bot']
+      ],
+      'Slams → Righteous Fire': [
+        ['GUIDE', 'PhazePlays · Bleed Slams Mobalytics', 'https://mobalytics.gg/poe/profile/phazeplays/builds/3-28-phazeplays-bleed-slams-slayer-revamped-ground-slam-of-earthshaking'],
+        ['FILTER', 'PhazePlays · FilterBlade profile', 'https://www.filterblade.xyz/Profile?name=phazeplays%234855&game=Poe1'],
+        ['GUIDE', 'Pohx · Righteous Fire Chieftain Mobalytics', 'https://mobalytics.gg/poe/builds/pohx-righteous-fire-chieftain']
+      ],
+      'Storm Burst Totems': [
+        ['SHEET', 'Aer0 · PoE1 resources: PoB, FAQ, leveling и Atlas', 'https://docs.google.com/spreadsheets/d/107zp9X1jol4ZCwBsGJxX9VH7Saw50ylF9FPF50_jHNk/edit?usp=sharing']
+      ]
+    });
+
+    function buildSources(build, includeSupplements = false) {
+      if (!includeSupplements) return build.sources;
+      const sources = [...build.sources, ...(sourceSupplementsByBuildName[build.name] || [])];
+      const seen = new Set();
+      return sources.filter(source => {
+        const key = source[2].replace(/^https?:\/\/(?:www\.)?/i, '').replace(/\/$/, '');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+    }
+
     const sourceAuthorAliases = Object.freeze({
       'CaptainLance': 'CaptainLance9',
       'Big Ducks': 'BigDucks'
@@ -1711,11 +1816,11 @@
       return `${count} ${word}`;
     }
 
-    function renderSourceGroups(build) {
+    function renderSourceGroups(build, includeSupplements = false) {
       const authorGroups = new Map();
       const commonGroups = new Map();
 
-      build.sources.forEach(source => {
+      buildSources(build, includeSupplements).forEach(source => {
         const category = sourceCategory(build, source);
         const target = category.author ? authorGroups : commonGroups;
         if (!target.has(category.key)) target.set(category.key, { ...category, sources: [] });
@@ -1810,7 +1915,7 @@
     function renderFubgun() {
       const query = fubgunSearch.value.trim().toLocaleLowerCase('ru');
       const visible = fubgunBuilds.filter(build => {
-        const haystack = `${build.name} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${build.signals.flat().join(' ')} ${build.sources.map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
+        const haystack = `${build.name} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${build.signals.flat().join(' ')} ${buildSources(build, true).map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
         const ascendancies = fubgunBuildAscendancyAlternatives[build.rank] || [build.art.ascendancy];
         const filterMatch = fubgunActiveAscendancies.size === 0 || ascendancies.some(ascendancy => fubgunActiveAscendancies.has(ascendancy));
         return filterMatch && (!query || haystack.includes(query));
@@ -1838,7 +1943,7 @@
           <div class="details">
             <div class="detail-body">
               <p>${esc(build.analysis)}</p>
-              ${renderSourceGroups(build)}
+              ${renderSourceGroups(build, true)}
             </div>
           </div>
         </article>
@@ -1850,7 +1955,7 @@
     function renderGpt2() {
       const query = gpt2Search.value.trim().toLocaleLowerCase('ru');
       let visible = gpt2Builds.filter(build => {
-        const haystack = `${build.name} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${build.sources.map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
+        const haystack = `${build.name} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${buildSources(build, true).map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
         const ascendancies = gpt2BuildAscendancyAlternatives[build.rank] || [build.art.ascendancy];
         const filterMatch = gpt2ActiveAscendancies.size === 0 || ascendancies.some(ascendancy => gpt2ActiveAscendancies.has(ascendancy));
         return filterMatch && (!query || haystack.includes(query));
@@ -1885,7 +1990,7 @@
           <div class="details">
             <div class="detail-body">
               <p>${esc(build.analysis)}</p>
-              ${renderSourceGroups(build)}
+              ${renderSourceGroups(build, true)}
             </div>
           </div>
         </article>
