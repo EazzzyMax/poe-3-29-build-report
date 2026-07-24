@@ -340,6 +340,42 @@
     .link-with-favicon { display: inline-flex; align-items: center; gap: 6px; }
     .empty { display: none; padding: 50px 0; color: var(--muted); text-align: center; border-bottom: 1px solid var(--line); }
 
+    .qa-section { padding-block: clamp(42px, 6vw, 86px); }
+    .qa-shell { width: min(calc(100% - 40px), 1040px); margin-inline: auto; }
+    .qa-kicker { margin: 0 0 12px; color: var(--primary-pale); font: 700 .72rem/1 Bahnschrift, sans-serif; letter-spacing: .1em; text-transform: uppercase; }
+    .qa-title { max-width: 18ch; margin: 0; font: 700 clamp(2.4rem, 6vw, 5.6rem)/.94 Bahnschrift, sans-serif; letter-spacing: -.045em; text-wrap: balance; }
+    .qa-updated { margin: 18px 0 0; color: var(--faint); font-size: .82rem; }
+    .qa-answer { margin-top: clamp(34px, 6vw, 70px); padding: clamp(22px, 4vw, 38px); border-left: 3px solid var(--primary); background: var(--surface); }
+    .qa-answer-label { display: block; margin-bottom: 10px; color: var(--faint); font: 700 .68rem/1 Bahnschrift, sans-serif; letter-spacing: .09em; text-transform: uppercase; }
+    .qa-answer strong { display: block; max-width: 32ch; font: 700 clamp(1.35rem, 3vw, 2.1rem)/1.2 Bahnschrift, sans-serif; letter-spacing: -.02em; }
+    .qa-answer p { max-width: 76ch; margin: 16px 0 0; color: var(--muted); }
+    .qa-block { padding-block: clamp(36px, 5vw, 62px); border-bottom: 1px solid var(--line); }
+    .qa-block:last-child { border-bottom: 0; }
+    .qa-block h2 { max-width: 28ch; margin: 0 0 22px; font: 700 clamp(1.5rem, 3vw, 2.4rem)/1.08 Bahnschrift, sans-serif; letter-spacing: -.025em; text-wrap: balance; }
+    .qa-copy { max-width: 78ch; color: var(--muted); }
+    .qa-copy p { margin: 0 0 15px; }
+    .qa-copy strong { color: var(--ink); }
+    .qa-factline { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; margin-top: 26px; background: var(--line); }
+    .qa-fact { min-width: 0; padding: 18px; background: var(--surface); }
+    .qa-fact span { display: block; margin-bottom: 7px; color: var(--faint); font: 700 .67rem/1 Bahnschrift, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
+    .qa-fact strong { display: block; font-size: .91rem; line-height: 1.42; }
+    .qa-routes { display: grid; gap: 1px; background: var(--line); counter-reset: route; }
+    .qa-route { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 20px; padding: clamp(20px, 3vw, 30px); background: var(--surface); counter-increment: route; }
+    .qa-route::before { content: "0" counter(route); color: var(--faint); font: 700 1.5rem/1 Bahnschrift, sans-serif; }
+    .qa-route.recommended { background: linear-gradient(90deg, oklch(0.22 0.035 155 / .42), var(--surface) 45%); }
+    .qa-route h3 { margin: 0 0 7px; font: 700 1.06rem/1.3 Bahnschrift, sans-serif; }
+    .qa-route p { max-width: 74ch; margin: 0; color: var(--muted); font-size: .91rem; }
+    .qa-route-note { display: inline-block; margin-top: 12px; color: var(--good); font: 700 .71rem/1 Bahnschrift, sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+    .qa-checklist { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 26px; margin: 0; padding: 0; list-style: none; }
+    .qa-checklist li { position: relative; padding: 12px 0 12px 24px; color: var(--muted); border-bottom: 1px solid var(--line); }
+    .qa-checklist li::before { content: "✓"; position: absolute; left: 0; color: var(--good); font-weight: 800; }
+    .qa-warning { margin-top: 24px; padding: 18px 20px; color: var(--muted); border: 1px solid oklch(0.79 0.14 82 / .4); background: oklch(0.19 0.03 82 / .24); }
+    .qa-warning strong { color: var(--warn); }
+    .qa-source-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    .qa-source-link { display: flex; align-items: center; min-height: 46px; padding: 10px 12px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); text-decoration: none; font-size: .82rem; line-height: 1.35; }
+    .qa-source-link:hover { border-color: var(--primary); background: var(--surface-2); }
+    .qa-source-link small { display: block; color: var(--faint); font-size: .68rem; }
+
     .scroll-minimap {
       position: fixed;
       top: 15vh;
@@ -508,6 +544,7 @@
       .version-tab + .version-tab { border-left: 1px solid var(--line); }
       .version-tab:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
       .version-tab:nth-child(4) { border-top: 1px solid var(--line); }
+      .version-tab:nth-child(5) { grid-column: 1 / -1; border-left: 0; border-top: 1px solid var(--line); }
       .section-heading { grid-template-columns: 1fr; gap: 22px; }
       .version-delta { margin-top: -4px; }
       .delta-grid { grid-template-columns: 1fr; }
@@ -526,6 +563,9 @@
       .metrics { grid-template-columns: repeat(2, 1fr); }
       .detail-body { grid-template-columns: 1fr; }
       .split { grid-template-columns: 1fr; gap: 8px; }
+      .qa-shell { width: min(calc(100% - 28px), 1040px); }
+      .qa-factline, .qa-source-list, .qa-checklist { grid-template-columns: 1fr; }
+      .qa-route { grid-template-columns: 42px minmax(0, 1fr); gap: 10px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -552,6 +592,7 @@
           <button class="version-tab" type="button" role="tab" id="gpt2-tab" aria-controls="gpt2-report" aria-selected="false" tabindex="-1" data-report-view="gpt2">GPT version 2</button>
           <button class="version-tab" type="button" role="tab" id="gpt3-tab" aria-controls="gpt3-report" aria-selected="false" tabindex="-1" data-report-view="gpt3">GPT version 3</button>
           <button class="version-tab" type="button" role="tab" id="fubgun-tab" aria-controls="fubgun-report" aria-selected="false" tabindex="-1" data-report-view="fubgun">Fubgun version</button>
+          <button class="version-tab" type="button" role="tab" id="qa-tab" aria-controls="qa-report" aria-selected="false" tabindex="-1" data-report-view="qa">Q | A</button>
         </div>
       </div>
       <div class="freshness"><span class="pulse" aria-hidden="true"></span>Срез v3: 24.07.2026</div>
@@ -784,6 +825,111 @@
           <div class="empty" id="fubgun-empty">Ничего не найдено. Попробуй другой запрос.</div>
         </div>
       </section>
+    </div>
+
+    <div class="report-view" id="qa-report" role="tabpanel" aria-labelledby="qa-tab" data-report-panel="qa" hidden>
+      <article class="qa-section" id="qa-winorb">
+        <header class="qa-shell">
+          <p class="qa-kicker">Личный вопрос · Winter Orb</p>
+          <h1 class="qa-title">Cold DoT или сразу WOrb?</h1>
+          <p class="qa-updated">Ответ по состоянию на 24 июля 2026 · до открытия экономики 3.29</p>
+
+          <div class="qa-answer">
+            <span class="qa-answer-label">Короткий ответ</span>
+            <strong>Стартуй Cold DoT Elementalist. После двух voidstones решишь по ощущениям и живым ценам.</strong>
+            <p>Charge stacking не пропал. Пропала необходимость покупать весь charge-набор до того, как Winter Orb вообще станет рабочим. Сейчас у WOrb есть нормальные промежуточные non-charge ступени, но Cold DoT остаётся более дешёвым, гладким и безусловным первым персонажем.</p>
+          </div>
+        </header>
+
+        <div class="qa-shell">
+          <section class="qa-block" aria-labelledby="qa-charge-title">
+            <h2 id="qa-charge-title">Что именно изменилось с charge stacking</h2>
+            <div class="qa-copy">
+              <p><strong>Моя прежняя формулировка была слишком резкой:</strong> главный страх не «исчез». Power-charge stack остаётся одним из лучших способов разогнать поздний WOrb и всё ещё может быть дорогим из-за Ralakesh, Badge, Malachai’s Loop и других популярных предметов.</p>
+              <p>Изменилось другое: после сильного баффа самого Winter Orb авторы показали полноценную лестницу до charge-stack. В PoB Fubgun есть отдельные loadout’ы <strong>Entering maps → Early game → Mid game → Endgame Optional</strong>, и только потом <strong>Pcharge Stack → Uber Pcharge</strong>. До stack он предлагает Bitterdream, Mystic Refractor или хорошую rare wand. То есть charge-gear теперь не входной билет, а поздний апгрейд.</p>
+              <p>Это делает честным выражение «league-start WOrb», но не обязательно означает «поставить Winter Orb на первом акте и больше никогда не менять умение». У Ruetoo свежий маршрут 1–100 для Elementalist/Occultist WOrb прямо подписан как <strong>new leveling with cold dot</strong>.</p>
+            </div>
+
+            <div class="qa-factline" aria-label="Что стало лучше и что осталось риском">
+              <div class="qa-fact"><span>Стало лучше</span><strong>Сам навык сильнее; non-charge WOrb теперь имеет убедительную дорогу через карты.</strong></div>
+              <div class="qa-fact"><span>Не исчезло</span><strong>Cast speed, duration, crit, +projectiles и дорогой charge-endgame всё ещё определяют комфорт.</strong></div>
+              <div class="qa-fact"><span>Главный риск</span><strong>Не «соберётся ли билд», а понравится ли тебе постоянно подзаряжать WOrb каналом.</strong></div>
+            </div>
+          </section>
+
+          <section class="qa-block" aria-labelledby="qa-cold-title">
+            <h2 id="qa-cold-title">Как стартовать Cold DoT и когда переходить</h2>
+            <div class="qa-routes">
+              <div class="qa-route recommended">
+                <div>
+                  <h3>Кампания: Cold DoT Spellslinger с 28 уровня</h3>
+                  <p>Следуй Jungroan: Power Siphon, затем Frenzy триггерят Vortex + Creeping Frost и Wintertide Brand + Cold Snap. Это быстрый и безопасный вход в Atlas на редких предметах.</p>
+                  <span class="qa-route-note">Моя рекомендация для тебя</span>
+                </div>
+              </div>
+              <div class="qa-route">
+                <div>
+                  <h3>Примерно level 80 / две voidstones: первая развилка</h3>
+                  <p>Если уже попробовал WOrb, тебе нравится ритм channel-and-move и собрана точная non-charge ступень из PoB Fubgun, Zizaran или Ruetoo — можно переходить в WOrb Elementalist. Не смешивай случайные предметы из трёх разных версий.</p>
+                </div>
+              </div>
+              <div class="qa-route">
+                <div>
+                  <h3>Level 85 / T16 / две–четыре voidstones: безопасная развилка</h3>
+                  <p>Если WOrb-gear перегрет или ты ещё сомневаешься, оставайся на Cold DoT. Когда Spellslinger начнёт терять single target, переходи не в WOrb, а сначала в self-cast Cold DoT. Jungroan сам говорит, что вечный Spellslinger слишком много теряет в endgame.</p>
+                </div>
+              </div>
+              <div class="qa-route">
+                <div>
+                  <h3>После четырёх stones: выбирай потолок, а не спасение</h3>
+                  <p>Cold DoT к этому моменту уже выполнил работу. Дальше можно идти в non-charge WOrb и позже в optional charge-stack; остаться на self-cast Cold DoT; либо перейти в Phys DoT Elementalist Ruetoo, у которого тоже есть бедная self-cast ступень до Poet’s Pen.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="qa-block" aria-labelledby="qa-ready-title">
+            <h2 id="qa-ready-title">Чек-лист перед реальным переходом в WOrb</h2>
+            <ul class="qa-checklist">
+              <li>Ты проверил WOrb хотя бы в белых картах и тебе нравится его ритм.</li>
+              <li>Выбран один конкретный progression loadout, а не финальный showcase PoB.</li>
+              <li>Решены mana, resistances и защита после смены дерева и предметов.</li>
+              <li>Cast speed и skill duration позволяют не останавливаться у каждой пачки.</li>
+              <li>Есть рабочая связка для crit/freeze и single target, а не только красивый clear.</li>
+              <li>Куплены regrets и заранее проверено, какие узлы действительно меняются.</li>
+            </ul>
+            <div class="qa-warning"><strong>Не ставь переход на таймер.</strong> Две voidstones — хорошая точка проверки, а не дедлайн. Если Cold DoT всё ещё идёт гладко, а WOrb-комплект дорог, спокойно забери четыре stones и решай уже по реальной экономике.</div>
+          </section>
+
+          <section class="qa-block" aria-labelledby="qa-verdict-title">
+            <h2 id="qa-verdict-title">Итог именно для тебя</h2>
+            <div class="qa-copy">
+              <p><strong>Elementalist Cold DoT → тест WOrb около level 75–80 → решение после двух stones.</strong> Это сохраняет весь выбор и почти ничего не ставит на карту. Если WOrb понравится — переходишь в его non-charge progression и рассматриваешь charge-stack только как поздний апгрейд. Если не понравится или рынок окажется безумным — доводишь Cold DoT до self-cast и четырёх stones.</p>
+              <p>Я бы не начинал с Occultist: Elementalist лучше сохраняет мост между Cold DoT, ранним WOrb и другими DoT/ignite-вариантами. В Occultist есть смысл переезжать позже, когда уже ясно, что ты остаёшься на WOrb и можешь оплатить её high-end преимущества.</p>
+            </div>
+          </section>
+
+          <section class="qa-block" aria-labelledby="qa-sources-title">
+            <h2 id="qa-sources-title">Гайды и доказательства</h2>
+            <div class="qa-source-list">
+              <a class="qa-source-link" href="https://www.youtube.com/watch?v=--XDhqSlwPA" target="_blank" rel="noopener"><span><small>VIDEO · 22 июля</small>Fubgun — полный Winter Orb Elementalist guide ↗</span></a>
+              <a class="qa-source-link" href="https://pobb.in/809C2XOcZyAf" target="_blank" rel="noopener"><span><small>POB · LEVELING</small>Fubgun — leveling progression ↗</span></a>
+              <a class="qa-source-link" href="https://pobb.in/MwV2BQxIyk-i" target="_blank" rel="noopener"><span><small>POB · ENDGAME</small>Fubgun — non-charge и charge loadout’ы ↗</span></a>
+              <a class="qa-source-link" href="https://www.youtube.com/watch?v=OZypCJ-5Bog" target="_blank" rel="noopener"><span><small>VIDEO · 21 июля</small>Zizaran — Winter Orb league starter ↗</span></a>
+              <a class="qa-source-link" href="https://pobb.in/221_ZcVSEO7G" target="_blank" rel="noopener"><span><small>POB</small>Zizaran — полный planner ↗</span></a>
+              <a class="qa-source-link" href="https://www.youtube.com/watch?v=v4eOWYUa9Wo" target="_blank" rel="noopener"><span><small>VIDEO · 23 июля</small>Ruetoo — три стартера, включая WOrb ↗</span></a>
+              <a class="qa-source-link" href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRZhV8GXd4Ua4ers19J2V8xw8ODO_3hsPGb5OnOD4ptJgBSoLZasXMb2HfaKh37NVCHFZX3pVIcqIDi/pubhtml" target="_blank" rel="noopener"><span><small>CATALOG</small>Ruetoo — 1–100 WOrb с Cold DoT leveling ↗</span></a>
+              <a class="qa-source-link" href="https://poe.ninja/poe1/pob/930ab" target="_blank" rel="noopener"><span><small>POB</small>Ruetoo — Elementalist / Occultist WOrb ↗</span></a>
+              <a class="qa-source-link" href="https://www.youtube.com/watch?v=a0qmdTU8PLI" target="_blank" rel="noopener"><span><small>VIDEO</small>Jungroan — Cold DoT Spellslinger guide ↗</span></a>
+              <a class="qa-source-link" href="https://mobalytics.gg/poe/profile/jungroan/builds/coldslinger-x-cold-dot-elementalist-league-start-guide" target="_blank" rel="noopener"><span><small>GUIDE</small>Jungroan — письменная progression ↗</span></a>
+              <a class="qa-source-link" href="https://pobb.in/AadCGMhml9fa" target="_blank" rel="noopener"><span><small>POB</small>Jungroan — Cold DoT progression ↗</span></a>
+              <a class="qa-source-link" href="https://www.reddit.com/r/PathOfExileBuilds/comments/1v3n9l6/cold_dot_vs_worb_vs_ignite_ele/" target="_blank" rel="noopener"><span><small>THREAD</small>Cold DoT vs WOrb vs Ignite — опыт игроков ↗</span></a>
+              <a class="qa-source-link" href="https://www.reddit.com/r/PathOfExileBuilds/comments/1v3d2ay/worb_league_starter_discuss/" target="_blank" rel="noopener"><span><small>THREAD</small>WOrb starter — non-charge и цена hype ↗</span></a>
+              <a class="qa-source-link" href="https://www.pathofexile.com/forum/view-thread/3985332" target="_blank" rel="noopener"><span><small>PRIMARY</small>Официальные patch notes 3.29 ↗</span></a>
+            </div>
+          </section>
+        </div>
+      </article>
     </div>
   </main>
 
@@ -3178,7 +3324,7 @@
     syncStickyControls();
 
     function setReportView(view, { updateUrl = true, scroll = false } = {}) {
-      const nextView = ['gpt', 'gpt2', 'gpt3', 'fubgun'].includes(view) ? view : 'gpt';
+      const nextView = ['gpt', 'gpt2', 'gpt3', 'fubgun', 'qa'].includes(view) ? view : 'gpt';
       document.body.dataset.reportView = nextView;
       reportTabs.forEach(tab => {
         const selected = tab.dataset.reportView === nextView;
@@ -3186,8 +3332,8 @@
         tab.tabIndex = selected ? 0 : -1;
       });
       reportPanels.forEach(panel => { panel.hidden = panel.dataset.reportPanel !== nextView; });
-      skipLink.href = nextView === 'fubgun' ? '#fubgun-ranking' : nextView === 'gpt3' ? '#gpt3-ranking' : nextView === 'gpt2' ? '#gpt2-ranking' : '#ranking';
-      document.title = nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : nextView === 'gpt3' ? 'PoE 3.29 — GPT version 3' : nextView === 'gpt2' ? 'PoE 3.29 — GPT version 2' : 'PoE 3.29 — что стартовать';
+      skipLink.href = nextView === 'qa' ? '#qa-winorb' : nextView === 'fubgun' ? '#fubgun-ranking' : nextView === 'gpt3' ? '#gpt3-ranking' : nextView === 'gpt2' ? '#gpt2-ranking' : '#ranking';
+      document.title = nextView === 'qa' ? 'PoE 3.29 — Cold DoT или Winter Orb?' : nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : nextView === 'gpt3' ? 'PoE 3.29 — GPT version 3' : nextView === 'gpt2' ? 'PoE 3.29 — GPT version 2' : 'PoE 3.29 — что стартовать';
       requestAnimationFrame(() => {
         syncStickyControls();
         renderActiveScrollMinimap();
