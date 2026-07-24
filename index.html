@@ -157,7 +157,7 @@
     .ascendancy-filter { min-width: 0; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); transition: margin .22s var(--ease), padding .22s var(--ease); }
     .ascendancy-rail { display: flex; flex-wrap: wrap; gap: 12px 16px; min-width: 0; }
     .ascendancy-group { flex: 0 0 auto; }
-    .ascendancy-class { display: block; margin: 0 0 6px; padding: 0 4px; border: 0; color: var(--faint); background: transparent; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
+    .ascendancy-class { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 6px; padding: 0 4px; border: 0; color: var(--faint); background: transparent; font: inherit; font-size: 14px; text-align: left; cursor: pointer; }
     .ascendancy-class[aria-pressed="true"] { color: var(--ink); }
     .ascendancy-class[aria-pressed="mixed"] { color: var(--muted); }
     .ascendancy-class:disabled { cursor: not-allowed; opacity: .42; }
@@ -181,14 +181,43 @@
     .ascendancy-option[aria-pressed="true"] { z-index: 1; color: var(--ink); background: var(--surface-3); border-color: var(--primary-pale); }
     .ascendancy-option:disabled { color: var(--faint); cursor: not-allowed; opacity: .42; }
     .ascendancy-option:disabled img { filter: grayscale(1); }
-    .ascendancy-option > span:last-child { display: inline-block; max-width: 150px; overflow: hidden; opacity: 1; transition: max-width .18s var(--ease), opacity .12s ease; }
+    .ascendancy-name { display: inline-block; max-width: 150px; overflow: hidden; opacity: 1; transition: max-width .18s var(--ease), opacity .12s ease; }
+    .filter-count {
+      display: inline-grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 20px;
+      min-width: 20px;
+      height: 20px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 50%;
+      color: var(--faint);
+      background: var(--surface-3);
+      font: 600 11px/1 Bahnschrift, sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
+    .ascendancy-option .filter-count { margin-left: 1px; }
     .ascendancy-thumb { position: relative; display: grid; place-items: center; flex: 0 0 36px; width: 36px; height: 36px; overflow: hidden; color: var(--faint); background: var(--surface-3); font: 700 .74rem/1 Bahnschrift, sans-serif; clip-path: polygon(12% 0, 88% 0, 100% 12%, 100% 88%, 88% 100%, 12% 100%, 0 88%, 0 12%); transition: width .18s var(--ease), height .18s var(--ease), flex-basis .18s var(--ease); }
     .ascendancy-thumb::before { content: attr(data-fallback); }
     .ascendancy-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .controls-wrap.is-stuck .ascendancy-filter { margin-top: 8px; padding-top: 8px; }
     .controls-wrap.is-stuck .ascendancy-rail { flex-wrap: nowrap; gap: 4px; }
     .controls-wrap.is-stuck .ascendancy-option { min-height: 36px; padding: 0; gap: 0; }
-    .controls-wrap.is-stuck .ascendancy-option > span:last-child { max-width: 0; opacity: 0; }
+    .controls-wrap.is-stuck .ascendancy-option + .ascendancy-option { margin-left: 4px; }
+    .controls-wrap.is-stuck .ascendancy-name { max-width: 0; opacity: 0; }
+    .controls-wrap.is-stuck .ascendancy-option .filter-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      z-index: 2;
+      width: 18px;
+      min-width: 18px;
+      height: 18px;
+      padding: 0;
+      background: var(--surface);
+      font-size: 10px;
+    }
 
     .rank-list { margin-top: 28px; border-top: 1px solid var(--line); }
     .build {
@@ -2996,16 +3025,49 @@
       return alternatives[build.rank] || [fallback(build)];
     }
 
-    function initAscendancyFilter(root, availableAscendancies, activeAscendancies, onChange) {
+    function filterCountsFor(buildList, alternatives, fallback) {
+      const perBuild = buildList.map(build => [...new Set(ascendanciesFor(build, alternatives, fallback))]);
+      const ascendancy = new Map();
+      perBuild.forEach(ascendancies => {
+        ascendancies.forEach(value => ascendancy.set(value, (ascendancy.get(value) || 0) + 1));
+      });
+      return { perBuild, ascendancy };
+    }
+
+    function filterCountLabel(count) {
+      const word = count === 1 ? 'билд' : count >= 2 && count <= 4 ? 'билда' : 'билдов';
+      return `${count} ${word}`;
+    }
+
+    function filterCountBadge(count) {
+      return `<span class="filter-count" aria-hidden="true">${count}</span>`;
+    }
+
+    function initAscendancyFilter(root, filterCounts, activeAscendancies, onChange) {
       const ascendancyButtons = [...root.querySelectorAll('.ascendancy-option')];
       const classButtons = [...root.querySelectorAll('.ascendancy-class')];
 
       ascendancyButtons.forEach(button => {
-        const label = button.lastElementChild.textContent.trim();
-        button.disabled = !availableAscendancies.has(button.dataset.ascendancy);
-        button.setAttribute('aria-label', label);
+        const name = button.lastElementChild;
+        const label = name.textContent.trim();
+        const count = filterCounts.ascendancy.get(button.dataset.ascendancy) || 0;
+        name.classList.add('ascendancy-name');
+        button.insertAdjacentHTML('beforeend', filterCountBadge(count));
+        button.disabled = count === 0;
+        button.setAttribute('aria-label', `${label}: ${filterCountLabel(count)}`);
         button.setAttribute('aria-pressed', 'false');
-        button.title = button.disabled ? `${label} — нет билдов в текущем рейтинге` : label;
+        button.title = `${label} — ${filterCountLabel(count)}`;
+      });
+
+      classButtons.forEach(button => {
+        const label = button.textContent.trim();
+        const classAscendancies = button.dataset.ascendancies.split(' ');
+        const count = filterCounts.perBuild.filter(buildAscendancies =>
+          buildAscendancies.some(ascendancy => classAscendancies.includes(ascendancy))
+        ).length;
+        button.insertAdjacentHTML('beforeend', filterCountBadge(count));
+        button.setAttribute('aria-label', `${label}: ${filterCountLabel(count)}`);
+        button.title = `${label} — ${filterCountLabel(count)}`;
       });
 
       const enabledAscendancies = new Set(
@@ -3020,7 +3082,6 @@
           const ascendancies = button.dataset.ascendancies.split(' ').filter(ascendancy => enabledAscendancies.has(ascendancy));
           const selectedCount = ascendancies.filter(ascendancy => activeAscendancies.has(ascendancy)).length;
           button.disabled = ascendancies.length === 0;
-          button.title = button.disabled ? `${button.textContent.trim()} — нет билдов в текущем рейтинге` : button.textContent.trim();
           button.setAttribute('aria-pressed', selectedCount === 0 ? 'false' : selectedCount === ascendancies.length ? 'true' : 'mixed');
         });
       }
@@ -3044,23 +3105,15 @@
       sync();
     }
 
-    const gptAvailableAscendancies = new Set(
-      builds.flatMap(build => ascendanciesFor(build, buildAscendancyAlternatives, item => buildArt[item.rank].ascendancy))
-    );
-    const gpt2AvailableAscendancies = new Set(
-      gpt2Builds.flatMap(build => ascendanciesFor(build, gpt2BuildAscendancyAlternatives, item => item.art.ascendancy))
-    );
-    const gpt3AvailableAscendancies = new Set(
-      gpt3Builds.flatMap(build => ascendanciesFor(build, gpt3BuildAscendancyAlternatives, item => item.art.ascendancy))
-    );
-    const fubgunAvailableAscendancies = new Set(
-      fubgunBuilds.flatMap(build => ascendanciesFor(build, fubgunBuildAscendancyAlternatives, item => item.art.ascendancy))
-    );
+    const gptFilterCounts = filterCountsFor(builds, buildAscendancyAlternatives, item => buildArt[item.rank].ascendancy);
+    const gpt2FilterCounts = filterCountsFor(gpt2Builds, gpt2BuildAscendancyAlternatives, item => item.art.ascendancy);
+    const gpt3FilterCounts = filterCountsFor(gpt3Builds, gpt3BuildAscendancyAlternatives, item => item.art.ascendancy);
+    const fubgunFilterCounts = filterCountsFor(fubgunBuilds, fubgunBuildAscendancyAlternatives, item => item.art.ascendancy);
 
-    initAscendancyFilter(document.querySelector('#gpt-report .ascendancy-filter'), gptAvailableAscendancies, activeAscendancies, render);
-    initAscendancyFilter(document.querySelector('#gpt2-report .ascendancy-filter'), gpt2AvailableAscendancies, gpt2ActiveAscendancies, renderGpt2);
-    initAscendancyFilter(document.querySelector('#gpt3-report .ascendancy-filter'), gpt3AvailableAscendancies, gpt3ActiveAscendancies, renderGpt3);
-    initAscendancyFilter(document.querySelector('#fubgun-report .ascendancy-filter'), fubgunAvailableAscendancies, fubgunActiveAscendancies, renderFubgun);
+    initAscendancyFilter(document.querySelector('#gpt-report .ascendancy-filter'), gptFilterCounts, activeAscendancies, render);
+    initAscendancyFilter(document.querySelector('#gpt2-report .ascendancy-filter'), gpt2FilterCounts, gpt2ActiveAscendancies, renderGpt2);
+    initAscendancyFilter(document.querySelector('#gpt3-report .ascendancy-filter'), gpt3FilterCounts, gpt3ActiveAscendancies, renderGpt3);
+    initAscendancyFilter(document.querySelector('#fubgun-report .ascendancy-filter'), fubgunFilterCounts, fubgunActiveAscendancies, renderFubgun);
 
     const stickyControlsMedia = window.matchMedia('(min-width: 761px)');
     const syncStickyControls = () => {
