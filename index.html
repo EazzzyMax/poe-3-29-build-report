@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
   <meta charset="utf-8">
@@ -454,8 +454,11 @@
       .topbar-inner { gap: 10px; }
       .brand-cluster { width: 100%; justify-content: space-between; gap: 10px; }
       .wordmark, .freshness { display: none; }
-      .version-tabs { width: 100%; }
-      .version-tab { flex: 1 1 0; padding-inline: 7px; font-size: .71rem; white-space: nowrap; }
+      .version-tabs { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .version-tab { min-width: 0; padding-inline: 7px; font-size: .75rem; white-space: nowrap; }
+      .version-tab + .version-tab { border-left: 1px solid var(--line); }
+      .version-tab:nth-child(3) { border-left: 0; border-top: 1px solid var(--line); }
+      .version-tab:nth-child(4) { border-top: 1px solid var(--line); }
       .section-heading { grid-template-columns: 1fr; gap: 22px; }
       .version-delta { margin-top: -4px; }
       .delta-grid { grid-template-columns: 1fr; }
@@ -498,10 +501,11 @@
         <div class="version-tabs" role="tablist" aria-label="Версия рейтинга">
           <button class="version-tab" type="button" role="tab" id="gpt-tab" aria-controls="gpt-report" aria-selected="true" data-report-view="gpt">GPT version</button>
           <button class="version-tab" type="button" role="tab" id="gpt2-tab" aria-controls="gpt2-report" aria-selected="false" tabindex="-1" data-report-view="gpt2">GPT version 2</button>
+          <button class="version-tab" type="button" role="tab" id="gpt3-tab" aria-controls="gpt3-report" aria-selected="false" tabindex="-1" data-report-view="gpt3">GPT version 3</button>
           <button class="version-tab" type="button" role="tab" id="fubgun-tab" aria-controls="fubgun-report" aria-selected="false" tabindex="-1" data-report-view="fubgun">Fubgun version</button>
         </div>
       </div>
-      <div class="freshness"><span class="pulse" aria-hidden="true"></span>Срез: 22.07.2026</div>
+      <div class="freshness"><span class="pulse" aria-hidden="true"></span>Срез v3: 24.07.2026</div>
     </div>
   </header>
 
@@ -651,6 +655,59 @@
       </section>
     </div>
 
+    <div class="report-view" id="gpt3-report" role="tabpanel" aria-labelledby="gpt3-tab" data-report-panel="gpt3" hidden>
+      <section class="section" id="gpt3-ranking" aria-labelledby="gpt3-ranking-title">
+        <div class="shell">
+          <div class="section-heading">
+            <h2 id="gpt3-ranking-title">Рейтинг стартеров v3</h2>
+            <p>Финальный предзапусковой срез 24 июля: новые авторские тирлисты, законченные гайды, PoB из описаний и свежие обсуждения Reddit сведены в практический рейтинг первого персонажа. GPT version и GPT version 2 сохранены без изменений.</p>
+          </div>
+
+          <details class="version-delta" open>
+            <summary>Что нового появилось после GPT version 2</summary>
+            <div class="delta-body">
+              <p class="delta-lead">V3 учитывает материалы, опубликованные 22–24 июля: тирлист Spicysushi, три финальных старта Ruetoo, новые гайды Zizaran / Goratha / BalorMage / PhazePlays и замечания сообщества к спорным progression-маршрутам. Score по-прежнему оценивает шанс получить хороший первый персонаж, а не максимальный PoB DPS.</p>
+              <div class="delta-grid">
+                <div class="delta-card up"><span>Главный подъём melee</span><strong>Earthshatter: #5 → #3</strong><p>Fubgun ставит slams вторыми, Spicysushi относит Earthshatter к A-tier и отдельно называет его одним из лучших билдов именно под Allflame. Риск остаётся только в warcry-ритме.</p></div>
+                <div class="delta-card up"><span>Winter Orb уже не один hype</span><strong>Winter Orb: #11 → #4</strong><p>Ruetoo опубликовал маршрут без обязательного раннего power-charge stacking, Jungroan показал SSF-прогон до камней менее чем за пять часов, а Phaze / Fubgun / Zizaran закрыли разные варианты развития.</p></div>
+                <div class="delta-card"><span>Шесть новых карточек</span><strong>26 → 32 билда</strong><p>Добавлены Elemental Hit Slayer, Phys DoT Elementalist, Essence Drain + Contagion, Holy Relic of Conviction, Explosive Arrow Champion и Arctic Salvo.</p></div>
+                <div class="delta-card up"><span>Миньоны разделены честнее</span><strong>Holy Relic сразу на #14</strong><p>У BalorMage появился отдельный 3.29 разбор, письменный гайд и свежий PoB. Mixed army остаётся выше как более прямой первый minion build, но больше не представляет весь рынок миньонов в одиночку.</p></div>
+                <div class="delta-card"><span>Новые сильные маршруты Ruetoo</span><strong>Ele Hit #7 · Phys DoT #10</strong><p>Оба билда получили не только место в тирлисте, но и пятиступенчатую progression-логику. Phys DoT особенно интересен как менее перегретый mapper с переходом из Cold DoT.</p></div>
+                <div class="delta-card caution"><span>Специалист, не универсал</span><strong>CWS уточнён, но не завышен</strong><p>После отдельного аудита Reddit и гайдов уверенность в Ultimatum / Simulacrum выросла. В общем рейтинге он остаётся на #20: безопасный путь — RF до камней, затем полный CWS-переход.</p></div>
+                <div class="delta-card caution"><span>Arctic Salvo с дисконтом</span><strong>Новый, но только #27</strong><p>PhazePlays после финальных правок снизил расчётный burst и поменял leveling. Полный PoB есть, но live-proof ещё нет — поэтому идея присутствует в рейтинге, не вытесняя проверенные старты.</p></div>
+                <div class="delta-card caution"><span>Не всё из индекса повышено</span><strong>Spectres / Carrion остаются за чертой</strong><p>Community index даёт варианты, но по Carrion уже есть предметная критика устаревшей ранней прогрессии, а Spectres сильнее зависят от конкретного setup. Одного количества ссылок недостаточно для высокой личной рекомендации.</p></div>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="controls-sentinel" aria-hidden="true"></div>
+        <div class="controls-wrap">
+          <div class="shell controls" role="group" aria-label="Фильтры рейтинга GPT version 3">
+            <div class="controls-main">
+              <label class="search"><span class="skip-link">Поиск билда в GPT version 3</span><input id="gpt3-search" type="search" placeholder="Умение, класс или автор…" autocomplete="off"></label>
+              <label><span class="skip-link">Сортировка GPT version 3</span><select class="sort-select" id="gpt3-sort">
+                <option value="rank">По общему рейтингу</option>
+                <option value="safety">По надёжности</option>
+                <option value="map">По маппингу</option>
+                <option value="boss">По боссам</option>
+                <option value="budget">По дешевизне</option>
+              </select></label>
+              <span class="result-count" id="gpt3-count" aria-live="polite">32 билда</span>
+            </div>
+            <div class="ascendancy-filter" role="group" aria-label="Фильтр GPT version 3 по аскенданси; можно выбрать несколько">
+              <div class="ascendancy-rail" id="gpt3-ascendancy-rail"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="shell">
+          <div class="rank-list" id="gpt3-build-list"></div>
+          <p class="empty" id="gpt3-empty">По этому фильтру ничего не осталось.</p>
+        </div>
+      </section>
+    </div>
+
     <div class="report-view" id="fubgun-report" role="tabpanel" aria-labelledby="fubgun-tab" data-report-panel="fubgun" hidden>
       <section class="section" id="fubgun-ranking" aria-labelledby="fubgun-ranking-title">
         <div class="shell">
@@ -683,7 +740,7 @@
 
   <footer>
     <div class="shell footer-inner">
-      <span>Собрано для личного выбора league starter · 22 июля 2026</span>
+      <span>Собрано для личного выбора league starter · обновлено 24 июля 2026</span>
       <span>Path of Exile и все названия принадлежат Grinding Gear Games.</span>
       <span class="asset-credit">Визуальные ассеты: игровые портреты GGG из <a href="https://github.com/PathOfBuildingCommunity/PathOfBuilding" target="_blank" rel="noopener">Path of Building Community</a>; цельные квадратные иконки умений — из <a href="https://www.poewiki.net/wiki/Category:Skill_gem_icons" target="_blank" rel="noopener">PoE Wiki</a>.</span>
     </div>
@@ -1638,6 +1695,420 @@
       })
     ];
 
+    function v3RefreshedBuild(name, overrides = {}) {
+      const source = gpt2Builds.find(build => build.name === name);
+      if (!source) throw new Error(`Не найден билд GPT v2: ${name}`);
+      const { extraSources = [], ...next } = overrides;
+      return {
+        ...source,
+        ...next,
+        art: { ...source.art, ...(next.art || {}) },
+        tags: next.tags || source.tags.map(tag => [...tag]),
+        pros: next.pros || [...source.pros],
+        cons: next.cons || [...source.cons],
+        metrics: { ...source.metrics, ...(next.metrics || {}) },
+        sources: next.sources || [...source.sources.map(item => [...item]), ...extraSources]
+      };
+    }
+
+    const gpt3Builds = [
+      v3RefreshedBuild('Kinetic Fusillade Totems', {
+        rank: 1, score: 94,
+        tags: [['Palsteron full guide','proven'], ['Fubgun #1','proven'], ['Spicysushi A','proven']],
+        verdict: 'Самый доказанный универсальный старт остаётся первым. После nerf у него всё ещё есть полный zero→4 stones маршрут, сильный bossing и несколько независимых подтверждений; главный вопрос — переносишь ли ты ballista-playstyle.',
+        metrics: { safety: 91, map: 91, boss: 94, budget: 91, guide: 98 },
+        analysis: 'V3 не нашла причины снимать лидера: Fubgun ставит Fusillade первым, Spicysushi оставляет в A-tier и называет самым ровным вариантом почти под любой контент, а Palsteron закончил progression-гайд уже после правок. Возможная цена Wilma’s и популярность билда учтены, но каркас работает и до ключевых покупок.',
+        extraSources: [
+          ['VIDEO','Spicysushi · итоговый tier list 3.29','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · таблица билдов и ссылок','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0'],
+          ['THREAD','Reddit · обсуждение итогового tier list','https://www.reddit.com/r/PathOfExileBuilds/comments/1v47m92/spicysushis_league_starter_tier_list/']
+        ]
+      }),
+      v3RefreshedBuild('Spellslinger → Cold DoT', {
+        rank: 2, score: 93,
+        tags: [['4:48 two-stone test','proven'], ['несколько gem buff-ов','proven'], ['Spicysushi A','proven']],
+        verdict: 'Лучший новый caster-маршрут для пустой экономики: Spellslinger закрывает кампанию и ранний Atlas, затем билд переходит в self-cast Cold DoT. Урон растёт от уровней gem, а финальные правки усилили сразу несколько используемых кнопок.',
+        metrics: { safety: 93, map: 91, boss: 82, budget: 94, guide: 95 },
+        analysis: 'Jungroan показал две камня за 4:48 ещё до финальных buff-ов, а Spicysushi поставил Cold DoT в A-tier. Это не самый высокий endgame ceiling списка, зато один из редких свежих билдов, где практический прогон, хороший guide и численные изменения патча смотрят в одну сторону.',
+        extraSources: [
+          ['VIDEO','Spicysushi · Cold DoT в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · таблица tier list','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0']
+        ]
+      }),
+      v3RefreshedBuild('Earthshatter', {
+        rank: 3, score: 92,
+        author: 'Woolie',
+        className: 'Berserker / Juggernaut · slam / warcries',
+        art: { ascendancy: 'berserker', label: 'Berserker' },
+        tags: [['Fubgun: slams #2','proven'], ['Spicysushi A','proven'], ['Allflame pick','proven']],
+        verdict: 'Самый сильный строгий melee-старт v3. Бюджетная редкая двуручка, отличный damage по камням и особенно хорошее взаимодействие с плотной Allflame-механикой перевешивают неудобство warcry-ротации.',
+        metrics: { safety: 90, map: 87, boss: 94, budget: 92, guide: 94 },
+        analysis: 'Подъём #5→#3 основан на совпадении независимых оценок: Fubgun ставит slams вторыми за прогрессию до четырёх камней, Spicysushi даёт Earthshatter A-tier и отдельно называет его одним из лучших билдов под саму лигу. Berserker быстрее, Juggernaut безопаснее; карта показывает оба варианта.',
+        extraSources: [
+          ['VIDEO','Fubgun · slams на втором месте','https://www.youtube.com/watch?v=lOnHH393bhQ'],
+          ['VIDEO','Spicysushi · Earthshatter A-tier и Allflame pick','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · таблица tier list','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0']
+        ]
+      }),
+      v3RefreshedBuild('Winter Orb', {
+        rank: 4, score: 91,
+        author: 'Ruetoo + Jungroan + Fubgun',
+        className: 'Elementalist · channeling cold / Herald of Ice',
+        art: { ascendancy: 'elementalist', label: 'Elementalist' },
+        tags: [['Ruetoo non-PC route','proven'], ['SSF <5h stones','proven'], ['рынок перегрет','hype']],
+        verdict: 'Теперь это не только модный endgame caster, а реальный быстрый starter с несколькими маршрутами. Новая версия Ruetoo снимает обязательность раннего power-charge gear, а Jungroan подтвердил скорость SSF-прогоном.',
+        metrics: { safety: 87, map: 98, boss: 84, budget: 76, guide: 96 },
+        analysis: 'V2 штрафовала билд за дорогой power-charge рынок. В v3 Ruetoo дал более дешёвую progression-линию через Scornful Herald / Calamitous Vision, Jungroan показал Eater/Exarch менее чем за пять часов, а несколько авторов закрыли leveling. Риск цены caster gear остаётся, поэтому Winter Orb не обгоняет три более дешёвых каркаса.',
+        extraSources: [
+          ['VIDEO','Ruetoo · Winter Orb в финальном top 3','https://www.youtube.com/watch?v=v4eOWYUa9Wo'],
+          ['SHEET','Ruetoo · progression sheet, PoB и варианты','https://docs.google.com/spreadsheets/d/e/2PACX-1vRZhV8GXd4Ua4ers19J2V8xw8ODO_3hsPGb5OnOD4ptJgBSoLZasXMb2HfaKh37NVCHFZX3pVIcqIDi/pubhtml'],
+          ['VIDEO','Jungroan · SSF Eater/Exarch менее чем за 5 часов','https://www.youtube.com/watch?v=xpsV4hSIwqs'],
+          ['VIDEO','Spicysushi · Winter Orb в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['THREAD','Reddit · рынок и ожидаемая популярность WOrb','https://www.reddit.com/r/PathOfExileBuilds/comments/1v47m92/spicysushis_league_starter_tier_list/']
+        ]
+      }),
+      v3RefreshedBuild('Penance Brand Ignite', {
+        rank: 5, score: 89,
+        tags: [['Goratha HC shell','proven'], ['Zeeboub SC route','proven'], ['Spicysushi B','']],
+        verdict: 'По-прежнему самый спокойный универсальный ignite: два сильных автора дают разные trade-версии, билд не зависит от новой непроверенной механики и уверенно маппит. Место ниже — из-за среднего bossing, а не из-за нового nerf.',
+        metrics: { safety: 91, map: 93, boss: 70, budget: 87, guide: 96 },
+        extraSources: [
+          ['VIDEO','Spicysushi · итоговая оценка Penance Brand','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['INDEX','Community index · обе версии Penance Brand','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      }),
+      v3RefreshedBuild('Static Strike', {
+        rank: 6, score: 88,
+        tags: [['Alohaa full route','proven'], ['Spicysushi A','proven'], ['snapshot checklist','hype']],
+        verdict: 'Один удар превращается в мобильный clear благодаря snapshot-механике. Результат очень силён для melee, но требует точно собрать cooldown / exert checklist — это менее прощающе, чем обычный slam.',
+        metrics: { safety: 84, map: 94, boss: 88, budget: 86, guide: 96 },
+        extraSources: [
+          ['VIDEO','Spicysushi · Static Strike в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['INDEX','Community index · четыре Static Strike маршрута','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      }),
+      {
+        rank: 7, score: 87, risk: false,
+        name: 'Elemental Hit Slayer', author: 'Ruetoo',
+        className: 'Slayer · elemental strike / crit transition',
+        art: { ascendancy: 'slayer', label: 'Slayer', skill: 'elemental-hit', skillFile: 'elemental-hit.webp', skillLabel: 'Elemental Hit' },
+        tags: [['Ruetoo top 3','proven'], ['Spicysushi A','proven'], ['5-stage progression','proven']],
+        verdict: 'Новый melee-all-rounder с очень простым стартом и огромным потолком. Небольшой численный nerf и исправление AoE-багов уже учтены Ruetoo; Spectral Throw → Elemental Hit → crit даёт понятные ступени без слепого прыжка в дорогой gear.',
+        pros: ['Elemental Hit доступен с 12 уровня', 'Slayer даёт leech и безопасный melee shell', 'пять опубликованных стадий от старта до high-end'],
+        cons: ['после исправления AoE clear стал уже', 'высокий потолок требует дорогой claw / Squire', 'не такой дешёвый ранний bossing, как KF или slams'],
+        metrics: { safety: 87, map: 89, boss: 88, budget: 82, guide: 94 },
+        analysis: 'Ruetoo оценивает суммарную потерю урона примерно в 17%, а AoE — примерно в 20%, но считает каркас всё ещё сильным и показывает пять этапов развития вплоть до очень дорогого crit-варианта. Spicysushi независимо оставляет Elemental Hit в A-tier. Это редкий новый кандидат, где nerf разобран автором, а не замолчан.',
+        sources: [
+          ['VIDEO','Ruetoo · Elemental Hit в финальном top 3','https://www.youtube.com/watch?v=v4eOWYUa9Wo'],
+          ['SHEET','Ruetoo · пять стадий, PoB и заметки','https://docs.google.com/spreadsheets/d/e/2PACX-1vRZhV8GXd4Ua4ers19J2V8xw8ODO_3hsPGb5OnOD4ptJgBSoLZasXMb2HfaKh37NVCHFZX3pVIcqIDi/pubhtml'],
+          ['VIDEO','Spicysushi · Elemental Hit в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · итоговая таблица','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0']
+        ]
+      },
+      v3RefreshedBuild('Boneshatter', {
+        rank: 8, score: 87,
+        author: 'Zizaran',
+        className: 'Juggernaut · strike / trauma',
+        art: { ascendancy: 'juggernaut', label: 'Juggernaut' },
+        tags: [['Zizaran 3.29 guide','proven'], ['safe nonfailure','proven'], ['не fastest farmer','']],
+        verdict: 'Самый простой толстый melee-ответ для первого персонажа. Он не лидер по farm ceiling, зато почти не зависит от рынка, имеет полный актуальный guide и редко застревает до камней.',
+        metrics: { safety: 95, map: 76, boss: 83, budget: 92, guide: 98 },
+        analysis: 'Community index вынес Zizaran Juggernaut в безопасные melee-рекомендации. В обсуждении есть важная поправка: Boneshatter иногда переоценивают из-за ностальгии, а Woolie Champion зависит от условного нового unique. Поэтому v3 оставляет только надёжную Juggernaut-линию и не продаёт билд как самый быстрый.',
+        extraSources: [
+          ['VIDEO','Zizaran · финальный Boneshatter guide 3.29','https://www.youtube.com/watch?v=ThANqlWYJ98'],
+          ['GUIDE','Zizaran · письменный Maxroll guide','https://maxroll.gg/poe/build-guides/boneshatter-juggernaut-league-starter'],
+          ['POB','Zizaran · актуальный progression PoB','https://maxroll.gg/poe/pob/tcjqpe0t'],
+          ['THREAD','Reddit · safe pick и критика переоценки','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      }),
+      v3RefreshedBuild('Righteous Fire', {
+        rank: 9, score: 86,
+        tags: [['Pohx ecosystem','proven'], ['Spicysushi Allflame pick','proven'], ['slow bossing','hype']],
+        verdict: 'Самый безошибочный путь по Atlas и лучший фундамент для последующего CWS. Allflame хорошо награждает плотный устойчивый clear, но медленный bossing не позволяет поставить RF выше сильных four-stone билдов.',
+        metrics: { safety: 96, map: 88, boss: 59, budget: 87, guide: 100 },
+        extraSources: [
+          ['VIDEO','Spicysushi · RF как один из лучших Allflame стартов','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['THREAD','Reddit · beginner-рекомендации и ограничение по Maven','https://www.reddit.com/r/pathofexile/comments/1v2j6gl/can_anyone_recommend_a_329_league_starter_for_a/']
+        ]
+      }),
+      {
+        rank: 10, score: 86, risk: false,
+        name: 'Phys DoT Elementalist', author: 'Ruetoo',
+        className: 'Elementalist · Reap / Exsanguinate autobomber',
+        art: { ascendancy: 'elementalist', label: 'Elementalist', skill: 'reap', skillFile: 'reap.webp', skillLabel: 'Reap / Exsanguinate' },
+        tags: [['Ruetoo top 3','proven'], ['Spicysushi A','proven'], ['underplayed market','proven']],
+        verdict: 'Сильнейший новый менее перегретый mapper v3: стартует через Cold DoT, затем переходит в Poet’s Pen Reap / Exsanguinate и позже — в почти autobomber. У апгрейдов есть понятный порядок, а не один дорогой обязательный pivot.',
+        pros: ['отличный clear и постоянный DoT uptime', 'Cold DoT закрывает слабый ранний участок', 'меньше рыночной конкуренции, чем у Winter Orb'],
+        cons: ['несколько важных transition-предметов', 'гайды сосредоточены у одного автора', 'финальный autobomber сложнее базовой версии'],
+        metrics: { safety: 84, map: 95, boss: 82, budget: 82, guide: 92 },
+        analysis: 'Ruetoo строит маршрут через Spellslinger Cold DoT, Poet’s Pen и golem-пакет Dark Monarch / Primordial Chain / Congregation, затем добавляет Bladefall of Trarthus и explosion-tech. Spicysushi независимо ставит Phys DoT в A-tier. Рынок ключевых unique — главный оставшийся риск.',
+        sources: [
+          ['VIDEO','Ruetoo · Phys DoT в финальном top 3','https://www.youtube.com/watch?v=v4eOWYUa9Wo'],
+          ['SHEET','Ruetoo · progression, PoB и ключевые переходы','https://docs.google.com/spreadsheets/d/e/2PACX-1vRZhV8GXd4Ua4ers19J2V8xw8ODO_3hsPGb5OnOD4ptJgBSoLZasXMb2HfaKh37NVCHFZX3pVIcqIDi/pubhtml'],
+          ['VIDEO','Spicysushi · Phys DoT в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · итоговая таблица','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0']
+        ]
+      },
+      v3RefreshedBuild('Chaos Minion Army', {
+        rank: 11, score: 85,
+        tags: [['лучший первый army build','proven'], ['minion no-pause buff','proven'], ['не весь minion рынок','']],
+        verdict: 'Остаётся лучшим вариантом именно для знакомства с постоянной армией миньонов: staged-прогрессия, хороший boss uptime и мало обязательных покупок. Но v3 больше не считает его автоматически сильнее всех остальных minion-архетипов.',
+        metrics: { safety: 89, map: 84, boss: 88, budget: 89, guide: 87 },
+        analysis: 'Community index подтверждает mixed army среди безопасных minion-стартов, а патч убирает паузы между атаками обычных миньонов. При этом предметная критика Carrion Golem-гайда показывает, почему нельзя переносить доверие к одному Helm Breaker маршруту на весь каталог. Здесь оценён именно mixed army, а Holy Relic вынесен отдельно.',
+        extraSources: [
+          ['THREAD','Reddit · minion-раздел и обсуждение качества progression','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      }),
+      v3RefreshedBuild('Storm Burst Totems', {
+        rank: 12, score: 85,
+        tags: [['Spicysushi A','proven'], ['Fubgun boss pick','proven'], ['totem playstyle','hype']],
+        verdict: 'Очень сильный бюджетный bosser с одной из лучших документаций среди spell totems. Он ниже KF только из-за менее быстрого mapping и прямого nerf, который Aer0 уже учёл в актуальных материалах.',
+        metrics: { safety: 86, map: 78, boss: 96, budget: 91, guide: 96 },
+        extraSources: [
+          ['VIDEO','Spicysushi · Storm Burst Totems в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · итоговая таблица','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0']
+        ]
+      }),
+      v3RefreshedBuild('Shield Crush', {
+        rank: 13, score: 84,
+        author: 'IlNino + ExiledCat',
+        className: 'Slayer / Berserker · armour / shield attack',
+        tags: [['два актуальных route','proven'], ['smooth 4 stones','proven'], ['mapping ceiling','hype']],
+        verdict: 'Практичнее, чем показывают строгие тирлисты: стартует на самом Shield Crush, не требует дорогой редкой пушки и имеет два полных актуальных маршрута. Компромисс — средний boss ceiling и ощутимая защита только после правильных покупок.',
+        metrics: { safety: 84, map: 91, boss: 75, budget: 91, guide: 96 },
+        analysis: 'Spicysushi ставит Shield Crush в C-tier, но несколько опытных игроков отдельно возражают: IlNino и ExiledCat показывают дешёвые four-stone линии. V3 поднимает билд, но не в топ-10: Emperor’s Vigilance может быть дорогим в первый день, Berserker midgame тоньше, а endgame остаётся mapper-oriented.',
+        extraSources: [
+          ['VIDEO','ExiledCat · Shield Crush Berserker 3.29','https://www.youtube.com/watch?v=LAAATs8mWb4'],
+          ['POB','ExiledCat · leveling / midgame PoB','https://pobb.in/PLhBSg9YWJVQ'],
+          ['POB','ExiledCat · budget explosions PoB','https://pobb.in/z93OAtgyXDK3'],
+          ['POB','ExiledCat · endgame explosions PoB','https://pobb.in/-Q4-Z3wq-GDS'],
+          ['VIDEO','IlNino · Shield Crush Slayer 3.29','https://youtu.be/BiorPV-Cv4E'],
+          ['THREAD','Reddit · спор с C-tier и практический опыт','https://www.reddit.com/r/PathOfExileBuilds/comments/1v47m92/spicysushis_league_starter_tier_list/']
+        ]
+      }),
+      {
+        rank: 14, score: 84, risk: false,
+        name: 'Holy Relic of Conviction', author: 'BalorMage',
+        className: 'Necromancer · trigger minion / poison',
+        art: { ascendancy: 'necromancer', label: 'Necromancer', skill: 'holy-relic', skillFile: 'holy-relic.webp', skillLabel: 'Summon Holy Relic of Conviction' },
+        tags: [['BalorMage update 3.29','proven'], ['all-content shell','proven'], ['quality breakpoints','hype']],
+        verdict: 'Лучший отдельный minion-all-rounder после mixed army: очень высокий uptime, плавные маленькие апгрейды и давно доказанный endgame. Вход сложнее обычной армии из-за transfigured gem и quality / cooldown breakpoints.',
+        pros: ['проверенный mapper и bosser одним персонажем', 'актуальные видео, письменный guide и PoB', '3.29 почти не ухудшила основной каркас'],
+        cons: ['нужен правильный trigger attack и transfigured gem', 'Dialla’s / Ashes breakpoints легко собрать неправильно', 'верхний scaling дороже mixed army'],
+        metrics: { safety: 86, map: 90, boss: 88, budget: 80, guide: 96 },
+        analysis: 'BalorMage выпустил отдельное обновление и считает билд фактически неизменённым; спор вокруг Dialla’s сводится к чтению нового общего quality-мода, а не к потере всего breakpoint. Reddit называет HRoC одним из лучших all-rounder миньонов, но честно отмечает зависимость от trans gem и ключевых quality-ступеней.',
+        sources: [
+          ['VIDEO','BalorMage · Holy Relic update для 3.29','https://www.youtube.com/watch?v=55YRrSHiHJk'],
+          ['GUIDE','BalorMage · письменный PoE Vault guide','https://www.poe-vault.com/guides/holy-relic-necromancer-build-guide'],
+          ['POB','BalorMage · актуальный 3.29 PoB','https://pobb.in/a2xd4fVo1bTS'],
+          ['INDEX','Community index · Holy Relic section','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/'],
+          ['THREAD','Reddit · HRoC в 3.29 и quality breakpoints','https://www.reddit.com/r/PathOfExileBuilds/comments/1uzvzun/hroc_starter_329/'],
+          ['THREAD','Reddit · сравнение minion all-rounder-ов','https://www.reddit.com/r/PathOfExileBuilds/comments/1undktl/witch_minion/']
+        ]
+      },
+      v3RefreshedBuild('Bleed Earthquake', {
+        rank: 15, score: 83,
+        tags: [['Zizaran full guide','proven'], ['Spicysushi bleed slams B','proven'], ['block mapper','proven']],
+        verdict: 'Толстый и понятный bleed mapper для тех, кто хочет slam без постоянного warcry-пианино. Он медленнее лидеров и не лучший ранний bosser, зато block и DoT дают большой запас ошибки.',
+        metrics: { safety: 92, map: 85, boss: 73, budget: 90, guide: 96 },
+        extraSources: [
+          ['VIDEO','Spicysushi · bleed slams в B-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · итоговая таблица','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0']
+        ]
+      }),
+      v3RefreshedBuild('Holy Flame Totem', {
+        rank: 16, score: 82,
+        tags: [['Aer0 full resources','proven'], ['дешёвый bosser','proven'], ['Spicysushi B','']],
+        verdict: 'Очень дешёвый и хорошо документированный totem-старт, который спокойно закрывает камни. Его ограничивают средний clear и нишевый feel, а не слабость чисел.',
+        metrics: { safety: 88, map: 77, boss: 89, budget: 94, guide: 95 },
+        extraSources: [
+          ['VIDEO','Spicysushi · Holy Flame Totem в B-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8']
+        ]
+      }),
+      {
+        rank: 17, score: 82, risk: false,
+        name: 'Essence Drain + Contagion', author: 'Goratha + Zizaran',
+        className: 'Occultist · chaos DoT / Spellslinger leveling',
+        art: { ascendancy: 'occultist', label: 'Occultist', skill: 'essence-drain', skillFile: 'essence-drain.webp', skillLabel: 'Essence Drain' },
+        tags: [['Goratha live starter','proven'], ['Zizaran full guide','proven'], ['single target TBD','hype']],
+        verdict: 'Сильный безопасный mapper и отличный Legion-кандидат: Spellslinger исправляет неприятный self-cast leveling, после чего Essence Drain + Contagion быстро распространяются по пачкам. Главная неизвестная — реальный single-target через Bane of Condemnation.',
+        pros: ['очень хороший chain-clear и постоянное движение', 'Goratha сам стартует билдом и обещает обновления', 'есть PoB и письменный Maxroll planner'],
+        cons: ['несколько кнопок на rare / boss', 'self-cast старт в тестах был слабым', 'дорогие charge-вещи нужны только позднему потолку, но заметно его поднимают'],
+        metrics: { safety: 85, map: 94, boss: 70, budget: 87, guide: 97 },
+        analysis: 'Zizaran и Goratha прямо рассказывают, что ранний self-cast тест не понравился, поэтому переходят на Spellslinger с 28 уровня и возвращаются к self-cast в maps. Это хороший знак качества гайда. Новый Bane of Condemnation может закрыть исторически слабый single-target ED, но до live-проверки score ограничен.',
+        sources: [
+          ['VIDEO','Goratha · video guide с Zizaran','https://www.youtube.com/watch?v=0YnVnhYCzy8'],
+          ['POB','Goratha · progression PoB','https://pobb.in/PfrGHW7YkQqU'],
+          ['GUIDE','Goratha · Maxroll planner','https://maxroll.gg/poe/planner/f9mek30t'],
+          ['INDEX','Community index · Essence Drain guide','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      },
+      v3RefreshedBuild('Poison SRS', {
+        rank: 18, score: 82,
+        author: 'Helm Breaker + BalorMage',
+        tags: [['два minion автора','proven'], ['no-pause minion buff','proven'], ['temporary minion loop','']],
+        verdict: 'Проверенный poison bosser с хорошим uptime и большим объёмом накопленных знаний. Он уступает Holy Relic и mixed army только по удобству целевого старта и количеству обязательных переходов.',
+        metrics: { safety: 86, map: 82, boss: 91, budget: 84, guide: 92 },
+        extraSources: [
+          ['INDEX','Community index · четыре актуальных SRS маршрута','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/'],
+          ['VIDEO','Spicysushi · SRS в B-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8']
+        ]
+      }),
+      v3RefreshedBuild('Cyclone Shockwave', {
+        rank: 19, score: 81,
+        tags: [['Sanavixx 3.29 route','proven'], ['Spicysushi B','proven'], ['smooth campaign→stones','proven']],
+        verdict: 'Лучший выбор, если нужен именно Cyclone-feel: урон в движении, понятная rare-weapon прогрессия и подтверждённые четыре камня. Ceiling ниже топовых melee, но документация теперь достаточно полная.',
+        metrics: { safety: 84, map: 85, boss: 81, budget: 86, guide: 94 },
+        extraSources: [
+          ['INDEX','Community index · Cyclone Shockwave guide','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/'],
+          ['VIDEO','Spicysushi · Cyclone Shockwave в B-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8']
+        ]
+      }),
+      v3RefreshedBuild('Cast when Stunned Chieftain', {
+        rank: 20, score: 80,
+        tags: [['Ultimatum specialist','proven'], ['RF→CWS safe route','proven'], ['не universal','hype']],
+        verdict: 'Отличный экономический specialist для Ultimatum / Simulacrum, но не честный универсальный starter. Практичный маршрут: RF закрывает кампанию и камни, затем полный Bloodnotch / Immutable Force переход в CWS.',
+        metrics: { safety: 80, map: 87, boss: 49, budget: 70, guide: 94 },
+        analysis: 'Отдельный аудит Reddit и тирлистов подтвердил: Fubgun направляет Ultimatum-игроков к Emiracle, а сообщество считает CWS живым и сильным именно в плотном контенте. Nerf Penance Mark с трёх phantasm до двух и цена защитного пакета не убивают билд, но делают агрессивный level-70 swap экспертным вариантом.',
+        extraSources: [
+          ['VIDEO','Fubgun · Ultimatum → CWS / Emiracle','https://www.youtube.com/watch?v=lOnHH393bhQ&t=826s'],
+          ['THREAD','Reddit · актуальное состояние Cast when Stunned','https://www.reddit.com/r/PathOfExileBuilds/comments/1v0qr8y/is_cast_on_stun_detonate_still_a_thing/'],
+          ['GUIDE','Lootkeeper · письменный CWS / «Квас» guide','https://guides.lootkeeper.com/poe/bild-kvas-cws'],
+          ['VIDEO','Русский обзор · CWS / «Квас»','https://www.youtube.com/watch?v=5b91AAgbkpE']
+        ]
+      }),
+      v3RefreshedBuild('Poisonous Concoction → Viper Mamba', {
+        rank: 21, score: 80,
+        tags: [['Spicysushi A','proven'], ['быстрый PConc старт','proven'], ['дорогой Mamba pivot','hype']],
+        verdict: 'PConc остаётся сильным ранним Assassin, но обещанный Mamba-endgame заметно сложнее прямых starters: Bino’s — редкая цель, а transition требует опыта с poison / Nightblade gearing.',
+        metrics: { safety: 78, map: 91, boss: 84, budget: 72, guide: 93 },
+        analysis: 'Высокая оценка Spicysushi подтверждает силу концепции, но Reddit отдельно предупреждает о сложности и цене перехода. Поэтому score описывает честную двухэтапную сборку: отличный PConc сначала, потенциально очень сильная Mamba позже — без обещания дешёвого мгновенного pivot.',
+        extraSources: [
+          ['VIDEO','Spicysushi · PConc → Mamba в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['THREAD','Reddit · обсуждение цены Bino’s и сложности pivot','https://www.reddit.com/r/PathOfExileBuilds/comments/1v47m92/spicysushis_league_starter_tier_list/']
+        ]
+      }),
+      v3RefreshedBuild('Vaal Ice Nova', {
+        rank: 22, score: 80,
+        tags: [['Legion mapper','proven'], ['Spicysushi B','proven'], ['нужны вложения','hype']],
+        verdict: 'Очень сильный визуальный mapper и потенциальный one-tap Legion билд, но это не появляется на голом gear. Для обычного Atlas надёжен, для рекламируемого экрана взрывов понадобится вложиться.',
+        metrics: { safety: 78, map: 95, boss: 69, budget: 72, guide: 91 },
+        extraSources: [
+          ['VIDEO','Spicysushi · Ice Nova в B-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['THREAD','Reddit · замечания к стоимости Legion-версии','https://www.reddit.com/r/PathOfExileBuilds/comments/1v47m92/spicysushis_league_starter_tier_list/']
+        ]
+      }),
+      v3RefreshedBuild('Spark Archmage', {
+        rank: 23, score: 79,
+        tags: [['BigDucks full route','proven'], ['Spicysushi B','proven'], ['day-1 mana clunky','hype']],
+        verdict: 'Высокий ceiling и хороший closed-arena damage, но ранний mana gearing остаётся менее плавным, чем у Cold DoT или DoT Elementalist. Берётся ради долгого развития, а не лучшего первого дня.',
+        metrics: { safety: 77, map: 85, boss: 83, budget: 68, guide: 93 },
+        extraSources: [
+          ['VIDEO','Spicysushi · Archmage в B-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8']
+        ]
+      }),
+      v3RefreshedBuild('Rolling Magma Mines', {
+        rank: 24, score: 79,
+        tags: [['Goratha route','proven'], ['дешёвый bossing','proven'], ['mine feel','hype']],
+        verdict: 'Мощный бюджетный bosser и честный SSF-каркас. Низкое место связано с mine detonation и Rolling Magma feel, а не с неспособностью закрыть камни.',
+        metrics: { safety: 83, map: 76, boss: 91, budget: 92, guide: 89 }
+      }),
+      v3RefreshedBuild('Holy Absolution', {
+        rank: 25, score: 78,
+        tags: [['cast speed buff','proven'], ['актуальный PoB','proven'], ['hybrid minion feel','']],
+        verdict: 'Хороший ранний minion caster с прямым cast-speed buff и удобным потенциалом дальнейшего Templar-reroll. Слабее верхних minion вариантов по объёму независимых 3.29 тестов.',
+        metrics: { safety: 82, map: 79, boss: 86, budget: 88, guide: 91 },
+        extraSources: [
+          ['INDEX','Community index · Absolution route','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
+        ]
+      }),
+      {
+        rank: 26, score: 77, risk: false,
+        name: 'Explosive Arrow Champion', author: 'Zizaran',
+        className: 'Champion · ignite ballista / safe mapper',
+        art: { ascendancy: 'champion', label: 'Champion', skill: 'explosive-arrow', skillFile: 'explosive-arrow.webp', skillLabel: 'Explosive Arrow' },
+        tags: [['Zizaran 3.29 guide','proven'], ['cheap off-meta','proven'], ['author: C-tier','hype']],
+        verdict: 'Старый решённый starter по новой низкой цене: ballista-nerf примерно компенсирован socket / quality изменениями, а Champion остаётся толстым. Медленный темп и слабое recovery не дают ему вернуться в верх списка.',
+        pros: ['очень подробный список опасных модов и ошибок gearing', 'дешёвая редкая bow progression', 'проверенный путь до всего обычного endgame'],
+        cons: ['нельзя случайно добавить flat fire или pierce', 'слабая recovery против degens', 'сам Zizaran оценивает билд примерно как C-tier'],
+        metrics: { safety: 89, map: 78, boss: 82, budget: 91, guide: 97 },
+        analysis: 'Zizaran честно не продаёт EA как нового победителя: это near-neutral 3.29 билд, который должен быть дешёвым именно из-за отсутствия meta-хайпа. Он оценивает около 6.5M pinnacle DPS на разумном gear и советует нафармить валюту, затем при желании перейти в более высокий ceiling.',
+        sources: [
+          ['VIDEO','Zizaran · Explosive Arrow Champion 3.29','https://www.youtube.com/watch?v=bD7Bt0UmVlo'],
+          ['POB','Zizaran · актуальный EA progression PoB','https://pobb.in/SS4brAQOXXM9']
+        ]
+      },
+      {
+        rank: 27, score: 75, risk: true,
+        name: 'Arctic Salvo', author: 'PhazePlays',
+        className: 'Elementalist · Creeping Frost / Winter Orb',
+        art: { ascendancy: 'elementalist', label: 'Elementalist', skill: 'winter-orb', skillLabel: 'Creeping Frost / Winter Orb' },
+        tags: [['новый 3.29 route','wip'], ['PoB updated 23.07','proven'], ['live-proof нет','wip']],
+        verdict: 'Самая интересная новая cold-концепция, но пока не практичнее обычного Winter Orb. После финальных patch notes автор снизил расчётный burst и отказался от Creeping Frost в ранней прогрессии.',
+        pros: ['большой AoE, freeze и Herald of Ice clear', 'автор сам стартует билдом в HC trade', 'есть обновлённые Mobalytics и PoB'],
+        cons: ['финальные числа уже пришлось заметно пересчитать', 'leveling переписан в последний момент', 'проверка Overloaded Intensity / Gluttony будет только на live'],
+        metrics: { safety: 67, map: 93, boss: 83, budget: 72, guide: 91 },
+        analysis: 'PhazePlays обновил PoB 23 июля и снизил заявленный burst примерно с 350M до 221–225M, одновременно перенеся переход на Creeping Frost в midgame. Spicysushi ставит Arctic Salvo в A-tier, но Reddit закономерно называет его экспериментальным. Поэтому билд добавлен, но с большим confidence discount.',
+        sources: [
+          ['VIDEO','PhazePlays · Arctic Salvo build guide 3.29','https://www.youtube.com/watch?v=kO1ZTP_WLvE'],
+          ['GUIDE','PhazePlays · Mobalytics guide','https://mobalytics.gg/poe/profile/phazeplays/builds/3-29-phazeplays-arctic-salvo-creeping-frost-winter-orb'],
+          ['POB','PhazePlays · обновлённый 23.07 PoB','https://pobb.in/ujBJbuXsj85u'],
+          ['VIDEO','Spicysushi · Arctic Salvo в A-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['THREAD','Reddit · выбор между Arctic Salvo и проверенными стартами','https://www.reddit.com/r/PathOfExileBuilds/comments/1v4e96u/league_starter_considerations_with_the_latest/']
+        ]
+      },
+      v3RefreshedBuild('Toxic Rain', {
+        rank: 28, score: 74,
+        tags: [['старый рабочий shell','proven'], ['Spicysushi C',''], ['без 3.29 edge','hype']],
+        verdict: 'Надёжный знакомый bow DoT всё ещё работает, особенно для Heist, но не получил причины выбирать его вместо более сильно buff-нутых или лучше документированных новых маршрутов.',
+        metrics: { safety: 82, map: 84, boss: 68, budget: 80, guide: 87 },
+        extraSources: [
+          ['VIDEO','Spicysushi · Toxic Rain в C-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8']
+        ]
+      }),
+      v3RefreshedBuild('Arc Ignite', {
+        rank: 29, score: 73,
+        tags: [['приятный chain clear','proven'], ['Legion viable',''], ['bossing thin','hype']],
+        verdict: 'Комфортный mapper и приятный Legion clear, но Penance Brand и новые Cold / Phys DoT варианты дают больше независимых доказательств и лучше закрывают single-target.',
+        metrics: { safety: 75, map: 90, boss: 60, budget: 82, guide: 83 },
+        extraSources: [
+          ['THREAD','Reddit · Arc Ignite против Penance Brand','https://www.reddit.com/r/PathOfExileBuilds/comments/1v47m92/spicysushis_league_starter_tier_list/']
+        ]
+      }),
+      v3RefreshedBuild('Holy Hammers of Spirals', {
+        rank: 30, score: 66,
+        tags: [['новая механика','wip'], ['overlap неизвестен','wip'], ['проверка только live','wip']],
+        verdict: 'Интересный эксперимент с готовым авторским планом, но реальный overlap, доступность gear и поведение на неудобных аренах ещё не доказаны. Для первого персонажа риск неоправдан.',
+        metrics: { safety: 55, map: 72, boss: 78, budget: 66, guide: 82 }
+      }),
+      v3RefreshedBuild('Flicker Strike', {
+        rank: 31, score: 62,
+        tags: [['Magefist route','proven'], ['Spicysushi C',''], ['acquired taste','wip']],
+        verdict: 'Рабочий фанатский старт для человека, который уже хочет Flicker. Как нейтральный совет на пустой экономике он проигрывает почти всему списку по цене ошибки и зависимости от переходов.',
+        metrics: { safety: 57, map: 92, boss: 68, budget: 59, guide: 89 },
+        extraSources: [
+          ['VIDEO','Spicysushi · Flicker в C-tier','https://www.youtube.com/watch?v=Et9PHqMxGa8']
+        ]
+      }),
+      v3RefreshedBuild('Luminary Merc Bot', {
+        rank: 32, score: 57,
+        tags: [['Spicysushi S+ meme','wip'], ['AI / gear неизвестны','wip'], ['reroll plan обязателен','hype']],
+        verdict: 'Лучше документирован, но не безопаснее: Luminary S+ у Spicysushi — явная шутка, а AI, ранний gear mercenary и поддержка механики в PoB всё ещё неизвестны. Это исследовательский старт, не практическая рекомендация.',
+        metrics: { safety: 37, map: 63, boss: 61, budget: 47, guide: 84 },
+        analysis: 'CaptainLance продолжил готовить route, но новые ссылки не заменяют live data. Zizaran заранее допускает тяжёлую кампанию и reroll в Earthshatter; Spicysushi поместил Luminary в S+ как meme. В v3 это последняя карточка и явное предупреждение, а не скрытая ставка.',
+        extraSources: [
+          ['VIDEO','Spicysushi · Luminary S+ как meme','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
+          ['SHEET','Spicysushi · пометка Luminary в отдельной строке','https://docs.google.com/spreadsheets/d/1ej_W-je3AWXtwRASnZQtuuTNlpUJf8PlU9aq-MSdras/edit?gid=0#gid=0']
+        ]
+      })
+    ];
+
+    const gpt3BuildAscendancyAlternatives = Object.freeze({
+      3: ['berserker', 'juggernaut'],
+      6: ['slayer', 'berserker'],
+      13: ['slayer', 'berserker']
+    });
+
     const gpt2BuildAscendancyAlternatives = Object.freeze({
       11: ['elementalist', 'occultist']
     });
@@ -1646,6 +2117,9 @@
     const gpt2AscendancyRail = gptAscendancyRail.cloneNode(true);
     gpt2AscendancyRail.id = 'gpt2-ascendancy-rail';
     document.querySelector('#gpt2-ascendancy-rail').replaceWith(gpt2AscendancyRail);
+    const gpt3AscendancyRail = gptAscendancyRail.cloneNode(true);
+    gpt3AscendancyRail.id = 'gpt3-ascendancy-rail';
+    document.querySelector('#gpt3-ascendancy-rail').replaceWith(gpt3AscendancyRail);
     const fubgunAscendancyRail = gptAscendancyRail.cloneNode(true);
     fubgunAscendancyRail.id = 'fubgun-ascendancy-rail';
     document.querySelector('#fubgun-ascendancy-rail').replaceWith(fubgunAscendancyRail);
@@ -1657,12 +2131,18 @@
     const sort = document.querySelector('#sort');
     const activeAscendancies = new Set();
     const gpt2ActiveAscendancies = new Set();
+    const gpt3ActiveAscendancies = new Set();
     const fubgunActiveAscendancies = new Set();
     const gpt2List = document.querySelector('#gpt2-build-list');
     const gpt2Search = document.querySelector('#gpt2-search');
     const gpt2Sort = document.querySelector('#gpt2-sort');
     const gpt2Count = document.querySelector('#gpt2-count');
     const gpt2Empty = document.querySelector('#gpt2-empty');
+    const gpt3List = document.querySelector('#gpt3-build-list');
+    const gpt3Search = document.querySelector('#gpt3-search');
+    const gpt3Sort = document.querySelector('#gpt3-sort');
+    const gpt3Count = document.querySelector('#gpt3-count');
+    const gpt3Empty = document.querySelector('#gpt3-empty');
     const fubgunList = document.querySelector('#fubgun-build-list');
     const fubgunSearch = document.querySelector('#fubgun-search');
     const fubgunCount = document.querySelector('#fubgun-count');
@@ -1910,7 +2390,12 @@
 
     const sourceAuthorNames = [...new Set([
       ...Object.values(authorByBuildName).flatMap(authors => authors.split(' + ')),
-      'Peuget2'
+      'Peuget2',
+      'Ruetoo',
+      'ExiledCat',
+      'BalorMage',
+      'PhazePlays',
+      'Spicysushi'
     ])].sort((a, b) => b.length - a.length);
 
     const sourceAuthorOverrides = Object.freeze({
@@ -2007,6 +2492,7 @@
       const authors = build.author || authorByBuildName[build.name] || 'автор не указан';
       const authorLabel = authors.includes('+') ? 'Авторы гайдов' : 'Автор гайда';
       const ascendancyInitial = art.label.charAt(0);
+      const skillFile = art.skillFile || `${art.skill}.png?v=square-1`;
       const lazy = build.rank > 3 ? ' loading="lazy"' : '';
       return `
         <div class="build-identity">
@@ -2015,7 +2501,7 @@
               <img src="assets/ascendancies/${esc(art.ascendancy)}.jpeg" width="72" height="72" alt="" aria-hidden="true" decoding="async"${lazy}>
             </span>
             <span class="skill-frame" data-fallback="✦" title="Main skill: ${esc(art.skillLabel)}">
-              <img src="assets/skills/${esc(art.skill)}.png?v=square-1" width="42" height="42" alt="" aria-hidden="true" decoding="async"${lazy}>
+              <img src="assets/skills/${esc(skillFile)}" width="42" height="42" alt="" aria-hidden="true" decoding="async"${lazy}>
             </span>
           </div>
           <div class="build-heading-copy">
@@ -2032,13 +2518,14 @@
 
     function scrollMinimapArt(build) {
       const art = build.art || buildArt[build.rank];
+      const skillFile = art.skillFile || `${art.skill}.png?v=square-1`;
       return `
         <span class="scroll-minimap-art" aria-hidden="true">
           <span class="scroll-minimap-ascendancy" data-fallback="${esc(art.label.charAt(0))}">
             <img src="assets/ascendancies/${esc(art.ascendancy)}.jpeg" width="50" height="50" alt="" decoding="async">
           </span>
           <span class="scroll-minimap-skill" data-fallback="✦">
-            <img src="assets/skills/${esc(art.skill)}.png?v=square-1" width="28" height="28" alt="" decoding="async">
+            <img src="assets/skills/${esc(skillFile)}" width="28" height="28" alt="" decoding="async">
           </span>
         </span>`;
     }
@@ -2453,6 +2940,54 @@
       updateScrollMinimap('gpt2', visible, gpt2List);
     }
 
+    function renderGpt3() {
+      const query = gpt3Search.value.trim().toLocaleLowerCase('ru');
+      let visible = gpt3Builds.filter(build => {
+        const haystack = `${build.name} ${build.author || ''} ${build.className} ${build.tags.map(tag => tag[0]).join(' ')} ${buildSources(build, true).map(source => source[1]).join(' ')}`.toLocaleLowerCase('ru');
+        const ascendancies = gpt3BuildAscendancyAlternatives[build.rank] || [build.art.ascendancy];
+        const filterMatch = gpt3ActiveAscendancies.size === 0 || ascendancies.some(ascendancy => gpt3ActiveAscendancies.has(ascendancy));
+        return filterMatch && (!query || haystack.includes(query));
+      });
+
+      const sortKey = gpt3Sort.value;
+      visible.sort((a, b) => sortKey === 'rank' ? a.rank - b.rank : b.metrics[sortKey] - a.metrics[sortKey]);
+      gpt3Count.textContent = `${visible.length} ${visible.length === 1 ? 'билд' : visible.length >= 2 && visible.length <= 4 ? 'билда' : 'билдов'}`;
+      gpt3Empty.style.display = visible.length ? 'none' : 'block';
+
+      gpt3List.innerHTML = visible.map(build => `
+        <article class="build" id="${scrollMinimapBuildId('gpt3', build)}" data-minimap-build>
+          <div class="rankbox"><span class="ranknum">${String(build.rank).padStart(2, '0')}</span><span class="overall-score">${build.score}<small>/100</small></span></div>
+          <div class="build-title">
+            ${buildIdentity(build)}
+            <div class="statusline">${build.tags.map(([label, cls]) => `<span class="tag ${esc(cls)}">${esc(label)}</span>`).join('')}</div>
+          </div>
+          <div class="build-main">
+            <p>${esc(build.verdict)}</p>
+            <div class="split">
+              <ul class="pros">${build.pros.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+              <ul class="cons">${build.cons.map(item => `<li>${esc(item)}</li>`).join('')}</ul>
+            </div>
+          </div>
+          <div class="metrics" aria-label="Оценки билда">
+            ${metric('Надёжность', build.metrics.safety)}
+            ${metric('Маппинг', build.metrics.map)}
+            ${metric('Боссы', build.metrics.boss)}
+            ${metric('Дешевизна', build.metrics.budget)}
+            ${metric('Гайд', build.metrics.guide)}
+          </div>
+          <div class="details">
+            <div class="detail-body">
+              <p>${esc(build.analysis)}</p>
+              ${renderSourceGroups(build, true)}
+            </div>
+          </div>
+        </article>
+      `).join('');
+      initSourceFavicons(gpt3List);
+      initAscendancyPortraits(gpt3List);
+      updateScrollMinimap('gpt3', visible, gpt3List);
+    }
+
     function metric(label, value) {
       return `<div class="metric"><span>${label}</span><b>${value}</b><div class="bar"><span style="width:${value}%"></span></div></div>`;
     }
@@ -2515,12 +3050,16 @@
     const gpt2AvailableAscendancies = new Set(
       gpt2Builds.flatMap(build => ascendanciesFor(build, gpt2BuildAscendancyAlternatives, item => item.art.ascendancy))
     );
+    const gpt3AvailableAscendancies = new Set(
+      gpt3Builds.flatMap(build => ascendanciesFor(build, gpt3BuildAscendancyAlternatives, item => item.art.ascendancy))
+    );
     const fubgunAvailableAscendancies = new Set(
       fubgunBuilds.flatMap(build => ascendanciesFor(build, fubgunBuildAscendancyAlternatives, item => item.art.ascendancy))
     );
 
     initAscendancyFilter(document.querySelector('#gpt-report .ascendancy-filter'), gptAvailableAscendancies, activeAscendancies, render);
     initAscendancyFilter(document.querySelector('#gpt2-report .ascendancy-filter'), gpt2AvailableAscendancies, gpt2ActiveAscendancies, renderGpt2);
+    initAscendancyFilter(document.querySelector('#gpt3-report .ascendancy-filter'), gpt3AvailableAscendancies, gpt3ActiveAscendancies, renderGpt3);
     initAscendancyFilter(document.querySelector('#fubgun-report .ascendancy-filter'), fubgunAvailableAscendancies, fubgunActiveAscendancies, renderFubgun);
 
     const stickyControlsMedia = window.matchMedia('(min-width: 761px)');
@@ -2547,7 +3086,7 @@
     syncStickyControls();
 
     function setReportView(view, { updateUrl = true, scroll = false } = {}) {
-      const nextView = ['gpt', 'gpt2', 'fubgun'].includes(view) ? view : 'gpt';
+      const nextView = ['gpt', 'gpt2', 'gpt3', 'fubgun'].includes(view) ? view : 'gpt';
       document.body.dataset.reportView = nextView;
       reportTabs.forEach(tab => {
         const selected = tab.dataset.reportView === nextView;
@@ -2555,8 +3094,8 @@
         tab.tabIndex = selected ? 0 : -1;
       });
       reportPanels.forEach(panel => { panel.hidden = panel.dataset.reportPanel !== nextView; });
-      skipLink.href = nextView === 'fubgun' ? '#fubgun-ranking' : nextView === 'gpt2' ? '#gpt2-ranking' : '#ranking';
-      document.title = nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : nextView === 'gpt2' ? 'PoE 3.29 — GPT version 2' : 'PoE 3.29 — что стартовать';
+      skipLink.href = nextView === 'fubgun' ? '#fubgun-ranking' : nextView === 'gpt3' ? '#gpt3-ranking' : nextView === 'gpt2' ? '#gpt2-ranking' : '#ranking';
+      document.title = nextView === 'fubgun' ? 'PoE 3.29 — Fubgun version' : nextView === 'gpt3' ? 'PoE 3.29 — GPT version 3' : nextView === 'gpt2' ? 'PoE 3.29 — GPT version 2' : 'PoE 3.29 — что стартовать';
       requestAnimationFrame(() => {
         syncStickyControls();
         renderActiveScrollMinimap();
@@ -2585,12 +3124,15 @@
     sort.addEventListener('change', render);
     gpt2Search.addEventListener('input', renderGpt2);
     gpt2Sort.addEventListener('change', renderGpt2);
+    gpt3Search.addEventListener('input', renderGpt3);
+    gpt3Sort.addEventListener('change', renderGpt3);
     fubgunSearch.addEventListener('input', renderFubgun);
     initExternalLinkFavicons(document);
     initSourceFavicons(document);
     initAscendancyPortraits(document);
     render();
     renderGpt2();
+    renderGpt3();
     renderFubgun();
     setReportView(new URLSearchParams(window.location.search).get('version'), { updateUrl: false });
   </script>
