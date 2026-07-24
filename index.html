@@ -253,10 +253,32 @@
       content: "";
       position: absolute;
       inset: 0;
+      z-index: 3;
       box-shadow: inset 0 0 0 2px oklch(0 0 0 / .2), inset 0 -22px 28px oklch(0 0 0 / .28);
       pointer-events: none;
     }
     .ascendancy-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .ascendancy-half {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .ascendancy-half.left { clip-path: polygon(0 0, 71% 0, 29% 100%, 0 100%); }
+    .ascendancy-half.right { clip-path: polygon(71% 0, 100% 0, 100% 100%, 29% 100%); }
+    .ascendancy-divider {
+      position: absolute;
+      top: -12%;
+      left: 50%;
+      z-index: 2;
+      width: 2px;
+      height: 124%;
+      background: oklch(0.9 0 0 / .72);
+      box-shadow: 0 0 0 1px oklch(0 0 0 / .42);
+      transform: translateX(-50%) rotate(30deg);
+      transform-origin: center;
+      pointer-events: none;
+    }
     .skill-frame {
       position: absolute;
       right: -1px;
@@ -412,6 +434,7 @@
     }
     .scroll-minimap-ascendancy::before { content: attr(data-fallback); }
     .scroll-minimap-ascendancy img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .scroll-minimap-ascendancy .ascendancy-divider { width: 1px; }
     .scroll-minimap-skill {
       position: absolute;
       right: 0;
@@ -940,8 +963,8 @@
         metrics: { safety: 79, map: 86, boss: 78, budget: 89, guide: 87 },
         analysis: 'Это не blind recommendation новичку, но хороший value pick для опытного игрока. Его сила — не secret broken interaction, а низкая конкуренция и автор, который показывает весь маршрут.',
         sources: [
-          ['VIDEO','Alohaa · полный guide 3.29','https://www.youtube.com/watch?v=jQy7qtUnQHM'],
-          ['POB','Alohaa · browser PoB snapshot','https://pobb.in/hRixktqVbF0v'],
+          ['VIDEO','Alohaa · Slayer guide 3.29','https://www.youtube.com/watch?v=jQy7qtUnQHM'],
+          ['POB','Alohaa · Slayer browser PoB snapshot','https://pobb.in/hRixktqVbF0v'],
           ['POB','Alohaa · Maxroll import','https://maxroll.gg/poe/pob/6bipck0t'],
           ['INDEX','Build index + discussion','https://www.reddit.com/r/PathOfExileBuilds/comments/1v2agyh/329_curse_of_the_allflame_league_start_build_index/']
         ]
@@ -1249,7 +1272,7 @@
       },
       {
         rank: 7, name: 'KBoC Necromancer / Hierophant', className: 'Necromancer / Hierophant · wander',
-        art: { ascendancy: 'necromancer', label: 'Necromancer / Hierophant', skill: 'kinetic-blast-clustering', skillLabel: 'Kinetic Blast of Clustering' },
+        art: { ascendancy: 'necromancer', ascendancies: ['necromancer', 'hierophant'], label: 'Necromancer / Hierophant', skill: 'kinetic-blast-clustering', skillLabel: 'Kinetic Blast of Clustering' },
         tags: [['Fubgun #7','proven'], ['Necro day 1',''], ['Hiero ceiling','']],
         verdict: 'Necromancer лучше начинает, Hierophant лучше масштабируется. Около 20% nerf не убивает архетип, который был слишком силён в двух предыдущих лигах.',
         pros: ['выбор между быстрым стартом и потолком', 'сильный wander clear', 'проверенный core пережил умеренный nerf'],
@@ -1285,7 +1308,7 @@
       },
       {
         rank: 9, name: 'Reap / Exsanguinate / GC Mines', className: 'Trickster / Elementalist · mine family',
-        art: { ascendancy: 'trickster', label: 'Trickster / Elementalist', skill: 'exsanguinate', skillLabel: 'Exsanguinate' },
+        art: { ascendancy: 'trickster', ascendancies: ['trickster', 'elementalist'], label: 'Trickster / Elementalist', skill: 'exsanguinate', skillLabel: 'Exsanguinate' },
         tags: [['Fubgun #9','proven'], ['выбор под farm',''], ['несколько авторов','']],
         verdict: 'Не один билд, а семейство: Eye of Winter — чистый bossing, Glacial Cascade — all-rounder, Reap/Exsanguinate — лучший mapping из трёх.',
         pros: ['можно подобрать mine под конкретную ферму', 'высокий ранний boss damage', 'Reap/Exsang хорошо раскрывают Legion'],
@@ -1324,8 +1347,8 @@
         ]
       },
       {
-        rank: 11, name: 'General’s Cry', className: 'Berserker / Slayer · pseudo-minion boss rush',
-        art: { ascendancy: 'berserker', label: 'Berserker / Slayer', skill: 'generals-cry', skillLabel: 'General’s Cry' },
+        rank: 11, name: 'General’s Cry', className: 'Champion · pseudo-minion boss rush',
+        art: { ascendancy: 'champion', label: 'Champion', skill: 'generals-cry', skillLabel: 'General’s Cry' },
         tags: [['Fubgun #11',''], ['мало игроков','hype'], ['boss rusher','proven']],
         verdict: 'Возможно, заслуживает более высокого места, но у Fubgun мало свежих референсов. Сильный чистый boss rusher, который почти не подходит Legion/Breach.',
         pros: ['сильные обычные, Uber и Nightmare bosses', 'может фармить Harvest и Essence', 'урон доставляют призванные mirages'],
@@ -1334,8 +1357,8 @@
         analysis: 'Fubgun описывает General’s Cry как pseudo-minion melee: создать corpses, поднять mirages и отправить их атаковать. Низкая позиция отражает недостаток свежих примеров, а не слабый boss damage.',
         sources: [
           ['VIDEO','Fubgun · место #11','https://www.youtube.com/watch?v=lOnHH393bhQ&t=619s'],
-          ['VIDEO','Plexsu · план 3.29','https://www.youtube.com/watch?v=xx6k7mZDfEE'],
-          ['POB','Plexsu · tree и gear','https://poe.ninja/poe1/pob/92c95']
+          ['VIDEO','Plexsu · Champion-план 3.29','https://www.youtube.com/watch?v=xx6k7mZDfEE'],
+          ['POB','Plexsu · Champion tree и gear','https://poe.ninja/poe1/pob/92c95']
         ]
       },
       {
@@ -1428,7 +1451,7 @@
       5:  { ascendancy: 'slayer', label: 'Slayer', skill: 'static-strike', skillLabel: 'Static Strike' },
       6:  { ascendancy: 'hierophant', label: 'Hierophant', skill: 'storm-burst', skillLabel: 'Storm Burst' },
       7:  { ascendancy: 'chieftain', label: 'Chieftain', skill: 'righteous-fire', skillLabel: 'Righteous Fire' },
-      8:  { ascendancy: 'elementalist', label: 'Elementalist', skill: 'winter-orb', skillLabel: 'Winter Orb' },
+      8:  { ascendancy: 'elementalist', ascendancies: ['occultist', 'elementalist'], label: 'Occultist / Elementalist', skill: 'winter-orb', skillLabel: 'Winter Orb' },
       9:  { ascendancy: 'necromancer', label: 'Necromancer', skill: 'summon-raging-spirit', skillLabel: 'Summon Raging Spirit' },
       10: { ascendancy: 'slayer', label: 'Slayer', skill: 'shield-crush', skillLabel: 'Shield Crush' },
       11: { ascendancy: 'assassin', label: 'Assassin', skill: 'poisonous-concoction', skillLabel: 'Poisonous Concoction' },
@@ -1436,7 +1459,7 @@
       13: { ascendancy: 'guardian', label: 'Guardian', skill: 'absolution', skillLabel: 'Absolution' },
       14: { ascendancy: 'hierophant', label: 'Hierophant', skill: 'shock-nova', skillLabel: 'Shock Nova' },
       15: { ascendancy: 'pathfinder', label: 'Pathfinder', skill: 'toxic-rain', skillLabel: 'Toxic Rain' },
-      16: { ascendancy: 'juggernaut', label: 'Juggernaut', skill: 'boneshatter', skillLabel: 'Boneshatter' },
+      16: { ascendancy: 'juggernaut', ascendancies: ['juggernaut', 'champion'], label: 'Juggernaut / Champion', skill: 'boneshatter', skillLabel: 'Boneshatter' },
       17: { ascendancy: 'elementalist', label: 'Elementalist', skill: 'arc', skillLabel: 'Arc' },
       18: { ascendancy: 'slayer', label: 'Slayer', skill: 'cyclone', skillLabel: 'Cyclone' },
       19: { ascendancy: 'inquisitor', label: 'Inquisitor', skill: 'holy-hammers', skillLabel: 'Holy Hammers' },
@@ -1451,8 +1474,7 @@
 
     const fubgunBuildAscendancyAlternatives = Object.freeze({
       7: ['necromancer', 'hierophant'],
-      9: ['trickster', 'elementalist'],
-      11: ['berserker', 'slayer']
+      9: ['trickster', 'elementalist']
     });
 
     function refreshedBuild(name, overrides = {}) {
@@ -1462,7 +1484,7 @@
       return {
         ...source,
         ...next,
-        art: { ...buildArt[source.rank] },
+        art: { ...buildArt[source.rank], ...(next.art || {}) },
         tags: next.tags || source.tags.map(tag => [...tag]),
         pros: next.pros || [...source.pros],
         cons: next.cons || [...source.cons],
@@ -1522,11 +1544,14 @@
       }),
       refreshedBuild('Static Strike', {
         rank: 6, score: 87,
+        className: 'Slayer / Berserker · exerted strike',
+        art: { ascendancies: ['slayer', 'berserker'], label: 'Slayer / Berserker' },
         tags: [['2-stone test','proven'], ['snapshot mechanic','proven'], ['нужен 2% CDR jewel','hype']],
         verdict: 'Свежий гайд и двухкаменный тест закрепили билд выше середины списка. Snapshot превращает один melee-hit в продолжительный мобильный clear, но механика требует точно выполнить gearing checklist.',
         extraSources: [
-          ['VIDEO','Alohaa · полный Void Shockwave guide 3.29','https://www.youtube.com/watch?v=6H8-ZmZZXoI'],
-          ['POB','Alohaa · актуальный PoB','https://pobb.in/0KGECHX4Ud3P'],
+          ['VIDEO','Alohaa · Berserker Void Shockwave guide 3.29','https://www.youtube.com/watch?v=6H8-ZmZZXoI'],
+          ['POB','Alohaa · Berserker progression PoB','https://pobb.in/0KGECHX4Ud3P'],
+          ['POB','Alohaa · Berserker Maxroll PoB','https://maxroll.gg/poe/pob/rakxnu0t'],
           ['VIDEO','Alohaa · two-stone progression run','https://www.youtube.com/watch?v=eh30wxYxVFQ'],
           ['SHEET','Alohaa · progression spreadsheet','https://docs.google.com/spreadsheets/d/1UGBybGpDGgNuewBudqyATyZwY-i81vjFpufj0020DvQ/edit?usp=sharing']
         ]
@@ -1767,12 +1792,12 @@
       v3RefreshedBuild('Earthshatter', {
         rank: 3, score: 92,
         author: 'Woolie',
-        className: 'Berserker / Juggernaut · slam / warcries',
-        art: { ascendancy: 'berserker', label: 'Berserker' },
+        className: 'Juggernaut · slam / warcries',
+        art: { ascendancy: 'juggernaut', ascendancies: null, label: 'Juggernaut' },
         tags: [['Fubgun: slams #2','proven'], ['Spicysushi A','proven'], ['Allflame pick','proven']],
         verdict: 'Самый сильный строгий melee-старт v3. Бюджетная редкая двуручка, отличный damage по камням и особенно хорошее взаимодействие с плотной Allflame-механикой перевешивают неудобство warcry-ротации.',
         metrics: { safety: 90, map: 87, boss: 94, budget: 92, guide: 94 },
-        analysis: 'Подъём #5→#3 основан на совпадении независимых оценок: Fubgun ставит slams вторыми за прогрессию до четырёх камней, Spicysushi даёт Earthshatter A-tier и отдельно называет его одним из лучших билдов под саму лигу. Berserker быстрее, Juggernaut безопаснее; карта показывает оба варианта.',
+        analysis: 'Подъём #5→#3 основан на совпадении независимых оценок: Fubgun ставит slams вторыми за прогрессию до четырёх камней, Spicysushi даёт Earthshatter A-tier и отдельно называет его одним из лучших билдов под саму лигу. В актуальном полном маршруте Woolie основной персонаж — Juggernaut; отдельный endgame PoB Berserker не считается вторым полноценным league-start гайдом.',
         extraSources: [
           ['VIDEO','Fubgun · slams на втором месте','https://www.youtube.com/watch?v=lOnHH393bhQ'],
           ['VIDEO','Spicysushi · Earthshatter A-tier и Allflame pick','https://www.youtube.com/watch?v=Et9PHqMxGa8'],
@@ -1783,7 +1808,7 @@
         rank: 4, score: 91,
         author: 'Ruetoo + Jungroan + Fubgun',
         className: 'Elementalist · channeling cold / Herald of Ice',
-        art: { ascendancy: 'elementalist', label: 'Elementalist' },
+        art: { ascendancy: 'elementalist', ascendancies: null, label: 'Elementalist' },
         tags: [['Ruetoo non-PC route','proven'], ['SSF <5h stones','proven'], ['рынок перегрет','hype']],
         verdict: 'Теперь это не только модный endgame caster, а реальный быстрый starter с несколькими маршрутами. Новая версия Ruetoo снимает обязательность раннего power-charge gear, а Jungroan подтвердил скорость SSF-прогоном.',
         metrics: { safety: 87, map: 98, boss: 84, budget: 76, guide: 96 },
@@ -1808,6 +1833,8 @@
       }),
       v3RefreshedBuild('Static Strike', {
         rank: 6, score: 88,
+        className: 'Slayer / Berserker · exerted strike',
+        art: { ascendancy: 'slayer', ascendancies: ['slayer', 'berserker'], label: 'Slayer / Berserker' },
         tags: [['Alohaa full route','proven'], ['Spicysushi A','proven'], ['snapshot checklist','hype']],
         verdict: 'Один удар превращается в мобильный clear благодаря snapshot-механике. Результат очень силён для melee, но требует точно собрать cooldown / exert checklist — это менее прощающе, чем обычный slam.',
         metrics: { safety: 84, map: 94, boss: 88, budget: 86, guide: 96 },
@@ -1838,7 +1865,7 @@
         rank: 8, score: 87,
         author: 'Zizaran',
         className: 'Juggernaut · strike / trauma',
-        art: { ascendancy: 'juggernaut', label: 'Juggernaut' },
+        art: { ascendancy: 'juggernaut', ascendancies: null, label: 'Juggernaut' },
         tags: [['Zizaran 3.29 guide','proven'], ['safe nonfailure','proven'], ['не fastest farmer','']],
         verdict: 'Самый простой толстый melee-ответ для первого персонажа. Он не лидер по farm ceiling, зато почти не зависит от рынка, имеет полный актуальный guide и редко застревает до камней.',
         metrics: { safety: 95, map: 76, boss: 83, budget: 92, guide: 98 },
@@ -1902,6 +1929,7 @@
         rank: 13, score: 84,
         author: 'IlNino + ExiledCat',
         className: 'Slayer / Berserker · armour / shield attack',
+        art: { ascendancy: 'slayer', ascendancies: ['slayer', 'berserker'], label: 'Slayer / Berserker' },
         tags: [['два актуальных route','proven'], ['smooth 4 stones','proven'], ['mapping ceiling','hype']],
         verdict: 'Практичнее, чем показывают строгие тирлисты: стартует на самом Shield Crush, не требует дорогой редкой пушки и имеет два полных актуальных маршрута. Компромисс — средний boss ceiling и ощутимая защита только после правильных покупок.',
         metrics: { safety: 84, map: 91, boss: 75, budget: 91, guide: 96 },
@@ -2133,12 +2161,13 @@
     ];
 
     const gpt3BuildAscendancyAlternatives = Object.freeze({
-      3: ['berserker', 'juggernaut'],
       6: ['slayer', 'berserker'],
       13: ['slayer', 'berserker']
     });
 
     const gpt2BuildAscendancyAlternatives = Object.freeze({
+      6: ['slayer', 'berserker'],
+      7: ['juggernaut', 'champion'],
       11: ['elementalist', 'occultist']
     });
 
@@ -2318,7 +2347,7 @@
         ['GUIDE', 'Woolie · Sunder leveling до Boneshatter', 'https://mobalytics.gg/poe/builds/woolie-sunder-leveling']
       ],
       'Static Strike': [
-        ['POB', 'Alohaa · актуальный guide PoB', 'https://pobb.in/pCocYg9C6vAC'],
+        ['POB', 'Alohaa · Slayer progression PoB', 'https://pobb.in/XnAvEuXFAWxR'],
         ['POB', 'Alohaa · снимок после двух voidstones', 'https://pobb.in/kdizb6e8c2Md']
       ],
       'Static Strike / Ele Hit Slayer': [
@@ -2516,6 +2545,19 @@
       `).join('')}</div>`;
     }
 
+    function ascendancyPortrait(art, size, lazy = '') {
+      const ascendancies = Array.isArray(art.ascendancies) && art.ascendancies.length > 1
+        ? art.ascendancies.slice(0, 2)
+        : [art.ascendancy];
+      if (ascendancies.length === 1) {
+        return `<img src="assets/ascendancies/${esc(ascendancies[0])}.jpeg" width="${size}" height="${size}" alt="" aria-hidden="true" decoding="async"${lazy}>`;
+      }
+      return `
+        <span class="ascendancy-half left"><img src="assets/ascendancies/${esc(ascendancies[0])}.jpeg" width="${size}" height="${size}" alt="" aria-hidden="true" decoding="async"${lazy}></span>
+        <span class="ascendancy-half right"><img src="assets/ascendancies/${esc(ascendancies[1])}.jpeg" width="${size}" height="${size}" alt="" aria-hidden="true" decoding="async"${lazy}></span>
+        <i class="ascendancy-divider" aria-hidden="true"></i>`;
+    }
+
     function buildIdentity(build) {
       const art = build.art || buildArt[build.rank];
       const authors = build.author || authorByBuildName[build.name] || 'автор не указан';
@@ -2527,7 +2569,7 @@
         <div class="build-identity">
           <div class="build-art">
             <span class="ascendancy-frame" data-fallback="${esc(ascendancyInitial)}" title="Ascendancy: ${esc(art.label)}">
-              <img src="assets/ascendancies/${esc(art.ascendancy)}.jpeg" width="72" height="72" alt="" aria-hidden="true" decoding="async"${lazy}>
+              ${ascendancyPortrait(art, 72, lazy)}
             </span>
             <span class="skill-frame" data-fallback="✦" title="Main skill: ${esc(art.skillLabel)}">
               <img src="assets/skills/${esc(skillFile)}" width="42" height="42" alt="" aria-hidden="true" decoding="async"${lazy}>
@@ -2551,7 +2593,7 @@
       return `
         <span class="scroll-minimap-art" aria-hidden="true">
           <span class="scroll-minimap-ascendancy" data-fallback="${esc(art.label.charAt(0))}">
-            <img src="assets/ascendancies/${esc(art.ascendancy)}.jpeg" width="50" height="50" alt="" decoding="async">
+            ${ascendancyPortrait(art, 50)}
           </span>
           <span class="scroll-minimap-skill" data-fallback="✦">
             <img src="assets/skills/${esc(skillFile)}" width="28" height="28" alt="" decoding="async">
